@@ -3,7 +3,7 @@ import { useState } from "react";
 import { TourRow } from "./components/TourRow";
 import { tourOptions, tourTypes } from "./types/tourTypes";
 import { getPrivateOptions } from "./helpers/tourOption";
-import { postTours } from "../lib/api";
+import { postTours } from "./lib/api";
 interface Row {
   id: string;
   type: tourTypes;
@@ -55,8 +55,7 @@ export default function Home() {
     try {
       const result = await postTours(allData);
       console.log("Server response:", result);
-            console.log("Server allData:", allData);
-
+      console.log("Server allData:", allData);
 
       alert(`Inserted tours successfully!`);
     } catch (err) {

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getReports } from "../../lib/api";
+import { getReports } from "../lib/api";
 
 export default function Reports() {
   const [reports, setReports] = useState<any[]>([]);

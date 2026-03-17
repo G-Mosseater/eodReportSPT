@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getReportById } from "../../../lib/api";
-import { handleDeleteReport } from "../../../lib/actions";
+import { getReportById } from "../../lib/api";
+import { handleDeleteReport } from "../../lib/actions";
 
 export default function ReportPage() {
   const { id } = useParams();
