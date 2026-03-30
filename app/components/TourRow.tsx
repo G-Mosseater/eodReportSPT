@@ -31,6 +31,7 @@ export const TourRow = ({
   const [child, setChild] = useState(0);
   const [endurkoma, setEndurkoma] = useState(0);
   const [free, setFree] = useState(0);
+  const [status, setStatus] = useState("On");
 
   const total = adults + groups + youth + child + endurkoma + free;
 
@@ -46,8 +47,9 @@ export const TourRow = ({
       endurkoma,
       free,
       total,
+      status,
     });
-  }, [hour, boat, adults, groups, youth, child, endurkoma, free]);
+  }, [hour, boat, adults, groups, youth, child, endurkoma, free, status]);
 
   return (
     <div className="flex gap-4 p-2 border rounded w-max min-w-[400px]">
@@ -58,7 +60,8 @@ export const TourRow = ({
           value={hour}
           onChange={(e) => setHour(e.target.value)}
           className="border rounded px-2 py-1"
-          required
+          required={status !== "Canceled"}
+          disabled={status === "Canceled"}
         >
           <option value="">Select time</option>
           {departureTimes.map((h) => (
@@ -72,7 +75,8 @@ export const TourRow = ({
           value={boat}
           onChange={(e) => setBoat(e.target.value)}
           className="border rounded px-2 py-1"
-          required
+          required={status !== "Canceled"}
+          disabled={status === "Canceled"}
         >
           <option value="">Select boat</option>
           {boatOptions.map((b) => (
@@ -84,6 +88,17 @@ export const TourRow = ({
       </div>
 
       <div className="flex flex-wrap gap-4 items-center">
+        <div className="flex flex-col items-center">
+          <label className="text-sm">Status</label>
+          <select
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            className="border rounded px-2 py-1 w-28"
+          >
+            <option value="ON">On</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+        </div>
         {(
           [
             ["Adults", adults, setAdults],
@@ -102,6 +117,7 @@ export const TourRow = ({
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
               className="border rounded px-2 py-1 w-20"
+              disabled={status === "Canceled"}
             />
           </div>
         ))}

@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const rowSchema = new mongoose.Schema({
   tourName: { type: String, required: true },
-  hour: { type: String, required: true },
+  status: { type: String, required: true },
+  hour: { type: String },
   boat: { type: String, default: "" },
   adults: { type: Number, default: 0 },
   groups: { type: Number, default: 0 },
@@ -27,7 +28,6 @@ const reportSchema = new mongoose.Schema(
   {
     rows: { type: [rowSchema], required: true },
     payment: paymentSchema,
-    
   },
 
   { timestamps: true },

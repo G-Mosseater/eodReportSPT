@@ -1,4 +1,4 @@
-import { tourOptions } from "../types/tourTypes";
+import { tourOptions } from "./tours";
 
 export function getPrivateOptions() {
   const allTours = Object.values(tourOptions);

@@ -1,22 +1,21 @@
 "use client";
 import { useState } from "react";
 import { TourRow } from "./components/TourRow";
-import { tourOptions, tourTypes } from "./types/tourTypes";
+import { tourOptions, tours } from "./helpers/tours";
 import { getPrivateOptions } from "./helpers/tourOption";
 import { postTours } from "./lib/api";
 import { PaymentSummary } from "./components/PaymentSummary";
 interface Row {
   id: string;
-  type: tourTypes;
+  type: tours;
 }
-export const tourOrder: tourTypes[] = [
+export const tourOrder: tours[] = [
   "Whale Watching",
   "RIB Express",
   "Northern Lights",
   "Puffin by RIB",
   "Puffin Tour",
   "Sea Angling",
-  "Private",
 ];
 
 export default function Home() {
@@ -30,7 +29,7 @@ export default function Home() {
     notes: "",
   });
 
-  function addRow(type: tourTypes) {
+  function addRow(type: tours) {
     const id = crypto.randomUUID();
     const newRows = [...rows, { id, type }];
 
@@ -61,11 +60,10 @@ export default function Home() {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
     };
-    console.log('this is all data rows+payments',allData)
+    console.log("this is all data rows+payments", allData);
 
     try {
-     await postTours(allData);
-
+      await postTours(allData);
 
       alert(`Inserted tours successfully!`);
     } catch (err) {
@@ -81,7 +79,7 @@ export default function Home() {
           <button
             key={tourName}
             type="button"
-            onClick={() => addRow(tourName as tourTypes)}
+            onClick={() => addRow(tourName as tours)}
             className="bg-blue-600 text-white px-3 py-1 rounded"
           >
             Add {tourName}
@@ -91,17 +89,17 @@ export default function Home() {
 
       <form onSubmit={handleSubmit} className="flex flex-col items-start gap-4">
         {rows.map((row) => {
-          const options =
-            row.type === "Private"
-              ? getPrivateOptions()
-              : (tourOptions[row.type] ?? { boats: [], hours: [] });
+          // const options =
+          //   row.type === "Private"
+          //     ? getPrivateOptions()
+          //     : (tourOptions[row.type] ?? { boats: [], hours: [] });
           return (
             <TourRow
               key={row.id}
               rowId={row.id}
               tourName={row.type}
-              boatOptions={options.boats}
-              departureTimes={options.hours}
+              boatOptions={tourOptions[row.type].boats}
+              departureTimes={tourOptions[row.type].hours}
               onChange={updateRowData}
               onRemove={removeRow}
             />

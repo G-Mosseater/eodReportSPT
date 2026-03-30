@@ -56,12 +56,14 @@ export function PaymentSummary({ onChange }: Props) {
         />
       </div>
       <div className="flex flex-col">
-        <label className="text-sm">Additional Info</label>
+        <label className="text-sm">
+          Group info / Cash to bank / Private tours
+        </label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           className="border rounded px-2 py-1 w-96 h-24 resize-none"
-          placeholder="Write any extra details here..."
+          placeholder="Write details here..."
         />
       </div>
     </div>

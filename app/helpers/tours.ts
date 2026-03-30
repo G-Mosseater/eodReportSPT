@@ -1,11 +1,10 @@
-export type tourTypes =
+export type tours =
   | "Whale Watching"
   | "Puffin Tour"
   | "Sea Angling"
   | "RIB Express"
   | "Northern Lights"
   | "Puffin by RIB"
-  | "Private";
 
 export const tourOptions = {
   "Whale Watching": {
