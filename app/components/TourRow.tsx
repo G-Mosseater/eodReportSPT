@@ -7,6 +7,12 @@ interface TourRowProps {
   departureTimes: string[];
   onChange: (rowId: string, data: any) => void;
   onRemove: (rowId: string) => void;
+  payment?: {
+    cash: number;
+    card: number;
+    voucher: number;
+    total: number;
+  };
 }
 
 export const TourRow = ({
@@ -48,21 +54,19 @@ export const TourRow = ({
       <div className="flex flex-col gap-2">
         <p className="font-semibold">{tourName}</p>
 
-   
-          <select
-            value={hour}
-            onChange={(e) => setHour(e.target.value)}
-            className="border rounded px-2 py-1"
-            required
-          >
-            <option value="">Select time</option>
-            {departureTimes.map((h) => (
-              <option key={h} value={h}>
-                {h}
-              </option>
-            ))}
-          </select>
-      
+        <select
+          value={hour}
+          onChange={(e) => setHour(e.target.value)}
+          className="border rounded px-2 py-1"
+          required
+        >
+          <option value="">Select time</option>
+          {departureTimes.map((h) => (
+            <option key={h} value={h}>
+              {h}
+            </option>
+          ))}
+        </select>
 
         <select
           value={boat}

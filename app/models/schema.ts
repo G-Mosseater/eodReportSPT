@@ -12,11 +12,24 @@ const rowSchema = new mongoose.Schema({
   free: { type: Number, default: 0 },
   total: { type: Number, required: true },
 });
+const paymentSchema = new mongoose.Schema(
+  {
+    cash: { type: Number, default: 0 },
+    card: { type: Number, default: 0 },
+    voucher: { type: Number, default: 0 },
+    total: { type: Number, default: 0 },
+    notes: { type: String, default: "" },
+  },
+  { _id: false },
+);
 
 const reportSchema = new mongoose.Schema(
   {
     rows: { type: [rowSchema], required: true },
+    payment: paymentSchema,
+    
   },
+
   { timestamps: true },
 );
 

@@ -4,6 +4,7 @@ import { TourRow } from "./components/TourRow";
 import { tourOptions, tourTypes } from "./types/tourTypes";
 import { getPrivateOptions } from "./helpers/tourOption";
 import { postTours } from "./lib/api";
+import { PaymentSummary } from "./components/PaymentSummary";
 interface Row {
   id: string;
   type: tourTypes;
@@ -21,6 +22,13 @@ export const tourOrder: tourTypes[] = [
 export default function Home() {
   const [rows, setRows] = useState<Row[]>([]);
   const [rowsData, setRowsData] = useState<{ [key: string]: any }>({});
+  const [paymentData, setPaymentData] = useState({
+    cash: 0,
+    card: 0,
+    voucher: 0,
+    total: 0,
+    notes: "",
+  });
 
   function addRow(type: tourTypes) {
     const id = crypto.randomUUID();
@@ -49,13 +57,15 @@ export default function Home() {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const allData = rows.map((row) => rowsData[row.id] || {});
+    const allData = {
+      rows: rows.map((row) => rowsData[row.id] || {}),
+      payment: paymentData,
+    };
+    console.log('this is all data rows+payments',allData)
 
     try {
-      const result = await postTours(allData);
-      console.log("Server response:", result);
-      console.log("Server allData:", allData);
+     await postTours(allData);
+
 
       alert(`Inserted tours successfully!`);
     } catch (err) {
@@ -97,6 +107,7 @@ export default function Home() {
             />
           );
         })}
+        <PaymentSummary onChange={setPaymentData} />
         <button
           type="submit"
           className="bg-green-600 text-white rounded px-3 py-2 mt-4"
