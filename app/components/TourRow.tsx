@@ -52,14 +52,14 @@ export const TourRow = ({
   }, [hour, boat, adults, groups, youth, child, endurkoma, free, status]);
 
   return (
-    <div className="flex gap-4 p-2 border rounded w-max min-w-[400px]">
-      <div className="flex flex-col gap-2">
-        <p className="font-semibold">{tourName}</p>
+    <div className="flex flex-col gap-3 p-3 border rounded w-full lg:flex-row lg:gap-6 lg:p-4 lg:items-center">
+      <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
+        <p className="font-semibold text-base lg:text-lg">{tourName}</p>
 
         <select
           value={hour}
           onChange={(e) => setHour(e.target.value)}
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2"
           required={status !== "Canceled"}
           disabled={status === "Canceled"}
         >
@@ -74,7 +74,7 @@ export const TourRow = ({
         <select
           value={boat}
           onChange={(e) => setBoat(e.target.value)}
-          className="border rounded px-2 py-1"
+          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2"
           required={status !== "Canceled"}
           disabled={status === "Canceled"}
         >
@@ -87,18 +87,19 @@ export const TourRow = ({
         </select>
       </div>
 
-      <div className="flex flex-wrap gap-4 items-center">
+      <div className="flex-1 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 lg:gap-4">
         <div className="flex flex-col items-center">
-          <label className="text-sm">Status</label>
+          <label className="text-xs lg:text-sm mb-1">Status</label>
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="border rounded px-2 py-1 w-28"
+            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-28"
           >
             <option value="ON">On</option>
             <option value="Canceled">Canceled</option>
           </select>
         </div>
+
         {(
           [
             ["Adults", adults, setAdults],
@@ -110,33 +111,36 @@ export const TourRow = ({
           ] as [string, number, React.Dispatch<React.SetStateAction<number>>][]
         ).map(([label, value, setter]) => (
           <div key={label} className="flex flex-col items-center">
-            <label className="text-sm">{label}</label>
+            <label className="text-xs lg:text-sm mb-1 whitespace-nowrap">
+              {label}
+            </label>
             <input
               type="number"
               min={0}
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
-              className="border rounded px-2 py-1 w-20"
+              className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20"
               disabled={status === "Canceled"}
             />
           </div>
         ))}
 
         <div className="flex flex-col items-center">
-          <label className="text-sm">Total</label>
+          <label className="text-xs lg:text-sm mb-1">Total</label>
           <input
             type="number"
             readOnly
             value={total}
-            className="border rounded px-2 py-1 w-20 bg-gray-100"
+            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 bg-muted"
           />
         </div>
       </div>
-      <div className="flex justify-between items-start">
+
+      <div className="flex justify-end lg:justify-center">
         <button
           type="button"
           onClick={() => onRemove(rowId)}
-          className="bg-red-500 hover:bg-red-600 text-white px-1  rounded transition-colors"
+          className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 lg:px-3 lg:py-1.5 rounded transition-colors text-sm lg:text-base"
         >
           X
         </button>
