@@ -33,6 +33,13 @@ const reportSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true},
+});
 
-export default Report;
+const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export { Report, User };

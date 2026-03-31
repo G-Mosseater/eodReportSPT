@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TourRow } from "../components/TourRow";
 import { tourOptions, tours } from "../helpers/tours";
 // import { getPrivateOptions } from "./helpers/tourOption";
 import { postTours } from "../lib/api";
 import { PaymentSummary } from "../components/PaymentSummary";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 interface Row {
   id: string;
   type: tours;
@@ -28,7 +30,19 @@ export default function NewReport() {
     total: 0,
     notes: "",
   });
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.replace("/signin");
+    }
+  }, [status, router]);
 
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (!session) return null;
   function addRow(type: tours) {
     const id = crypto.randomUUID();
     const newRows = [...rows, { id, type }];

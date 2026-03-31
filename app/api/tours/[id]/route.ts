@@ -1,16 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectDatabase } from "../../../helpers/db";
-import Report from "../../../models/schema";
+import { Report } from "../../../models/schema";
+import { getToken } from "next-auth/jwt";
 
-export async function GET(req: Request, context: { params: { id: string } | Promise<{ id: string }> }) {
+export async function GET(
+  req: NextRequest,
+  context: { params: { id: string } | Promise<{ id: string }> },
+) {
+  const token = await getToken({ req, secret: process.env.BETTER_AUTH_SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   try {
     await connectDatabase();
 
     const params = await context.params;
-    
+
     const id = params.id;
-    console.log("this is the id", id); 
+    console.log("this is the id", id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
@@ -28,12 +36,14 @@ export async function GET(req: Request, context: { params: { id: string } | Prom
   }
 }
 
-
-
 export async function DELETE(
-  req: Request,
+  req: NextRequest,
   context: { params: { id: string } | Promise<{ id: string }> },
 ) {
+  const token = await getToken({ req, secret: process.env.BETTER_AUTH_SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
   try {
     await connectDatabase();
     const params = await context.params;
@@ -49,7 +59,7 @@ export async function DELETE(
     console.error(err);
     return NextResponse.json(
       { error: err.message || "Server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

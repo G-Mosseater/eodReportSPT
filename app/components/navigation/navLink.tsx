@@ -1,10 +1,11 @@
 "use client";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
   const pathname = usePathname();
-
+  const { data: session } = useSession();
   const linkStyle = (path: string) =>
     `px-3 py-1.5 rounded text-sm lg:text-base transition-colors ${
       pathname === path
@@ -18,16 +19,20 @@ export default function NavLinks() {
           Home
         </Link>
       </li>
-      <li>
-        <Link href="/reports" className={linkStyle("/reports")}>
-          All Reports
-        </Link>
-      </li>
-      <li>
-        <Link href="/create" className={linkStyle("/create")}>
-          New Report
-        </Link>
-      </li>
+      {session && (
+        <>
+          <li>
+            <Link href="/reports" className={linkStyle("/reports")}>
+              All Reports
+            </Link>
+          </li>
+          <li>
+            <Link href="/create" className={linkStyle("/create")}>
+              New Report
+            </Link>
+          </li>
+        </>
+      )}
     </ul>
   );
 }
