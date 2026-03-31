@@ -64,14 +64,15 @@ export function PaymentSummary({ onChange }: Props) {
           />
         </div>
       </div>
-      <div className="flex flex-col flex-1 min-w-0">
-        <label className="text-xs lg:text-sm font-medium text-muted-foreground mb-1">
+      <div className="flex flex-col flex-grow min-w-[250px]">
+        <label className="text-sm font-medium text-muted-foreground mb-1">
           Group info / Cash to bank / Private tours
         </label>
+
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full h-20 lg:h-24 resize-none text-sm lg:text-base"
+          className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y"
           placeholder="Write details here..."
         />
       </div>

@@ -227,7 +227,6 @@ export default function ReportPage() {
           </div>
         </section>
 
-        {/* Delete Button */}
         <div className="flex justify-start">
           <button
             onClick={() => handleDeleteReport(String(id), router)}

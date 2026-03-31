@@ -20,30 +20,41 @@ export default function Reports() {
     fetchReports();
   }, []);
 
-  return (
-    <div className="flex flex-col gap-4 p-6">
-      {reports.map((report) => (
-        <div
-          key={report._id}
-          className="flex items-center justify-between border rounded-lg p-6 shadow-md bg-white cursor-pointer 
-                     hover:scale-105 transform transition-all duration-300"
-          onClick={() => router.push(`/reports/${report._id}`)}
-        >
-          <div className="text-left">
-            <p className="text-xl font-bold text-gray-800">
-              {new Date(report.createdAt).toLocaleDateString(undefined, {
-                day: "numeric",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
-          </div>
+  if (!reports)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
+      </div>
+    );
 
-          <div className="text-right">
-            <p className="text-sm text-gray-500">{report.rows.length} tours</p>
+  return (
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
+          All Reports
+        </h1>
+
+      <div className="grid gap-4 md:gap-6">
+        {reports.map((report) => (
+          <div
+            key={report._id}
+            className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-sm transition-all hover:shadow-md hover:scale-[1.01]"
+            onClick={() => router.push(`/reports/${report._id}`)}
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <h2 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
+                {new Date(report.createdAt).toLocaleDateString(undefined, {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </h2>
+              <span className="text-sm text-muted-foreground">
+                {report.rows.length} tours
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

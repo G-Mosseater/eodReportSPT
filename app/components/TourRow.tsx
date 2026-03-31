@@ -54,7 +54,9 @@ export const TourRow = ({
   return (
     <div className="flex flex-col gap-3 p-3 border rounded w-full lg:flex-row lg:gap-6 lg:p-4 lg:items-center">
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
-        <p className="font-semibold text-base lg:text-lg">{tourName}</p>
+        <div>
+          <p className="font-semibold text-base lg:text-lg">{tourName}</p>
+        </div>
 
         <select
           value={hour}
