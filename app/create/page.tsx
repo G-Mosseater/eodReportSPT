@@ -1,24 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { TourRow } from "../components/TourRow";
-import { tourOptions, tours } from "../helpers/tours";
+import { tourOptions } from "../helpers/tours";
 // import { getPrivateOptions } from "./helpers/tourOption";
 import { postTours } from "../lib/api";
 import { PaymentSummary } from "../components/PaymentSummary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { tours, tourOrder } from "../types/tourOrder";
 interface Row {
   id: string;
   type: tours;
 }
-export const tourOrder: tours[] = [
-  "Whale Watching",
-  "RIB Express",
-  "Northern Lights",
-  "Puffin by RIB",
-  "Puffin Tour",
-  "Sea Angling",
-];
 
 export default function NewReport() {
   const [rows, setRows] = useState<Row[]>([]);
@@ -31,6 +24,7 @@ export default function NewReport() {
     notes: "",
   });
   const { data: session, status } = useSession();
+
   const router = useRouter();
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -38,8 +32,46 @@ export default function NewReport() {
     }
   }, [status, router]);
 
+  // Load data from local storage
+  useEffect(() => {
+    try {
+      const savedRows = localStorage.getItem("tourRows");
+      if (savedRows) setRows(JSON.parse(savedRows));
+    } catch (err) {
+      console.warn("Failed to parse tourRows from localStorage:", err);
+      setRows([]);
+    }
+
+    try {
+      const savedRowsData = localStorage.getItem("tourRowsData");
+      if (savedRowsData) setRowsData(JSON.parse(savedRowsData));
+    } catch (err) {
+      console.warn("Failed to parse tourRowsData from localStorage:", err);
+      setRowsData({});
+    }
+
+    try {
+      const savedPayment = localStorage.getItem("payment");
+      if (savedPayment) setPaymentData(JSON.parse(savedPayment));
+    } catch (err) {
+      console.warn("Failed to parse paymentData from localStorage:", err);
+      setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+    }
+  }, []);
+
+  // Save data to local storage
+  useEffect(() => {
+    (localStorage.setItem("tourRows", JSON.stringify(rows)),
+      localStorage.setItem("tourRowsData", JSON.stringify(rowsData)),
+      localStorage.setItem("payment", JSON.stringify(paymentData)));
+  }, [rows, rowsData, paymentData]);
+
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
+      </div>
+    );
   }
 
   if (!session) return null;
@@ -78,8 +110,13 @@ export default function NewReport() {
 
     try {
       await postTours(allData);
-
       alert(`Inserted tours successfully!`);
+      localStorage.removeItem("tourRows");
+      localStorage.removeItem("tourRowData");
+      localStorage.removeItem("payment");
+      setRows([]);
+      setRowsData({});
+      setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
     } catch (err) {
       console.error(err);
       alert("Failed to submit tours");
@@ -111,10 +148,11 @@ export default function NewReport() {
             departureTimes={tourOptions[row.type].hours}
             onChange={updateRowData}
             onRemove={removeRow}
+            initialData={rowsData[row.id]}
           />
         ))}
 
-        <PaymentSummary onChange={setPaymentData} />
+        <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
 
         <button
           type="submit"

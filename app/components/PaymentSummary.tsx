@@ -1,23 +1,15 @@
 import { useEffect, useState } from "react";
 import { formatIsk } from "../helpers/formatCurrency";
+import { PaymentProps } from "../types/payment";
 
-type Props = {
-  onChange: (data: {
-    cash: number;
-    card: number;
-    voucher: number;
-    total: number;
-    notes: string;
-  }) => void;
-};
 
-export function PaymentSummary({ onChange }: Props) {
-  const [cash, setCash] = useState(0);
-  const [card, setCard] = useState(0);
-  const [voucher, setVoucher] = useState(0);
-  const [notes, setNotes] = useState("");
+export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
+  const [cash, setCash] = useState(initialData.cash || 0);
+  const [card, setCard] = useState(initialData.card || 0);
+  const [voucher, setVoucher] = useState(initialData.voucher || 0);
+  const [notes, setNotes] = useState(initialData.notes || "");
 
-  const total = cash + card + voucher;
+  const total = initialData.total || cash + card + voucher;
 
   useEffect(() => {
     onChange({

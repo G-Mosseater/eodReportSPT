@@ -1,19 +1,6 @@
 import { useEffect, useState } from "react";
+import { TourRowProps } from "../types/tourRow";
 
-interface TourRowProps {
-  rowId: string;
-  tourName: string;
-  boatOptions: string[];
-  departureTimes: string[];
-  onChange: (rowId: string, data: any) => void;
-  onRemove: (rowId: string) => void;
-  payment?: {
-    cash: number;
-    card: number;
-    voucher: number;
-    total: number;
-  };
-}
 
 export const TourRow = ({
   rowId,
@@ -22,16 +9,17 @@ export const TourRow = ({
   departureTimes,
   onChange,
   onRemove,
+  initialData = {},
 }: TourRowProps) => {
-  const [hour, setHour] = useState("");
-  const [boat, setBoat] = useState("");
-  const [adults, setAdults] = useState(0);
-  const [groups, setGroups] = useState(0);
-  const [youth, setYouth] = useState(0);
-  const [child, setChild] = useState(0);
-  const [endurkoma, setEndurkoma] = useState(0);
-  const [free, setFree] = useState(0);
-  const [status, setStatus] = useState("On");
+  const [hour, setHour] = useState(initialData.hour || "");
+  const [boat, setBoat] = useState(initialData.boat || "");
+  const [adults, setAdults] = useState(initialData.adults || 0);
+  const [groups, setGroups] = useState(initialData.groups || 0);
+  const [youth, setYouth] = useState(initialData.youth || 0);
+  const [child, setChild] = useState(initialData.child || 0);
+  const [endurkoma, setEndurkoma] = useState(initialData.endurkoma || 0);
+  const [free, setFree] = useState(initialData.free || 0);
+  const [status, setStatus] = useState(initialData.status || "On");
 
   const total = adults + groups + youth + child + endurkoma + free;
 
@@ -97,7 +85,7 @@ export const TourRow = ({
             onChange={(e) => setStatus(e.target.value)}
             className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-28"
           >
-            <option value="ON">On</option>
+            <option value="On">On</option>
             <option value="Canceled">Canceled</option>
           </select>
         </div>

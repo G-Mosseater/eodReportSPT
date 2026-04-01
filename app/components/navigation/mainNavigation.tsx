@@ -21,9 +21,7 @@ export default function MainNavigation() {
 
           {session ? (
             <div className="flex items-center gap-2">
-              <span className="hidden lg:inline">
-                Hello, {session.user?.name}
-              </span>
+         
               <button
                 onClick={() => signOut()}
                 className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"

@@ -1,7 +1,6 @@
-'use client'
 import "./globals.css";
 import MainNavigation from "./components/navigation/mainNavigation";
-import { SessionProvider } from "next-auth/react";
+import SessionProviderWrapper from "./components/SessionWrapper";
 
 export default function RootLayout({
   children,
@@ -11,10 +10,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <SessionProvider>
-          <MainNavigation />
+        <SessionProviderWrapper>
+        <MainNavigation />
           <main>{children}</main>
-        </SessionProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

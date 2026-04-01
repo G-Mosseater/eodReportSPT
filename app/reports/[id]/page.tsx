@@ -1,16 +1,35 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getReportById } from "../../lib/api";
-import { handleDeleteReport } from "../../lib/actions";
+import { getReportById, removeReport } from "../../lib/api";
 import { formatIsk } from "../../helpers/formatCurrency";
+import { useSession } from "next-auth/react";
 
 export default function ReportPage() {
   const { id } = useParams();
-  const [report, setReport] = useState<any>(null);
+  const [report, setReport] = useState<any | null>(null);
   const router = useRouter();
 
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace("/signin");
+    },
+  });
+
+  async function handleDeleteReport(id: string, router: any) {
+  try {
+    const result = await removeReport(id);
+    alert(result?.message || "Report deleted");
+    router.push("/reports");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
   useEffect(() => {
+    if (status !== "authenticated" || !id) return;
     async function fetchReport() {
       if (!id) return;
       try {
@@ -22,14 +41,15 @@ export default function ReportPage() {
       }
     }
     fetchReport();
-  }, [id]);
+  }, [status, id]);
 
-  if (!report)
+  if (status === "loading" || report === null) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">

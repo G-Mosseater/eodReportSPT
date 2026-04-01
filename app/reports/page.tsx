@@ -2,12 +2,21 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getReports } from "../lib/api";
+import { useSession } from "next-auth/react";
 
 export default function Reports() {
-  const [reports, setReports] = useState<any[]>([]);
+  const [reports, setReports] = useState<any[] | null>([]);
   const router = useRouter();
 
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace("/signin");
+    },
+  });
+
   useEffect(() => {
+    if (status !== "authenticated") return;
     async function fetchReports() {
       try {
         const data = await getReports();
@@ -18,20 +27,21 @@ export default function Reports() {
       }
     }
     fetchReports();
-  }, []);
+  }, [status]);
 
-  if (!reports)
+  if (status === "loading" || reports === null) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
-          All Reports
-        </h1>
+      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
+        All Reports
+      </h1>
 
       <div className="grid gap-4 md:gap-6">
         {reports.map((report) => (
