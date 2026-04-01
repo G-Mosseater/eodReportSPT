@@ -3,10 +3,30 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getReports } from "../lib/api";
 import { useSession } from "next-auth/react";
-
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ReportProps } from "../types/report";
 export default function Reports() {
-  const [reports, setReports] = useState<any[] | null>([]);
+  const [reports, setReports] = useState<ReportProps[]>([]);
+  const [selectedMonth, setSelectedMonth] = useState<Date | null>(null);
+  const [selectedYear, setSelectedYear] = useState<Date | null>(null);
+  const [monthOpen, setMonthOpen] = useState(false);
+  const [yearOpen, setYearOpen] = useState(false);
   const router = useRouter();
+
+  const filteredReports = reports.filter((report) => {
+    const reportDate = new Date(report.createdAt);
+
+    const monthMatch = selectedMonth
+      ? reportDate.getMonth() === selectedMonth.getMonth()
+      : true;
+
+    const yearMatch = selectedYear
+      ? reportDate.getFullYear() === selectedYear.getFullYear()
+      : true;
+
+    return monthMatch && yearMatch;
+  });
 
   const { data: session, status } = useSession({
     required: true,
@@ -42,9 +62,94 @@ export default function Reports() {
       <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
         All Reports
       </h1>
-
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <div className="flex justify-end gap-4 mb-6">
+          <DatePicker
+            open={monthOpen}
+            onClose={() => setMonthOpen(false)}
+            views={["month"]}
+            label="Month"
+            minDate={new Date(2020, 0)}
+            value={selectedMonth}
+            onChange={(newValue) => setSelectedMonth(newValue)}
+            slotProps={{
+              field: {
+                onClick: () => setMonthOpen(true),
+              },
+              openPickerButton: {
+                onClick: () => setMonthOpen(true),
+              },
+              popper: {
+                popperOptions: {
+                  modifiers: [
+                    {
+                      name: "offset",
+                      options: {
+                        offset: [0, 20],
+                      },
+                    },
+                  ],
+                },
+                sx: {
+                  "& .MuiPaper-root": {
+                    paddingTop: "16px",
+                  },
+                },
+              },
+            }}
+          />
+          <DatePicker
+            open={yearOpen}
+            onClose={() => setYearOpen(false)}
+            views={["year"]}
+            label="Year"
+            minDate={new Date(2026, 0)}
+            maxDate={new Date(new Date().getFullYear() + 30, 11)}
+            value={selectedYear}
+            yearsPerRow={3}
+            onChange={(newValue) => {
+              (setSelectedYear(newValue), setSelectedMonth(null));
+            }}
+            slotProps={{
+              field: {
+                onClick: () => setYearOpen(true),
+              },
+              openPickerButton: {
+                onClick: () => setYearOpen(true),
+              },
+              popper: {
+                popperOptions: {
+                  modifiers: [
+                    {
+                      name: "offset",
+                      options: {
+                        offset: [0, 20],
+                      },
+                    },
+                  ],
+                },
+                sx: {
+                  "& .MuiPaper-root": {
+                    paddingTop: "16px",
+                  },
+                },
+              },
+            }}
+          />
+          <button
+            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
+            onClick={() => {
+              setSelectedMonth(null);
+              setSelectedYear(null);
+            }}
+          >
+            Reset date
+          </button>
+        </div>
+      </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
-        {reports.map((report) => (
+        {filteredReports.length === 0 && <p>No reports found</p>}
+        {filteredReports.map((report) => (
           <div
             key={report._id}
             className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-sm transition-all hover:shadow-md hover:scale-[1.01]"

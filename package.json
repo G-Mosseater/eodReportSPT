@@ -9,8 +9,15 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.2.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.9",
+    "@mui/x-date-pickers": "^8.27.2",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
+    "date-fns": "^4.1.0",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.4",
     "next": "16.1.6",
