@@ -55,3 +55,26 @@ export async function removeReport(id: string) {
     throw new Error(err?.message || "Failed to delete report");
   }
 }
+
+export async function updateReport(id: string, data: any) {
+  try {
+    const response = await fetch(`/api/tours/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error?.error || "Failed to update report");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (err: any) {
+    console.error(err);
+    throw new Error(err?.message || "Failed to update report");
+  }
+}

@@ -18,15 +18,14 @@ export default function ReportPage() {
   });
 
   async function handleDeleteReport(id: string, router: any) {
-  try {
-    const result = await removeReport(id);
-    alert(result?.message || "Report deleted");
-    router.push("/reports");
-  } catch (err) {
-    console.error(err);
+    try {
+      const result = await removeReport(id);
+      alert(result?.message || "Report deleted");
+      router.push("/reports");
+    } catch (err) {
+      console.error(err);
+    }
   }
-}
-
 
   useEffect(() => {
     if (status !== "authenticated" || !id) return;
@@ -246,14 +245,23 @@ export default function ReportPage() {
             )}
           </div>
         </section>
-
-        <div className="flex justify-start">
-          <button
-            onClick={() => handleDeleteReport(String(id), router)}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
-          >
-            Delete Report
-          </button>
+        <div className="flex space-between w-full">
+          <div className="flex justify-start">
+            <button
+              onClick={() => handleDeleteReport(String(id), router)}
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+            >
+              Delete Report
+            </button>
+          </div>
+          <div className="flex justify-start">
+            <button
+              onClick={() => router.push(`/edit/${id}`)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+            >
+              Edit Report
+            </button>
+          </div>
         </div>
       </div>
     </div>

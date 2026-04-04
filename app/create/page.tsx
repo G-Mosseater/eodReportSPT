@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { TourRow } from "../components/TourRow";
 import { tourOptions } from "../helpers/tours";
-// import { getPrivateOptions } from "./helpers/tourOption";
 import { postTours } from "../lib/api";
 import { PaymentSummary } from "../components/PaymentSummary";
 import { useRouter } from "next/navigation";
@@ -14,18 +13,25 @@ interface Row {
 }
 
 export default function NewReport() {
-  const [rows, setRows] = useState<Row[]>([]);
-  const [rowsData, setRowsData] = useState<{ [key: string]: any }>({});
-  const [paymentData, setPaymentData] = useState({
-    cash: 0,
-    card: 0,
-    voucher: 0,
-    total: 0,
-    notes: "",
+  const [rows, setRows] = useState<Row[]>(() => {
+    const saved = localStorage.getItem("tourRows");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [rowsData, setRowsData] = useState<{ [key: string]: any }>(() => {
+    const saved = localStorage.getItem("tourRowsData");
+    return saved ? JSON.parse(saved) : {};
+  });
+
+  const [paymentData, setPaymentData] = useState(() => {
+    const saved = localStorage.getItem("payment");
+    return saved
+      ? JSON.parse(saved)
+      : { cash: 0, card: 0, voucher: 0, total: 0, notes: "" };
   });
   const { data: session, status } = useSession();
-
   const router = useRouter();
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/signin");
@@ -85,6 +91,14 @@ export default function NewReport() {
 
     setRows(newRows);
   }
+  function resetReport() {
+    localStorage.removeItem("tourRows");
+    localStorage.removeItem("tourRowsData");
+    localStorage.removeItem("payment");
+    setRows([]);
+    setRowsData({});
+    setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+  }
 
   function removeRow(id: string) {
     setRows((prev) => prev.filter((row) => row.id !== id));
@@ -112,11 +126,12 @@ export default function NewReport() {
       await postTours(allData);
       alert(`Inserted tours successfully!`);
       localStorage.removeItem("tourRows");
-      localStorage.removeItem("tourRowData");
+      localStorage.removeItem("tourRowsData");
       localStorage.removeItem("payment");
       setRows([]);
       setRowsData({});
       setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+      router.push("/reports");
     } catch (err) {
       console.error(err);
       alert("Failed to submit tours");
@@ -159,6 +174,13 @@ export default function NewReport() {
           className="bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base"
         >
           Submit Report
+        </button>
+        <button
+          type="button"
+          onClick={resetReport}
+          className="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base"
+        >
+          Reset Report
         </button>
       </form>
     </div>

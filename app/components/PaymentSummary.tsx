@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 import { formatIsk } from "../helpers/formatCurrency";
 import { PaymentProps } from "../types/payment";
 
-
 export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
   const [cash, setCash] = useState(initialData.cash || 0);
   const [card, setCard] = useState(initialData.card || 0);
   const [voucher, setVoucher] = useState(initialData.voucher || 0);
   const [notes, setNotes] = useState(initialData.notes || "");
 
-  const total = initialData.total || cash + card + voucher;
+  // Update local state when initialData changes (edit mode)
+  useEffect(() => {
+    setCash(initialData.cash || 0);
+    setCard(initialData.card || 0);
+    setVoucher(initialData.voucher || 0);
+    setNotes(initialData.notes || "");
+  }, [initialData]);
 
+  const total = cash + card + voucher;
   useEffect(() => {
     onChange({
       cash,

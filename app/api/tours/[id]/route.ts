@@ -63,3 +63,38 @@ export async function DELETE(
     );
   }
 }
+
+export async function PUT(
+  req: NextRequest,
+  context: { params: { id: string } | Promise<{ id: string }> },
+) {
+  const token = await getToken({ req, secret: process.env.BETTER_AUTH_SECRET });
+  if (!token) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    await connectDatabase();
+    const params = await context.params;
+    const id = params.id;
+    const body = await req.json();
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
+
+    const updatedReport = await Report.findByIdAndUpdate(id, body, { new: true });
+    if (!updatedReport) {
+      return NextResponse.json({ error: "Report not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedReport);
+  } catch (err: any) {
+    console.error(err);
+    return NextResponse.json(
+      { error: err.message || "Server error" },
+      { status: 500 },
+    );
+  }
+}
+
+
