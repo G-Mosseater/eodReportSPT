@@ -1,13 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
-import { TourRow } from "../../components/TourRow";
-import { tourOptions } from "../../helpers/tours";
-// import { getPrivateOptions } from "./helpers/tourOption";
-import { getReportById, postTours, updateReport } from "../../lib/api";
-import { PaymentSummary } from "../../components/PaymentSummary";
+
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+import { getReportById, updateReport } from "../../lib/api";
+import { TourRow } from "../../components/TourRow";
+import { PaymentSummary } from "../../components/PaymentSummary";
+import { tourOptions } from "../../helpers/tours";
 import { tours, tourOrder } from "../../types/tourOrder";
+
 interface Row {
   id: string;
   type: tours;
@@ -15,7 +17,7 @@ interface Row {
 
 export default function EditReport() {
   const [rows, setRows] = useState<Row[]>([]);
-  const [rowsData, setRowsData] = useState<{ [key: string]: any }>({});
+  const [rowsData, setRowsData] = useState<Record<string, any>>({});
   const [paymentData, setPaymentData] = useState({
     cash: 0,
     card: 0,
@@ -23,93 +25,124 @@ export default function EditReport() {
     total: 0,
     notes: "",
   });
+  const [isLoading, setIsLoading] = useState(true);
+
   const { id } = useParams();
   const { data: session, status } = useSession();
-
   const router = useRouter();
+
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.replace("/signin");
+      router.replace(
+        `/signin?callbackUrl=${encodeURIComponent(`/edit/${id}`)}`,
+      );
     }
-  }, [status, router]);
+  }, [status, router, id]);
 
   useEffect(() => {
-    if (status !== "authenticated" || !id) return;
-    async function fetchReport() {
-      const data = await getReportById(String(id));
-      const loadedRows = data.rows.map((row: any) => ({
-        id: crypto.randomUUID(),
-        type: row.tourName,
-      }));
-
-      const loadedRowsData: any = {};
-      loadedRows.forEach((r: any, index: number) => {
-        loadedRowsData[r.id] = data.rows[index];
-      });
-
-      setRows(loadedRows);
-      setRowsData(loadedRowsData);
-      setPaymentData(data.payment);
+    if (status !== "authenticated" || !id) {
+      setIsLoading(false);
+      return;
     }
 
-    if (id) fetchReport();
-  }, [id]);
+    async function fetchReport() {
+      setIsLoading(true);
+      try {
+        const data = await getReportById(String(id));
 
-  if (!session) return null;
-  function addRow(type: tours) {
-    const id = crypto.randomUUID();
-    const newRows = [...rows, { id, type }];
+        const loadedRows: Row[] = data.rows.map((row: any) => ({
+          id: crypto.randomUUID(),
+          type: row.tourName,
+        }));
 
-    newRows.sort(
-      (a, b) => tourOrder.indexOf(a.type) - tourOrder.indexOf(b.type),
-    );
+        const loadedRowsData: Record<string, any> = {};
+        loadedRows.forEach((r, index) => {
+          loadedRowsData[r.id] = data.rows[index];
+        });
 
-    setRows(newRows);
-  }
+        setRows(loadedRows);
+        setRowsData(loadedRowsData);
+        setPaymentData(
+          data.payment || { cash: 0, card: 0, voucher: 0, total: 0, notes: "" },
+        );
+      } catch (err) {
+        console.error(err);
+        alert(
+          "Failed to load report. It may have been deleted or you don't have access.",
+        );
+        router.push("/reports");
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-  function removeRow(id: string) {
-    setRows((prev) => prev.filter((row) => row.id !== id));
+    fetchReport();
+  }, [id, status, router]);
 
+  const addRow = useCallback((type: tours) => {
+    const newId = crypto.randomUUID();
+    setRows((prev) => {
+      const newRows = [...prev, { id: newId, type }];
+      return newRows.sort(
+        (a, b) => tourOrder.indexOf(a.type) - tourOrder.indexOf(b.type),
+      );
+    });
+  }, []);
+
+  const removeRow = useCallback((rowId: string) => {
+    setRows((prev) => prev.filter((row) => row.id !== rowId));
     setRowsData((prev) => {
       const copy = { ...prev };
-      delete copy[id];
+      delete copy[rowId];
       return copy;
     });
-  }
+  }, []);
 
-  function updateRowData(rowId: string, data: any) {
+  const updateRowData = useCallback((rowId: string, data: any) => {
     setRowsData((prev) => ({ ...prev, [rowId]: data }));
-  }
+  }, []);
 
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!id) return;
+
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
     };
-    console.log("this is all data rows+payments", allData);
 
     try {
-      if (id) {
-        await updateReport(String(id), allData);
-        alert("Report updated!");
-      }
-      router.push("/");
+      await updateReport(String(id), allData);
+      alert("Report updated successfully!");
+      router.push("/reports");
     } catch (err) {
       console.error(err);
-      alert("Failed to submit tours");
+      alert("Failed to update report. Please try again.");
     }
+  };
+
+  if (status === "loading" || isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading report...
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
   }
 
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <div className="flex flex-wrap gap-2 mb-6">
-        {[...Object.keys(tourOptions)].map((tourName) => (
+        {Object.keys(tourOptions).map((tourName) => (
           <button
             key={tourName}
             type="button"
             onClick={() => addRow(tourName as tours)}
-            className="bg-primary text-primary-foreground px-3 py-1.5 lg:px-4 lg:py-2 rounded text-sm lg:text-base"
+            className="bg-primary text-primary-foreground px-3 py-1.5 lg:px-4 lg:py-2 rounded text-sm lg:text-base hover:bg-primary/90 transition"
           >
             Add {tourName}
           </button>
@@ -134,9 +167,9 @@ export default function EditReport() {
 
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base"
+          className="bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base transition"
         >
-          Save
+          Save Changes
         </button>
       </form>
     </div>

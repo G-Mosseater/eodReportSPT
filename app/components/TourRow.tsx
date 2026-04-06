@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TourRowProps } from "../types/tourRow";
-
+import { X } from "lucide-react";
 
 export const TourRow = ({
   rowId,
@@ -40,7 +40,14 @@ export const TourRow = ({
   }, [hour, boat, adults, groups, youth, child, endurkoma, free, status]);
 
   return (
-    <div className="flex flex-col gap-3 p-3 border rounded w-full lg:flex-row lg:gap-6 lg:p-4 lg:items-center">
+    <div className="relative flex flex-col gap-3 p-3 pt-8 border rounded w-full lg:flex-row lg:gap-6 lg:p-4 lg:items-center">
+      <button
+        type="button"
+        onClick={() => onRemove(rowId)}
+        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2  shadow-md transition"
+      >
+        <X className="w-4 h-4" />
+      </button>
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>
           <p className="font-semibold text-base lg:text-lg">{tourName}</p>
@@ -76,7 +83,6 @@ export const TourRow = ({
           ))}
         </select>
       </div>
-
       <div className="flex-1 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 lg:gap-4">
         <div className="flex flex-col items-center">
           <label className="text-xs lg:text-sm mb-1">Status</label>
@@ -124,16 +130,6 @@ export const TourRow = ({
             className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 bg-muted"
           />
         </div>
-      </div>
-
-      <div className="flex justify-end lg:justify-center">
-        <button
-          type="button"
-          onClick={() => onRemove(rowId)}
-          className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 lg:px-3 lg:py-1.5 rounded transition-colors text-sm lg:text-base"
-        >
-          X
-        </button>
       </div>
     </div>
   );

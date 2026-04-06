@@ -48,7 +48,9 @@ export async function DELETE(
     await connectDatabase();
     const params = await context.params;
     const id = params.id;
-    console.log("Deleting report with id", id);
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid report ID" }, { status: 400 });
+    }
 
     const deletedReport = await Report.findByIdAndDelete(id);
     if (!deletedReport) {
@@ -82,7 +84,9 @@ export async function PUT(
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
-    const updatedReport = await Report.findByIdAndUpdate(id, body, { new: true });
+    const updatedReport = await Report.findByIdAndUpdate(id, body, {
+      new: true,
+    });
     if (!updatedReport) {
       return NextResponse.json({ error: "Report not found" }, { status: 404 });
     }
@@ -96,5 +100,3 @@ export async function PUT(
     );
   }
 }
-
-

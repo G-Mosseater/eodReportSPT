@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { getReportById, removeReport } from "../../lib/api";
 import { formatIsk } from "../../helpers/formatCurrency";
 import { useSession } from "next-auth/react";
+import { downloadCSVFile, reportToCSV } from "../../helpers/downloadCsv";
 
 export default function ReportPage() {
   const { id } = useParams();
@@ -16,6 +17,12 @@ export default function ReportPage() {
       router.replace("/signin");
     },
   });
+  function handleDownload() {
+    if (!report) return;
+
+    const csv = reportToCSV(report);
+    downloadCSVFile(`report-${report._id}.csv`, csv);
+  }
 
   async function handleDeleteReport(id: string, router: any) {
     try {
@@ -245,21 +252,27 @@ export default function ReportPage() {
             )}
           </div>
         </section>
-        <div className="flex space-between w-full">
-          <div className="flex justify-start">
+        <div className="flex flex-wrap justify-between items-center gap-3 w-full mt-6">
             <button
-              onClick={() => handleDeleteReport(String(id), router)}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
-            >
-              Delete Report
-            </button>
-          </div>
-          <div className="flex justify-start">
+            onClick={() => handleDeleteReport(String(id), router)}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+          >
+            Delete Report
+          </button>
+
+          <div className="flex gap-3">
             <button
               onClick={() => router.push(`/edit/${id}`)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
             >
               Edit Report
+            </button>
+
+            <button
+              onClick={handleDownload}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+            >
+              Download CSV
             </button>
           </div>
         </div>

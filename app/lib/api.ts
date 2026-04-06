@@ -1,80 +1,70 @@
-export async function postTours(data: any) {
+const API_BASE = "/api";
+
+async function apiRequest<T = any>(
+  endpoint: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
   try {
-    const response = await fetch("/api/tours", {
-      method: "POST",
+    const response = await fetch(`${API_BASE}${endpoint}`, {
+      ...options,
+      credentials: "include",
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
+        ...options.headers,
       },
-      body: JSON.stringify(data),
     });
-    const result = await response.json();
+
+    clearTimeout(timeoutId);
+
+    const result = await response.json().catch(() => ({}));
+
     if (!response.ok) {
-      throw new Error(result.error || "Failed to post tours");
+      throw new Error(
+        result.error || result.message || `HTTP error ${response.status}`,
+      );
     }
-    return result;
+
+    return result as T;
   } catch (err: any) {
-    throw new Error(err?.message || "Failed to post tours");
+    clearTimeout(timeoutId);
+
+    if (err.name === "AbortError") {
+      throw new Error("Request timeout - please try again");
+    }
+
+    throw new Error(err?.message || "An unexpected error occurred");
   }
+}
+
+export async function postTours(data: any) {
+  return apiRequest("/tours", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 }
 
 export async function getReports() {
-  try {
-    const response = await fetch("/api/tours");
-    const result = await response.json();
-    if (!response.ok)
-      throw new Error(result.error || "Failed to fetch reports");
-    return result;
-  } catch (err: any) {
-    throw new Error(err?.message || "Failed to fetch tours");
-  }
+  return apiRequest("/tours");
 }
 
 export async function getReportById(id: string) {
-  try {
-    const response = await fetch(`/api/tours/${id}`);
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.error || "Failed to fetch report");
-    }
-    return result;
-  } catch (err: any) {
-    throw new Error(err?.message || "Failed to fetch tours");
-  }
+  if (!id) throw new Error("Report ID is required");
+  return apiRequest(`/tours/${id}`);
 }
 
 export async function removeReport(id: string) {
-  try {
-    const response = await fetch(`/api/tours/${id}`, { method: "DELETE" });
-    const result = await response.json();
-    if (!response.ok)
-      throw new Error(result.error || "Failed to delete report");
-    console.log(result.message);
-    return result;
-  } catch (err: any) {
-    console.error(err);
-    throw new Error(err?.message || "Failed to delete report");
-  }
+  if (!id) throw new Error("Report ID is required");
+  return apiRequest(`/tours/${id}`, { method: "DELETE" });
 }
 
 export async function updateReport(id: string, data: any) {
-  try {
-    const response = await fetch(`/api/tours/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error?.error || "Failed to update report");
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (err: any) {
-    console.error(err);
-    throw new Error(err?.message || "Failed to update report");
-  }
+  if (!id) throw new Error("Report ID is required");
+  return apiRequest(`/tours/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
 }

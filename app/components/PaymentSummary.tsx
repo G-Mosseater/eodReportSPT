@@ -8,7 +8,6 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
   const [voucher, setVoucher] = useState(initialData.voucher || 0);
   const [notes, setNotes] = useState(initialData.notes || "");
 
-  // Update local state when initialData changes (edit mode)
   useEffect(() => {
     setCash(initialData.cash || 0);
     setCard(initialData.card || 0);
@@ -43,7 +42,6 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
             </label>
             <input
               type="number"
-              min={0}
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
               className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full text-sm lg:text-base"

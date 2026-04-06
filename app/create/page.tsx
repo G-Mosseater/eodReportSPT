@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TourRow } from "../components/TourRow";
 import { tourOptions } from "../helpers/tours";
 import { postTours } from "../lib/api";
@@ -13,6 +13,7 @@ interface Row {
 }
 
 export default function NewReport() {
+  const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState<Row[]>(() => {
     const saved = localStorage.getItem("tourRows");
     return saved ? JSON.parse(saved) : [];
@@ -32,87 +33,72 @@ export default function NewReport() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.replace("/signin");
-    }
-  }, [status, router]);
-
   // Load data from local storage
   useEffect(() => {
+    if (status === "unauthenticated") {
+      setIsLoading(false);
+      router.replace("/signin");
+    }
+    setIsLoading(true);
     try {
       const savedRows = localStorage.getItem("tourRows");
-      if (savedRows) setRows(JSON.parse(savedRows));
-    } catch (err) {
-      console.warn("Failed to parse tourRows from localStorage:", err);
-      setRows([]);
-    }
-
-    try {
       const savedRowsData = localStorage.getItem("tourRowsData");
-      if (savedRowsData) setRowsData(JSON.parse(savedRowsData));
-    } catch (err) {
-      console.warn("Failed to parse tourRowsData from localStorage:", err);
-      setRowsData({});
-    }
-
-    try {
       const savedPayment = localStorage.getItem("payment");
+
+      if (savedRows) setRows(JSON.parse(savedRows));
+      if (savedRowsData) setRowsData(JSON.parse(savedRowsData));
       if (savedPayment) setPaymentData(JSON.parse(savedPayment));
     } catch (err) {
-      console.warn("Failed to parse paymentData from localStorage:", err);
+      console.warn("Failed to load from localStorage:", err);
+      setRows([]);
+      setRowsData({});
       setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [status]);
 
   // Save data to local storage
   useEffect(() => {
-    (localStorage.setItem("tourRows", JSON.stringify(rows)),
-      localStorage.setItem("tourRowsData", JSON.stringify(rowsData)),
-      localStorage.setItem("payment", JSON.stringify(paymentData)));
-  }, [rows, rowsData, paymentData]);
+    if (status !== "authenticated") return;
 
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
+    localStorage.setItem("tourRows", JSON.stringify(rows));
+    localStorage.setItem("tourRowsData", JSON.stringify(rowsData));
+    localStorage.setItem("payment", JSON.stringify(paymentData));
+  }, [rows, rowsData, paymentData, status]);
 
-  if (!session) return null;
-  function addRow(type: tours) {
-    const id = crypto.randomUUID();
-    const newRows = [...rows, { id, type }];
+  const addRow = useCallback((type: tours) => {
+    const newId = crypto.randomUUID();
+    setRows((prev) => {
+      const newRows = [...prev, { id: newId, type }];
+      return newRows.sort(
+        (a, b) => tourOrder.indexOf(a.type) - tourOrder.indexOf(b.type),
+      );
+    });
+  }, []);
 
-    newRows.sort(
-      (a, b) => tourOrder.indexOf(a.type) - tourOrder.indexOf(b.type),
-    );
-
-    setRows(newRows);
-  }
-  function resetReport() {
+  const resetReport = useCallback(function resetForm() {
     localStorage.removeItem("tourRows");
     localStorage.removeItem("tourRowsData");
     localStorage.removeItem("payment");
+
     setRows([]);
     setRowsData({});
     setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
-  }
+  }, []);
 
-  function removeRow(id: string) {
-    setRows((prev) => prev.filter((row) => row.id !== id));
-
+  const removeRow = useCallback((rowId: string) => {
+    setRows((prev) => prev.filter((row) => row.id !== rowId));
     setRowsData((prev) => {
       const copy = { ...prev };
-      delete copy[id];
+      delete copy[rowId];
       return copy;
     });
-  }
+  }, []);
 
-  function updateRowData(rowId: string, data: any) {
+  const updateRowData = useCallback((rowId: string, data: any) => {
     setRowsData((prev) => ({ ...prev, [rowId]: data }));
-  }
+  }, []);
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -125,19 +111,23 @@ export default function NewReport() {
     try {
       await postTours(allData);
       alert(`Inserted tours successfully!`);
-      localStorage.removeItem("tourRows");
-      localStorage.removeItem("tourRowsData");
-      localStorage.removeItem("payment");
-      setRows([]);
-      setRowsData({});
-      setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+      resetReport();
+
       router.push("/reports");
     } catch (err) {
       console.error(err);
       alert("Failed to submit tours");
     }
   }
+  if (status === "loading" || isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
+      </div>
+    );
+  }
 
+  if (!session) return null;
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <div className="flex flex-wrap gap-2 mb-6">
@@ -169,19 +159,22 @@ export default function NewReport() {
 
         <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
 
-        <button
-          type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base"
-        >
-          Submit Report
-        </button>
-        <button
-          type="button"
-          onClick={resetReport}
-          className="bg-red-600 hover:bg-red-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base"
-        >
-          Reset Report
-        </button>
+        <div className="flex gap-3 mt-6">
+          <button
+            type="submit"
+            className="bg-green-600 hover:bg-green-700 text-white rounded px-6 py-3 text-sm lg:text-base"
+          >
+            Submit Report
+          </button>
+
+          <button
+            type="button"
+            onClick={resetReport}
+            className="bg-red-600 hover:bg-red-700 text-white rounded px-6 py-3 text-sm lg:text-base"
+          >
+            Reset Report
+          </button>
+        </div>
       </form>
     </div>
   );
