@@ -136,13 +136,23 @@ export default function EditReport() {
 
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
-      <div className="flex flex-wrap gap-2 mb-6">
-        {Object.keys(tourOptions).map((tourName) => (
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
+        {[...Object.keys(tourOptions)].map((tourName) => (
           <button
             key={tourName}
             type="button"
             onClick={() => addRow(tourName as tours)}
-            className="bg-primary text-primary-foreground px-3 py-1.5 lg:px-4 lg:py-2 rounded text-sm lg:text-base hover:bg-primary/90 transition"
+            className="
+                bg-blue-600 text-white
+          px-3 py-1.5 lg:px-6 lg:py-3
+          text-xs sm:text-sm lg:text-base
+          rounded-md
+          font-semibold
+          flex-1 sm:flex-none
+          min-w-[100px]
+          transition
+          hover:bg-blue-700
+        "
           >
             Add {tourName}
           </button>
@@ -167,7 +177,7 @@ export default function EditReport() {
 
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white rounded px-4 py-2 lg:px-6 lg:py-3 mt-4 w-fit text-sm lg:text-base transition"
+          className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
         >
           Save Changes
         </button>

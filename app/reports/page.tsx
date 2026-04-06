@@ -63,7 +63,7 @@ export default function Reports() {
         All Reports
       </h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div className="flex justify-end gap-4 mb-6">
+        <div className="flex flex-wrap justify-end gap-2 md:gap-4 mb-6">
           <DatePicker
             open={monthOpen}
             onClose={() => setMonthOpen(false)}
@@ -152,7 +152,17 @@ export default function Reports() {
         {filteredReports.map((report) => (
           <div
             key={report._id}
-            className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-sm transition-all hover:shadow-md hover:scale-[1.01]"
+            className="
+          cursor-pointer 
+         rounded-lg 
+       border border-border 
+       bg-card 
+       p-4 md:p-5 lg:p-6 
+       shadow-md 
+       transition-all 
+       hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] 
+       hover:scale-[1.01]
+  "
             onClick={() => router.push(`/reports/${report._id}`)}
           >
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
@@ -163,6 +173,7 @@ export default function Reports() {
                   year: "numeric",
                 })}
               </h2>
+
               <span className="text-sm text-muted-foreground">
                 {report.rows.length} tours
               </span>

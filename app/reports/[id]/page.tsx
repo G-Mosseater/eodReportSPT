@@ -79,7 +79,7 @@ export default function ReportPage() {
               return (
                 <div
                   key={row._id || row.tourName + row.hour}
-                  className={`w-full rounded-lg border p-4 md:p-5 lg:p-6 shadow-sm transition-all ${
+                  className={`w-full rounded-lg border p-4 md:p-2 lg:p-3 shadow-sm transition-all ${
                     isCanceled
                       ? "bg-red-50 border-red-300 dark:bg-red-950/30 dark:border-red-800"
                       : "bg-card border-border"
@@ -253,9 +253,9 @@ export default function ReportPage() {
           </div>
         </section>
         <div className="flex flex-wrap justify-between items-center gap-3 w-full mt-6">
-            <button
+          <button
             onClick={() => handleDeleteReport(String(id), router)}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-red-600 hover:bg-red-700 text-white"
           >
             Delete Report
           </button>
@@ -263,14 +263,14 @@ export default function ReportPage() {
           <div className="flex gap-3">
             <button
               onClick={() => router.push(`/edit/${id}`)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit  text-primary-foreground"
             >
               Edit Report
             </button>
 
             <button
               onClick={handleDownload}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 lg:px-6 lg:py-3 rounded-lg text-sm lg:text-base font-medium transition-colors shadow-sm"
+              className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
             >
               Download CSV
             </button>

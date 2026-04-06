@@ -6,12 +6,21 @@ import { usePathname } from "next/navigation";
 export default function NavLinks() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const linkStyle = (path: string) =>
-    `px-3 py-1.5 rounded text-sm lg:text-base transition-colors ${
-      pathname === path
-        ? "bg-primary text-primary-foreground"
-        : "hover:bg-muted"
-    }`;
+  const linkStyle = (path: string) => {
+    if (path === "/") {
+      return `px-3 py-1.5 rounded text-sm lg:text-base transition-colors ${
+        pathname === "/"
+          ? "bg-blue-600 text-primary-foreground"
+          : "hover:bg-blue-100"
+      }`;
+    } else {
+      return `px-3 py-1.5 rounded text-sm lg:text-base transition-colors ${
+        pathname.startsWith(path)
+          ? "bg-blue-600 text-primary-foreground"
+          : "hover:bg-blue-100"
+      }`;
+    }
+  };
   return (
     <ul className="flex gap-2 lg:gap-4 items-center">
       <li>

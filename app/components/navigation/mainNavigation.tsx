@@ -11,9 +11,9 @@ export default function MainNavigation() {
   return (
     <header className="border-b bg-background text-foreground w-full">
       <div className="w-full mx-auto flex items-center  flex justify-between p-4">
-        <h1 className="text-lg lg:text-xl font-bold">
+        <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold">
           <Link href="/" className="hover:text-primary transition-colors">
-            EOD
+            Special Tours Operations
           </Link>
         </h1>
         <div className="flex items-center gap-4">
@@ -21,7 +21,6 @@ export default function MainNavigation() {
 
           {session ? (
             <div className="flex items-center gap-2">
-         
               <button
                 onClick={() => signOut()}
                 className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"

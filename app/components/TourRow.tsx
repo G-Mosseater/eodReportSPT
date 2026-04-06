@@ -40,7 +40,14 @@ export const TourRow = ({
   }, [hour, boat, adults, groups, youth, child, endurkoma, free, status]);
 
   return (
-    <div className="relative flex flex-col gap-3 p-3 pt-8 border rounded w-full lg:flex-row lg:gap-6 lg:p-4 lg:items-center">
+    <div
+      className={`
+    relative flex flex-col gap-3 p-3 pt-8 border rounded w-full 
+    lg:flex-row lg:gap-6 lg:p-2 lg:items-center
+    transition-opacity
+    ${status === "Canceled" ? "opacity-50 bg-gray-100" : "bg-white"}
+  `}
+    >
       <button
         type="button"
         onClick={() => onRemove(rowId)}
