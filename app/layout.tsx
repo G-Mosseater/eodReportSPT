@@ -1,6 +1,7 @@
 import "./globals.css";
 import MainNavigation from "./components/navigation/mainNavigation";
 import SessionProviderWrapper from "./components/SessionWrapper";
+import Footer from "./components/Footer";
 
 export default function RootLayout({
   children,
@@ -16,6 +17,7 @@ export default function RootLayout({
           <MainNavigation />
           <main>{children}</main>
         </SessionProviderWrapper>
+        <Footer />
       </body>
     </html>
   );

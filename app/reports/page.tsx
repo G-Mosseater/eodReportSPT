@@ -7,7 +7,6 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ReportProps } from "../types/report";
 
-
 export default function Reports() {
   const [reports, setReports] = useState<ReportProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<Date | null>(null);
@@ -15,20 +14,6 @@ export default function Reports() {
   const [monthOpen, setMonthOpen] = useState(false);
   const [yearOpen, setYearOpen] = useState(false);
   const router = useRouter();
-
-  const filteredReports = reports.filter((report) => {
-    const reportDate = new Date(report.createdAt);
-
-    const monthMatch = selectedMonth
-      ? reportDate.getMonth() === selectedMonth.getMonth()
-      : true;
-
-    const yearMatch = selectedYear
-      ? reportDate.getFullYear() === selectedYear.getFullYear()
-      : true;
-
-    return monthMatch && yearMatch;
-  });
 
   const { data: session, status } = useSession({
     required: true,
@@ -50,6 +35,20 @@ export default function Reports() {
     }
     fetchReports();
   }, [status]);
+
+  const filteredReports = reports.filter((report) => {
+    const reportDate = new Date(report.createdAt);
+
+    const monthMatch = selectedMonth
+      ? reportDate.getMonth() === selectedMonth.getMonth()
+      : true;
+
+    const yearMatch = selectedYear
+      ? reportDate.getFullYear() === selectedYear.getFullYear()
+      : true;
+
+    return monthMatch && yearMatch;
+  });
 
   if (status === "loading" || reports === null) {
     return (
