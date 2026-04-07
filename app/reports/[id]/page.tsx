@@ -5,10 +5,12 @@ import { getReportById, removeReport } from "../../lib/api";
 import { formatIsk } from "../../helpers/formatCurrency";
 import { useSession } from "next-auth/react";
 import { downloadCSVFile, reportToCSV } from "../../helpers/downloadCsv";
+import { Modal } from "../../components/UI/Modal";
 
 export default function ReportPage() {
   const { id } = useParams();
   const [report, setReport] = useState<any | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -26,8 +28,8 @@ export default function ReportPage() {
 
   async function handleDeleteReport(id: string, router: any) {
     try {
-      const result = await removeReport(id);
-      alert(result?.message || "Report deleted");
+      await removeReport(id);
+      setShowModal(false);
       router.push("/reports");
     } catch (err) {
       console.error(err);
@@ -70,9 +72,18 @@ export default function ReportPage() {
         </div>
 
         <section className="mb-6 lg:mb-8">
-          <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-foreground mb-3 lg:mb-4">
-            Tours
-          </h2>
+          <div className="flex items-center justify-between mb-3 lg:mb-4">
+            <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-foreground">
+              Tours
+            </h2>
+
+            <button
+              onClick={() => router.back()}
+              className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm md:text-base hidden lg:inline-block"
+            >
+              Go back
+            </button>
+          </div>
           <div className="space-y-4 lg:space-y-6">
             {report.rows?.map((row: any) => {
               const isCanceled = row.status === "Canceled";
@@ -254,7 +265,7 @@ export default function ReportPage() {
         </section>
         <div className="flex flex-wrap justify-between items-center gap-3 w-full mt-6">
           <button
-            onClick={() => handleDeleteReport(String(id), router)}
+            onClick={() => setShowModal(true)}
             className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-red-600 hover:bg-red-700 text-white"
           >
             Delete Report
@@ -277,6 +288,32 @@ export default function ReportPage() {
           </div>
         </div>
       </div>
+      <Modal
+        show={showModal}
+        onCancel={() => setShowModal(false)}
+        header="Delete Report"
+        footer={
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setShowModal(false)}
+              className="px-4 py-2 rounded text-sm lg:text-base bg-gray-200 hover:bg-gray-300 transition"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={() => handleDeleteReport(String(id), router)}
+              className="px-4 py-2 rounded text-sm lg:text-base bg-red-600 hover:bg-red-700 text-white transition"
+            >
+              Delete
+            </button>
+          </div>
+        }
+      >
+        <p className="text-sm lg:text-base text-muted-foreground mb-0">
+          Are you sure you want to delete this report?
+        </p>
+      </Modal>
     </div>
   );
 }

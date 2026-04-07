@@ -61,7 +61,7 @@ export default function Reports() {
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
       <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
         All Reports
-      </h1>
+      </h1> 
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <div className="flex flex-wrap justify-end gap-2 md:gap-4 mb-6">
           <DatePicker
@@ -148,7 +148,6 @@ export default function Reports() {
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
-        {filteredReports.length === 0 && <p>No reports found</p>}
         {filteredReports.map((report) => (
           <div
             key={report._id}
@@ -162,6 +161,9 @@ export default function Reports() {
        transition-all 
        hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] 
        hover:scale-[1.01]
+         max-w-4xl
+            w-full 
+              mx-auto   
   "
             onClick={() => router.push(`/reports/${report._id}`)}
           >

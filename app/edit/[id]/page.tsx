@@ -9,6 +9,7 @@ import { TourRow } from "../../components/TourRow";
 import { PaymentSummary } from "../../components/PaymentSummary";
 import { tourOptions } from "../../helpers/tours";
 import { tours, tourOrder } from "../../types/tourOrder";
+import { Modal } from "../../components/UI/Modal";
 
 interface Row {
   id: string;
@@ -18,6 +19,7 @@ interface Row {
 export default function EditReport() {
   const [rows, setRows] = useState<Row[]>([]);
   const [rowsData, setRowsData] = useState<Record<string, any>>({});
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [paymentData, setPaymentData] = useState({
     cash: 0,
     card: 0,
@@ -102,24 +104,26 @@ export default function EditReport() {
     setRowsData((prev) => ({ ...prev, [rowId]: data }));
   }, []);
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!id) return;
+  const confirmSubmit = async () => {
+    setShowSubmitModal(false);
 
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
     };
 
+    if (!id) return;
+
     try {
       await updateReport(String(id), allData);
-      alert("Report updated successfully!");
       router.push("/reports");
     } catch (err) {
       console.error(err);
-      alert("Failed to update report. Please try again.");
     }
+  };
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setShowSubmitModal(true);
   };
 
   if (status === "loading" || isLoading) {
@@ -135,14 +139,15 @@ export default function EditReport() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 lg:p-8">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
-        {[...Object.keys(tourOptions)].map((tourName) => (
-          <button
-            key={tourName}
-            type="button"
-            onClick={() => addRow(tourName as tours)}
-            className="
+    <>
+      <div className="min-h-screen bg-background p-4 lg:p-8">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
+          {[...Object.keys(tourOptions)].map((tourName) => (
+            <button
+              key={tourName}
+              type="button"
+              onClick={() => addRow(tourName as tours)}
+              className="
                 bg-blue-600 text-white
           px-3 py-1.5 lg:px-6 lg:py-3
           text-xs sm:text-sm lg:text-base
@@ -153,35 +158,63 @@ export default function EditReport() {
           transition
           hover:bg-blue-700
         "
+            >
+              Add {tourName}
+            </button>
+          ))}
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {rows.map((row) => (
+            <TourRow
+              key={row.id}
+              rowId={row.id}
+              tourName={row.type}
+              boatOptions={tourOptions[row.type].boats}
+              departureTimes={tourOptions[row.type].hours}
+              onChange={updateRowData}
+              onRemove={removeRow}
+              initialData={rowsData[row.id]}
+            />
+          ))}
+
+          <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
+
+          <button
+            type="button"
+            onClick={() => setShowSubmitModal(true)}
+            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
           >
-            Add {tourName}
+            Save Changes
           </button>
-        ))}
+        </form>
       </div>
+      <Modal
+        show={showSubmitModal}
+        onCancel={() => setShowSubmitModal(false)}
+        header="Save Changes"
+        footer={
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setShowSubmitModal(false)}
+              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200"
+            >
+              Cancel
+            </button>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {rows.map((row) => (
-          <TourRow
-            key={row.id}
-            rowId={row.id}
-            tourName={row.type}
-            boatOptions={tourOptions[row.type].boats}
-            departureTimes={tourOptions[row.type].hours}
-            onChange={updateRowData}
-            onRemove={removeRow}
-            initialData={rowsData[row.id]}
-          />
-        ))}
-
-        <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
-
-        <button
-          type="submit"
-          className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
-        >
-          Save Changes
-        </button>
-      </form>
-    </div>
+            <button
+              onClick={confirmSubmit}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Confirm
+            </button>
+          </div>
+        }
+      >
+        <p className="text-sm lg:text-base text-muted-foreground mb-0">
+          Are you sure you want to save the changes to this report?
+        </p>
+      </Modal>
+    </>
   );
 }

@@ -7,12 +7,14 @@ import { PaymentSummary } from "../components/PaymentSummary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { tours, tourOrder } from "../types/tourOrder";
+import { Modal } from "../components/UI/Modal";
 interface Row {
   id: string;
   type: tours;
 }
 
 export default function NewReport() {
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState<Row[]>(() => {
     const saved = localStorage.getItem("tourRows");
@@ -100,24 +102,24 @@ export default function NewReport() {
     setRowsData((prev) => ({ ...prev, [rowId]: data }));
   }, []);
 
-  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function submitReport() {
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
     };
-    console.log("this is all data rows+payments", allData);
 
     try {
       await postTours(allData);
-      alert(`Inserted tours successfully!`);
       resetReport();
-
       router.push("/reports");
     } catch (err) {
       console.error(err);
-      alert("Failed to submit tours");
     }
+  }
+
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setShowSubmitModal(true);
   }
   if (status === "loading" || isLoading) {
     return (
@@ -128,6 +130,7 @@ export default function NewReport() {
   }
 
   if (!session) return null;
+  const isReportEmpty = rows.length === 0;
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
@@ -171,7 +174,8 @@ export default function NewReport() {
 
         <div className="flex gap-3 mt-6">
           <button
-            type="submit"
+            type="button"
+            onClick={() => setShowSubmitModal(true)}
             className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
           >
             Submit Report
@@ -186,6 +190,39 @@ export default function NewReport() {
           </button>
         </div>
       </form>
+
+      <Modal
+        show={showSubmitModal}
+        onCancel={() => setShowSubmitModal(false)}
+        header="Submit Report"
+        footer={
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => setShowSubmitModal(false)}
+              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={async () => {
+                if (isReportEmpty) return;
+                setShowSubmitModal(false);
+                await submitReport();
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            >
+              Confirm
+            </button>
+          </div>
+        }
+      >
+        <p className="text-sm lg:text-base mb-0">
+          {isReportEmpty
+            ? "Report is empty. Cannot submit."
+            : "Are you sure you want to submit this report?"}
+        </p>
+      </Modal>
     </div>
   );
 }
