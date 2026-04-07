@@ -18,7 +18,6 @@ export async function GET(
     const params = await context.params;
 
     const id = params.id;
-    console.log("this is the id", id);
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });

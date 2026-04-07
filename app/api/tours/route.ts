@@ -13,7 +13,6 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
 
     const report = new Report({ rows: data.rows, payment: data.payment });
-    console.log("Report before save:", report.toObject());
     await report.save();
 
     return NextResponse.json({
@@ -43,6 +42,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(reports);
   } catch (err) {
     console.error(err);
-    console.log(err);
   }
 }

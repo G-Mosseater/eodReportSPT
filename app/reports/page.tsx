@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ReportProps } from "../types/report";
+
+
 export default function Reports() {
   const [reports, setReports] = useState<ReportProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<Date | null>(null);
@@ -61,9 +63,9 @@ export default function Reports() {
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
       <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
         All Reports
-      </h1> 
+      </h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div className="flex flex-wrap justify-end gap-2 md:gap-4 mb-6">
+        <div className="flex  justify-end gap-2 md:gap-4 mb-6">
           <DatePicker
             open={monthOpen}
             onClose={() => setMonthOpen(false)}
@@ -148,10 +150,15 @@ export default function Reports() {
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
-        {filteredReports.map((report) => (
-          <div
-            key={report._id}
-            className="
+        {filteredReports.length === 0 ? (
+          <p className="min-h-screen flex items-center justify-center text-lg font-bold">
+            No reports found
+          </p>
+        ) : (
+          filteredReports.map((report) => (
+            <div
+              key={report._id}
+              className="
           cursor-pointer 
          rounded-lg 
        border border-border 
@@ -165,23 +172,24 @@ export default function Reports() {
             w-full 
               mx-auto   
   "
-            onClick={() => router.push(`/reports/${report._id}`)}
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-              <h2 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
-                {new Date(report.createdAt).toLocaleDateString(undefined, {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </h2>
+              onClick={() => router.push(`/reports/${report._id}`)}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                <h2 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
+                  {new Date(report.createdAt).toLocaleDateString(undefined, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </h2>
 
-              <span className="text-sm text-muted-foreground">
-                {report.rows.length} tours
-              </span>
+                <span className="text-sm text-muted-foreground">
+                  {report.rows.length} tours
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

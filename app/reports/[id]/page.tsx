@@ -263,25 +263,25 @@ export default function ReportPage() {
             )}
           </div>
         </section>
-        <div className="flex flex-wrap justify-between items-center gap-3 w-full mt-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 w-full mt-6">
           <button
             onClick={() => setShowModal(true)}
-            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-red-600 hover:bg-red-700 text-white"
+            className="w-full sm:w-auto px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition bg-red-600 hover:bg-red-700 text-white"
           >
             Delete Report
           </button>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <button
               onClick={() => router.push(`/edit/${id}`)}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit  text-primary-foreground"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition text-primary-foreground"
             >
               Edit Report
             </button>
 
             <button
               onClick={handleDownload}
-              className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
+              className="w-full sm:w-auto px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition bg-green-600 hover:bg-green-700 text-white"
             >
               Download CSV
             </button>

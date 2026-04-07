@@ -15,27 +15,21 @@ const handler = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      
 
       async authorize(credentials: any) {
-        console.log("these are credentials", credentials);
         try {
           await connectDatabase();
-          const allusers = await User.find();
-          console.log("all useres", allusers);
-          const user = await User.findOne({ email: credentials?.email }).select("+password");
-          console.log("User found:", user);
+          const user = await User.findOne({ email: credentials?.email }).select(
+            "+password",
+          );
           if (!user) {
-            console.log("User not found");
             throw new Error("User not found");
           }
           const isValidPassword = await bcrypt.compare(
             credentials?.password ?? "",
             user.password,
           );
-          console.log("Password valid?", isValidPassword);
           if (!isValidPassword) {
-            console.log("Invalid password");
             throw new Error("Invalid password");
           }
           return {

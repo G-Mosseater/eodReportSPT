@@ -11,6 +11,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div id="modal"></div>
+        <div id="drawer"></div>
         <SessionProviderWrapper>
           <MainNavigation />
           <main>{children}</main>
