@@ -1,8 +1,6 @@
 "use client";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
 export default function Home() {
   // const { data: session, status } = useSession();
   // const router = useRouter();
@@ -21,12 +19,14 @@ export default function Home() {
   // }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+ <div className="flex flex-col items-center justify-center h-screen gap-4 text-center">
+      <h1 className="text-3xl font-bold">Welcome to Special Tours Operations</h1>
+      <p className="text-lg">Explore private tours here:</p>
       <Link
-        href="/signin"
+        href="/privates"
         className="bg-blue-600 text-white px-6 py-3 rounded text-lg hover:bg-blue-700 transition"
       >
-        Create New EOD Report
+        Explore 
       </Link>
     </div>
   );

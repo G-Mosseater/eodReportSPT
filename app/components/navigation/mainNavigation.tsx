@@ -22,26 +22,6 @@ export default function MainNavigation() {
           </h1>
           <div className="md:flex hidden items-center gap-4">
             <NavLinks />
-
-            {session ? (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() =>
-                  signIn("credentials", { redirect: true, callbackUrl: "/" })
-                }
-                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"
-              >
-                Sign In
-              </button>
-            )}
           </div>
           <button
             className="md:hidden flex flex-col justify-between w-6 h-6 p-1"
@@ -83,7 +63,7 @@ export default function MainNavigation() {
                 signOut({ callbackUrl: "/" });
                 setDrawerOpen(false);
               }}
-              className="mt-6 px-6 py-2 rounded bg-red-500 hover:bg-red-600 text-white font-semibold text-lg transition-all duration-200 transform hover:scale-105"
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"
             >
               Sign Out
             </button>
@@ -93,9 +73,9 @@ export default function MainNavigation() {
                 signIn("credentials", { callbackUrl: "/" });
                 setDrawerOpen(false);
               }}
-              className="mt-6 px-6 py-2 rounded bg-green-500 hover:bg-green-600 text-white font-semibold text-lg transition-all duration-200 transform hover:scale-105"
+              className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
             >
-              Sign In
+              Admin Access
             </button>
           )}
         </nav>
