@@ -8,9 +8,7 @@ import SideDrawer from "./sideDrawer";
 export default function MainNavigation() {
   const { data: session, status } = useSession({ required: false });
   const [drawerOpen, setDrawerOpen] = useState(false);
-  if (status === "loading") {
-    return null;
-  }
+ 
   return (
     <>
       <header className="border-b bg-background text-foreground w-full">

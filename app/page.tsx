@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import Image from "next/image";
 export default function Home() {
   // const { data: session, status } = useSession();
   // const router = useRouter();
@@ -18,15 +18,19 @@ export default function Home() {
   // }
 
   return (
- <div className="flex flex-col items-center justify-center h-screen gap-4 text-center">
-      <h1 className="text-3xl font-bold">Welcome to Special Tours Operations</h1>
-      <p className="text-lg">Explore private tours here:</p>
-      <Link
-        href="/privates"
-        className="bg-blue-600 text-white px-6 py-3 rounded text-lg hover:bg-blue-700 transition"
-      >
-        Explore 
-      </Link>
+    <div className="flex flex-col items-center gap-6 text-center px-4 pt-32 flex-1">
+      <h1 className="text-3xl md:text-4xl font-bold">
+        Welcome to Special Tours Operations
+      </h1>
+      <div className="w-full max-w-lg">
+        <Image
+          src="/humpback.png"
+          alt="Humpback Whale"
+          width={640}
+          height={480}
+          className="w-full h-auto object-contain"
+        />
+      </div>
     </div>
   );
 }

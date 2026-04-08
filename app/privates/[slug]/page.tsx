@@ -1,5 +1,6 @@
 import { privateTours } from "../../helpers/privateTours";
 import Image from "next/image";
+
 type Props = {
   params: { slug: string };
 };

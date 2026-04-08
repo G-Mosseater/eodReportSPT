@@ -16,6 +16,7 @@ interface Row {
 export default function NewReport() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
   const [rows, setRows] = useState<Row[]>(() => {
     const saved = localStorage.getItem("tourRows");
     return saved ? JSON.parse(saved) : [];
@@ -33,6 +34,7 @@ export default function NewReport() {
       : { cash: 0, card: 0, voucher: 0, total: 0, notes: "", g11: 0, ae5: 0 };
   });
   const { data: session, status } = useSession();
+
   const router = useRouter();
 
   // Load data from local storage
@@ -146,7 +148,9 @@ export default function NewReport() {
   }
 
   if (!session) return null;
+
   const isReportEmpty = rows.length === 0;
+
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
@@ -156,7 +160,7 @@ export default function NewReport() {
             type="button"
             onClick={() => addRow(tourName as tours)}
             className="
-                bg-blue-600 text-white
+          bg-blue-600 text-white
           px-3 py-1.5 lg:px-6 lg:py-3
           text-xs sm:text-sm lg:text-base
           rounded-md
@@ -164,8 +168,7 @@ export default function NewReport() {
           flex-1 sm:flex-none
           min-w-[100px]
           transition
-          hover:bg-blue-700
-        "
+          hover:bg-blue-700"
           >
             Add {tourName}
           </button>
