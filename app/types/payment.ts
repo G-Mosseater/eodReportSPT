@@ -5,6 +5,8 @@ export interface PaymentProps {
     voucher: number;
     total: number;
     notes: string;
+    g11: number;
+    ae5: number;
   }) => void;
   initialData?: {
     cash?: number;
@@ -12,5 +14,7 @@ export interface PaymentProps {
     voucher?: number;
     total?: number;
     notes?: string;
+    g11?: number;
+    ae5?: number;
   };
 }

@@ -43,7 +43,6 @@ export default function ReportPage() {
       try {
         const data = await getReportById(String(id));
         setReport(data);
-        console.log("this is the data", data);
       } catch (error) {
         console.error(error);
       }
@@ -90,10 +89,20 @@ export default function ReportPage() {
               return (
                 <div
                   key={row._id || row.tourName + row.hour}
-                  className={`w-full rounded-lg border p-4 md:p-2 lg:p-3 shadow-sm transition-all ${
+                  className={`w-full rounded-lg border p-4 md:p-4 lg:p-6 shadow-sm transition-all ${
                     isCanceled
-                      ? "bg-red-50 border-red-300 dark:bg-red-950/30 dark:border-red-800"
-                      : "bg-card border-border"
+                      ? "bg-gradient-to-r from-red-200/70 to-red-300/15"
+                      : row.tourName.toLowerCase().includes("northern lights")
+                        ? "bg-gradient-to-r bg-linear-to-r from-violet-200/70 to-emerald-400/25"
+                        : row.tourName.toLowerCase().includes("whale")
+                          ? "bg-gradient-to-r from-sky-200/70 to-sky-400/15"
+                          : row.tourName.toLowerCase().includes("puffin tour")
+                            ? "bg-gradient-to-r bg-linear-to-r from-amber-100/70 to-amber-300/30"
+                            : row.tourName.toLowerCase().includes("sea angling")
+                              ? "bg-gradient-to-r from-blue-100/70 via-blue-300/70 to-blue-300/30"
+                              : row.tourName.toLowerCase().includes("rib")
+                                ? "bg-gradient-to-r from-blue-300/40 to-indigo-500/30"
+                                : "bg-card border-border"
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 lg:mb-5">
@@ -111,7 +120,7 @@ export default function ReportPage() {
                         {row.status}
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base text-muted-foreground">
+                    <div className="flex items-center gap-3 lg:gap-4 text-sm lg:text-base ">
                       <span className="flex items-center gap-1">
                         <svg
                           className="w-4 h-4 lg:w-5 lg:h-5"
@@ -149,7 +158,7 @@ export default function ReportPage() {
 
                   <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 lg:gap-4">
                     <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                      <p className="text-xs lg:text-sm text-muted-foreground mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Adults
                       </p>
                       <p className="text-base lg:text-xl font-semibold text-foreground">
@@ -157,7 +166,7 @@ export default function ReportPage() {
                       </p>
                     </div>
                     <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                      <p className="text-xs lg:text-sm text-muted-foreground mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Youth
                       </p>
                       <p className="text-base lg:text-xl font-semibold text-foreground">
@@ -165,7 +174,7 @@ export default function ReportPage() {
                       </p>
                     </div>
                     <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                      <p className="text-xs lg:text-sm text-muted-foreground mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Child
                       </p>
                       <p className="text-base lg:text-xl font-semibold text-foreground">
@@ -173,7 +182,7 @@ export default function ReportPage() {
                       </p>
                     </div>
                     <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                      <p className="text-xs lg:text-sm text-muted-foreground mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Groups
                       </p>
                       <p className="text-base lg:text-xl font-semibold text-foreground">
@@ -181,7 +190,7 @@ export default function ReportPage() {
                       </p>
                     </div>
                     <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                      <p className="text-xs lg:text-sm text-muted-foreground mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Free
                       </p>
                       <p className="text-base lg:text-xl font-semibold text-foreground">
@@ -189,7 +198,7 @@ export default function ReportPage() {
                       </p>
                     </div>
                     <div className="bg-primary/10 rounded-md p-2 lg:p-3 text-center border border-primary/20">
-                      <p className="text-xs lg:text-sm text-primary mb-0.5 lg:mb-1">
+                      <p className="text-sm lg:text-lg text-muted-foreground  mb-0.5 lg:mb-1">
                         Total
                       </p>
                       <p className="text-base lg:text-xl font-bold text-primary">
@@ -211,7 +220,7 @@ export default function ReportPage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-6 mb-4 lg:mb-6">
               {report.payment?.cash != null && (
                 <div className="bg-background/50 rounded-md p-3 lg:p-4 text-center border border-border/50">
-                  <p className="text-xs lg:text-sm text-muted-foreground mb-1 lg:mb-2">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
                     Cash
                   </p>
                   <p className="text-lg lg:text-2xl font-semibold text-foreground">
@@ -221,7 +230,7 @@ export default function ReportPage() {
               )}
               {report.payment?.card != null && (
                 <div className="bg-background/50 rounded-md p-3 lg:p-4 text-center border border-border/50">
-                  <p className="text-xs lg:text-sm text-muted-foreground mb-1 lg:mb-2">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
                     Card
                   </p>
                   <p className="text-lg lg:text-2xl font-semibold text-foreground">
@@ -231,7 +240,7 @@ export default function ReportPage() {
               )}
               {report.payment?.voucher != null && (
                 <div className="bg-background/50 rounded-md p-3 lg:p-4 text-center border border-border/50">
-                  <p className="text-xs lg:text-sm text-muted-foreground mb-1 lg:mb-2">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
                     Voucher
                   </p>
                   <p className="text-lg lg:text-2xl font-semibold text-foreground">
@@ -241,11 +250,32 @@ export default function ReportPage() {
               )}
               {report.payment?.total != null && (
                 <div className="bg-primary/10 rounded-md p-3 lg:p-4 text-center border border-primary/20">
-                  <p className="text-xs lg:text-sm text-primary mb-1 lg:mb-2">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
                     Total
                   </p>
                   <p className="text-lg lg:text-2xl font-bold text-primary">
                     {formatIsk(report.payment.total)}
+                  </p>
+                </div>
+              )}
+              {report.payment?.g11 != null && (
+                <div className="bg-background/50 rounded-md p-3 lg:p-4 text-center border border-border/50">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
+                    G11 Walk-ins
+                  </p>
+                  <p className="text-lg lg:text-2xl font-semibold text-foreground">
+                    {report.payment.g11}
+                  </p>
+                </div>
+              )}
+
+              {report.payment?.ae5 != null && (
+                <div className="bg-background/50 rounded-md p-3 lg:p-4 text-center border border-border/50">
+                  <p className="text-sm lg:text-lg text-muted-foreground mb-1 lg:mb-2 font-medium">
+                    AE5 Walk-ins
+                  </p>
+                  <p className="text-lg lg:text-2xl font-semibold text-foreground">
+                    {report.payment.ae5}
                   </p>
                 </div>
               )}

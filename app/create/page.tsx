@@ -30,7 +30,7 @@ export default function NewReport() {
     const saved = localStorage.getItem("payment");
     return saved
       ? JSON.parse(saved)
-      : { cash: 0, card: 0, voucher: 0, total: 0, notes: "" };
+      : { cash: 0, card: 0, voucher: 0, total: 0, notes: "", g11: 0, ae5: 0 };
   });
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -54,7 +54,15 @@ export default function NewReport() {
       console.warn("Failed to load from localStorage:", err);
       setRows([]);
       setRowsData({});
-      setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+      setPaymentData({
+        cash: 0,
+        card: 0,
+        voucher: 0,
+        total: 0,
+        notes: "",
+        g11: 0,
+        ae5: 0,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +94,15 @@ export default function NewReport() {
 
     setRows([]);
     setRowsData({});
-    setPaymentData({ cash: 0, card: 0, voucher: 0, total: 0, notes: "" });
+    setPaymentData({
+      cash: 0,
+      card: 0,
+      voucher: 0,
+      total: 0,
+      notes: "",
+      g11: 0,
+      ae5: 0,
+    });
   }, []);
 
   const removeRow = useCallback((rowId: string) => {

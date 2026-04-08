@@ -20,6 +20,8 @@ const paymentSchema = new mongoose.Schema(
     voucher: { type: Number, default: 0 },
     total: { type: Number, default: 0 },
     notes: { type: String, default: "" },
+    g11: { type: Number, default: 0 },
+    ae5: { type: Number, default: 0 },
   },
   { _id: false },
 );
@@ -36,7 +38,7 @@ const reportSchema = new mongoose.Schema(
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true},
+  password: { type: String, required: true },
 });
 
 const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
