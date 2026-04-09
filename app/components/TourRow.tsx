@@ -51,13 +51,13 @@ export const TourRow = ({
       <button
         type="button"
         onClick={() => onRemove(rowId)}
-        className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white p-2  shadow-md transition"
+        className="absolute top-2 right-2 bg-red-600  hover:bg-red-700 text-white p-2  rounded-sm  shadow-md transition"
       >
-        <X className="w-4 h-4" />
+        <X className="w-4 h-4 " />
       </button>
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>
-          <p className="font-semibold text-base lg:text-lg">{tourName}</p>
+          <p className="font-semibold  text-base lg:text-lg">{tourName}</p>
         </div>
 
         <select
@@ -122,7 +122,7 @@ export const TourRow = ({
               min={0}
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
-              className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20"
+              className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
               disabled={status === "Canceled"}
             />
           </div>

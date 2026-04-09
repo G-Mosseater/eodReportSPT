@@ -11,14 +11,14 @@ export default function NavLinks() {
     if (path === "/") {
       return `px-3 py-1.5 rounded text-sm lg:text-xl transition-colors ${
         pathname === "/"
-          ? "bg-blue-600 text-primary-foreground"
-          : "hover:bg-blue-100"
+          ? "bg-[#1E73BE]  text-white"
+          : "hover:bg-[#155a96] hover:text-white "
       }`;
     } else {
       return `px-3 py-1.5 rounded text-sm lg:text-xl transition-colors ${
         pathname.startsWith(path)
-          ? "bg-blue-600 text-primary-foreground"
-          : "hover:bg-blue-100"
+          ? "bg-[#1E73BE] text-white"
+          : "hover:bg-[#155a96] hover:text-white "
       }`;
     }
   };

@@ -18,16 +18,19 @@ export default function NewReport() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [rows, setRows] = useState<Row[]>(() => {
+    if (typeof window === "undefined") return [];
     const saved = localStorage.getItem("tourRows");
     return saved ? JSON.parse(saved) : [];
   });
 
   const [rowsData, setRowsData] = useState<{ [key: string]: any }>(() => {
+    if (typeof window === "undefined") return {};
     const saved = localStorage.getItem("tourRowsData");
     return saved ? JSON.parse(saved) : {};
   });
 
   const [paymentData, setPaymentData] = useState(() => {
+    if (typeof window === "undefined") return {};
     const saved = localStorage.getItem("payment");
     return saved
       ? JSON.parse(saved)
@@ -160,7 +163,7 @@ export default function NewReport() {
             type="button"
             onClick={() => addRow(tourName as tours)}
             className="
-          bg-blue-600 text-white
+          bg-[#1E73BE] text-white
           px-3 py-1.5 lg:px-6 lg:py-3
           text-xs sm:text-sm lg:text-base
           rounded-md
@@ -168,7 +171,7 @@ export default function NewReport() {
           flex-1 sm:flex-none
           min-w-[100px]
           transition
-          hover:bg-blue-700"
+          hover:bg-[#155a96]"
           >
             Add {tourName}
           </button>

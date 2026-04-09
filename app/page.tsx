@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center gap-6 text-center px-4 pt-32 flex-1">
       <h1 className="text-3xl md:text-4xl font-bold">
-        Welcome to Special Tours Operations
+       Special Tours Operations
       </h1>
       <div className="w-full max-w-lg">
         <Image

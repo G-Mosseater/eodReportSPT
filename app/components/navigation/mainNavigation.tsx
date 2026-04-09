@@ -15,7 +15,7 @@ export default function MainNavigation() {
         <div className="w-full mx-auto flex items-center  flex justify-between p-4">
           <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold">
             <Link href="/" className="hover:text-primary transition-colors">
-              Special Tours Operations
+              SPT Operations
             </Link>
           </h1>
           <div className="md:flex hidden items-center gap-4">

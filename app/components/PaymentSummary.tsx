@@ -56,19 +56,19 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
               type="number"
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
-              className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full text-sm lg:text-base"
+              className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full text-sm lg:text-base focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
         ))}
         <div className="flex flex-col">
-          <label className="text-xs lg:text-sm font-medium text-muted-foreground mb-1">
+          <label className="text-xs lg:text-sm font-medium text-muted-foreground mb-1 ">
             Total
           </label>
           <input
             type="text"
             readOnly
             value={formatIsk(total)}
-            className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full bg-muted text-sm lg:text-base font-medium"
+            className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full bg-muted text-sm lg:text-base font-medium focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
           />
         </div>
       </div>
@@ -87,7 +87,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
               type="number"
               value={g11}
               onChange={(e) => setG11(Number(e.target.value))}
-              className="border rounded px-2 py-1.5 w-full"
+              className="border rounded px-2 py-1.5 w-full focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
 
@@ -99,7 +99,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
               type="number"
               value={ae5}
               onChange={(e) => setAE5(Number(e.target.value))}
-              className="border rounded px-2 py-1.5 w-full"
+              className="border rounded px-2 py-1.5 w-full focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
 
@@ -111,7 +111,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
               type="number"
               value={totalWalkins}
               readOnly
-              className="border rounded px-2 py-1.5 w-full bg-muted font-medium"
+              className="border rounded px-2 py-1.5 w-full bg-muted font-medium focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
         </div>
@@ -124,7 +124,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y"
+          className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
           placeholder="Write details here..."
         />
       </div>
