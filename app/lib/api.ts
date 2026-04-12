@@ -68,3 +68,14 @@ export async function updateReport(id: string, data: any) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getPrivateRequests() {
+  return apiRequest("/private-tour");
+}
+
+export async function postPrivateRequest(data: any) {
+  return apiRequest("/private-tour", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

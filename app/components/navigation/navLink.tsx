@@ -8,19 +8,15 @@ export default function NavLinks() {
 
   const { data: session } = useSession();
   const linkStyle = (path: string) => {
-    if (path === "/") {
-      return `px-3 py-1.5 rounded text-sm lg:text-xl transition-colors ${
-        pathname === "/"
-          ? "bg-[#1E73BE]  text-white"
-          : "hover:bg-[#155a96] hover:text-white "
-      }`;
-    } else {
-      return `px-3 py-1.5 rounded text-sm lg:text-xl transition-colors ${
-        pathname.startsWith(path)
-          ? "bg-[#1E73BE] text-white"
-          : "hover:bg-[#155a96] hover:text-white "
-      }`;
-    }
+    const isActive =
+      path === "/" ? pathname === "/" : pathname.startsWith(path);
+
+    return `px-3 py-1.5 text-sm lg:text-xl text-muted      transition-colors duration-300 ease-in-out
+    relative
+    ${isActive ? "text-secondary font-medium " : "text-muted-foreground "}
+    after:content-[''] after:absolute after:left-0 after:-bottom-1
+    after:h-[2px] after:bg-primary after:transition-all after:duration-300
+    ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
   };
   return (
     <ul className="flex gap-2 lg:gap-4 items-center">
@@ -34,38 +30,29 @@ export default function NavLinks() {
           Private Tours
         </Link>
       </li>
-      {session ? (
+      {session && (
         <>
           <li>
             <Link href="/create" className={linkStyle("/create")}>
               New EOD Report
             </Link>
           </li>
+
           <li>
             <Link href="/reports" className={linkStyle("/reports")}>
               All Reports
             </Link>
           </li>
+
           <li>
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm lg:text-base transition-colors"
+            <Link
+              href="/private-request"
+              className={linkStyle("/private-request")}
             >
-              Sign Out
-            </button>
+              Private requests
+            </Link>
           </li>
         </>
-      ) : (
-        <li>
-          <button
-            onClick={() =>
-              signIn("credentials", { redirect: true, callbackUrl: "/" })
-            }
-            className={linkStyle("/signin")}
-          >
-            Admin Access
-          </button>
-        </li>
       )}
     </ul>
   );

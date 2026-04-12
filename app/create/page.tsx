@@ -1,16 +1,16 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { TourRow } from "../components/TourRow";
-import { tourOptions } from "../helpers/tours";
+import { TourKey, tourOptions } from "../helpers/tours";
 import { postTours } from "../lib/api";
 import { PaymentSummary } from "../components/PaymentSummary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { tours, tourOrder } from "../types/tourOrder";
+import { tours, tourOrder, tourLabels } from "../types/tourOrder";
 import { Modal } from "../components/UI/Modal";
 interface Row {
   id: string;
-  type: tours;
+  type: TourKey;
 }
 
 export default function NewReport() {
@@ -82,7 +82,7 @@ export default function NewReport() {
     localStorage.setItem("payment", JSON.stringify(paymentData));
   }, [rows, rowsData, paymentData, status]);
 
-  const addRow = useCallback((type: tours) => {
+  const addRow = useCallback((type: TourKey) => {
     const newId = crypto.randomUUID();
     setRows((prev) => {
       const newRows = [...prev, { id: newId, type }];
@@ -153,27 +153,27 @@ export default function NewReport() {
   if (!session) return null;
 
   const isReportEmpty = rows.length === 0;
-
+  const tourKeys = Object.keys(tourOptions) as TourKey[];
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
-        {[...Object.keys(tourOptions)].map((tourName) => (
+        {tourKeys.map((tourName) => (
           <button
             key={tourName}
             type="button"
-            onClick={() => addRow(tourName as tours)}
+            onClick={() => addRow(tourName)}
             className="
-          bg-[#1E73BE] text-white
-          px-3 py-1.5 lg:px-6 lg:py-3
-          text-xs sm:text-sm lg:text-base
-          rounded-md
-          font-semibold
-          flex-1 sm:flex-none
-          min-w-[100px]
-          transition
-          hover:bg-[#155a96]"
+      bg-[#1E73BE] text-white
+      px-3 py-1.5 lg:px-6 lg:py-3
+      text-xs sm:text-sm lg:text-base
+      rounded-md
+      font-semibold
+      flex-1 sm:flex-none
+      min-w-[100px]
+      transition
+      hover:bg-[#155a96]"
           >
-            Add {tourName}
+            Add {tourLabels[tourName]}
           </button>
         ))}
       </div>

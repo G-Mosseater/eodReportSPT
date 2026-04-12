@@ -18,17 +18,36 @@ export default function Home() {
   // }
 
   return (
-    <div className="flex flex-col items-center gap-6 text-center px-4 pt-32 flex-1">
-      <h1 className="text-3xl md:text-4xl font-bold">
-       Special Tours Operations
-      </h1>
-      <div className="w-full max-w-lg">
+    <div className="flex flex-col md:flex-row items-center justify-between  px-6 md:px-16 lg:px-24 py-40 gap-12">
+      <div className="flex flex-col gap-6 text-center md:text-left max-w-xl">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+          Special Tours <br /> Operations
+        </h1>
+
+        <p className="text-gray-600 text-base md:text-lg">
+          Platform for managing private tour requests and internal
+          operations.
+        </p>
+
+        <div className="flex gap-4 justify-center md:justify-start">
+          <Link
+            href="/privates"
+            className="px-6 py-3 bg-black text-white rounded-lg bg-primary hover:bg-secondary transition"
+          >
+            Private Tours
+          </Link>
+        </div>
+      </div>
+
+      <div className="w-full max-w-[180px] sm:max-w-[220px] md:max-w-sm lg:max-w-xl">
+        {" "}
         <Image
-          src="/humpback.png"
+          src="/balena.png"
           alt="Humpback Whale"
-          width={640}
-          height={480}
+          width={1000}
+          height={800}
           className="w-full h-auto object-contain"
+          priority
         />
       </div>
     </div>

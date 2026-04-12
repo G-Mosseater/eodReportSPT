@@ -6,10 +6,14 @@ import { formatIsk } from "../../helpers/formatCurrency";
 import { useSession } from "next-auth/react";
 import { downloadCSVFile, reportToCSV } from "../../helpers/downloadCsv";
 import { Modal } from "../../components/UI/Modal";
+import { tourLabels } from "../../types/tourOrder";
+import { ReportProps } from "../../types/report";
+import { tourStyles } from "../../helpers/tourCardStyle";
+
 
 export default function ReportPage() {
   const { id } = useParams();
-  const [report, setReport] = useState<any | null>(null);
+  const [report, setReport] = useState<ReportProps | null>(null);
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
@@ -78,7 +82,7 @@ export default function ReportPage() {
 
             <button
               onClick={() => router.back()}
-              className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition text-sm md:text-base hidden lg:inline-block"
+              className="px-3 py-1 bg-primary text-white rounded hover:bg-secondary transition text-sm md:text-base hidden lg:inline-block"
             >
               Go back
             </button>
@@ -92,23 +96,13 @@ export default function ReportPage() {
                   className={`w-full rounded-lg border p-4 md:p-4 lg:p-6 shadow-sm transition-all ${
                     isCanceled
                       ? "bg-gradient-to-r from-red-200/70 to-red-300/15"
-                      : row.tourName.toLowerCase().includes("northern lights")
-                        ? "bg-gradient-to-r bg-linear-to-r from-violet-200/70 to-emerald-400/25"
-                        : row.tourName.toLowerCase().includes("whale")
-                          ? "bg-gradient-to-r from-sky-200/70 to-sky-400/15"
-                          : row.tourName.toLowerCase().includes("puffin tour")
-                            ? "bg-gradient-to-r bg-linear-to-r from-amber-100/70 to-amber-300/30"
-                            : row.tourName.toLowerCase().includes("sea angling")
-                              ? "bg-gradient-to-r from-blue-100/70 via-blue-300/70 to-blue-300/30"
-                              : row.tourName.toLowerCase().includes("rib")
-                                ? "bg-gradient-to-r from-blue-300/40 to-indigo-500/30"
-                                : "bg-card border-border"
+                      : tourStyles[row.tourName as keyof typeof tourStyles]
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 lg:mb-5">
                     <div className="flex items-center gap-2 lg:gap-3">
                       <h3 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
-                        {row.tourName}
+                        {tourLabels[row.tourName as keyof typeof tourLabels]}
                       </h3>
                       <span
                         className={`px-2 py-0.5 lg:px-3 lg:py-1 rounded-full text-xs lg:text-sm font-medium ${

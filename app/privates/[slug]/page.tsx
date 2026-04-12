@@ -1,5 +1,7 @@
+import PrivateTourForm from "../../components/UI/PrivateForm";
 import { privateTours } from "../../helpers/privateTours";
 import Image from "next/image";
+import { tourOptions, TourKey } from "../../helpers/tours";
 
 type Props = {
   params: { slug: string };
@@ -8,6 +10,8 @@ type Props = {
 export async function TourPage({ params }: Props) {
   const { slug } = await params;
   const tour = privateTours.find((t) => t.slug === slug);
+
+  const boats = tourOptions[tour?.slug as TourKey].boats || [];
 
   if (!tour) {
     return <div className="p-8 text-center">Tour not found</div>;
@@ -44,6 +48,7 @@ export async function TourPage({ params }: Props) {
           ))}
         </ul>
       </div>
+      <PrivateTourForm tourName={tour.name} boatOptions={boats} />
     </div>
   );
 }

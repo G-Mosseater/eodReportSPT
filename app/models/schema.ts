@@ -41,7 +41,24 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
 });
 
+const privateRequestSchema = new mongoose.Schema(
+  {
+    tourName: { type: String, required: true },
+    company: { type: String, required: true },
+    pax: { type: Number, required: true },
+    boat: { type: String, required: true },
+    date: { type: String, required: true },
+    email: { type: String, required: true },
+
+    notes: { type: String, default: "" },
+  },
+  { timestamps: true },
+);
+
+const PrivateRequest =
+  mongoose.models.PrivateRequest ||
+  mongoose.model("PrivateRequest", privateRequestSchema);
 const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-export { Report, User };
+export { Report, User, PrivateRequest };

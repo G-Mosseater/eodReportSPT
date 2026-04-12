@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TourRowProps } from "../types/tourRow";
 import { X } from "lucide-react";
-
+import { tourLabels } from "../types/tourOrder";
 export const TourRow = ({
   rowId,
   tourName,
@@ -57,7 +57,7 @@ export const TourRow = ({
       </button>
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>
-          <p className="font-semibold  text-base lg:text-lg">{tourName}</p>
+          <p className="font-semibold  text-base lg:text-lg">  {tourLabels[tourName]}</p>
         </div>
 
         <select

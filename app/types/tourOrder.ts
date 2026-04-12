@@ -1,16 +1,26 @@
 export type tours =
-  | "Whale Watching"
-  | "Puffin Tour"
-  | "Sea Angling"
-  | "RIB Express"
-  | "Northern Lights"
-  | "Puffin by RIB";
+  | "whale-watching"
+  | "puffin-tour"
+  | "sea-angling"
+  | "rib-express"
+  | "northern-lights"
+  | "puffin-by-rib";
 
 export const tourOrder: tours[] = [
-  "Whale Watching",
-  "RIB Express",
-  "Northern Lights",
-  "Puffin by RIB",
-  "Puffin Tour",
-  "Sea Angling",
+  "whale-watching",
+  "rib-express",
+  "northern-lights",
+  "puffin-by-rib",
+  "puffin-tour",
+  "sea-angling",
 ];
+
+
+export const tourLabels: Record<tours, string> = {
+  "whale-watching": "Whale Watching",
+  "puffin-tour": "Puffin Tour",
+  "sea-angling": "Sea Angling",
+  "rib-express": "RIB Express",
+  "northern-lights": "Northern Lights",
+  "puffin-by-rib": "Puffin by RIB",
+};

@@ -13,6 +13,7 @@ export default function Reports() {
   const [selectedYear, setSelectedYear] = useState<Date | null>(null);
   const [monthOpen, setMonthOpen] = useState(false);
   const [yearOpen, setYearOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -26,12 +27,14 @@ export default function Reports() {
     if (status !== "authenticated") return;
     async function fetchReports() {
       try {
+        setLoading(true);
         const data = await getReports();
 
         setReports(data);
       } catch (err) {
         console.error(err);
       }
+      setLoading(false);
     }
     fetchReports();
   }, [status]);
@@ -50,7 +53,7 @@ export default function Reports() {
     return monthMatch && yearMatch;
   });
 
-  if (status === "loading" || reports === null) {
+  if (status === "loading" || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
@@ -149,7 +152,7 @@ export default function Reports() {
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
-        {filteredReports.length === 0 ? (
+        {!loading && filteredReports.length === 0 ? (
           <p className="min-h-screen flex items-center justify-center text-lg font-bold">
             No reports found
           </p>

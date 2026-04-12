@@ -24,7 +24,6 @@ export default function SignInForm() {
         password,
         callbackUrl: "/"
       });
-      console.log("this is res", res)
       if (res?.error) {
         setError("Invalid credentials");
         return;

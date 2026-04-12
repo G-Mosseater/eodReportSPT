@@ -3,7 +3,7 @@ export const privateTours = [
     id: 1,
     name: "Whale Watching",
     slug: "whale-watching",
-    description: "Experience majestic whales up close on a guided tour.", // card preview
+    description: "Experience majestic whales up close on a guided tour.",
     fullDescription: `Join a private whale watching tour from Reykjavik on boats Andrea, Lilja, or Rósin. 
 Tours are fully customizable in duration and priced per hour. Spot humpback whales, minke whales, harbour porpoises, white-beaked dolphins, 
 and enjoy Iceland’s rich seabird life. Our expert guides provide interactive, educational insights while ensuring comfort, safety, and environmental care.`,
@@ -16,32 +16,101 @@ and enjoy Iceland’s rich seabird life. Our expert guides provide interactive, 
     ],
     image: "/whale.png",
   },
+
   {
     id: 2,
     name: "Northern Lights",
     slug: "northern-lights",
-    description: "Chase the aurora borealis in Iceland’s darkest skies.",
+    description:
+      "Experience the Northern Lights from the sea on a 2–3 hour aurora hunting cruise from Reykjavík.",
+    fullDescription: `Join a Northern Lights by Boat tour from Reykjavík and sail into the North Atlantic in search of the aurora borealis. 
+Only 15–20 minutes from the city lights, you reach ideal viewing conditions at sea with dark skies and open horizons.
+
+During the tour, our expert guides explain the science and myths behind the Northern Lights, while you enjoy views of Reykjavík’s coastline and surrounding mountains. 
+Warm overalls are provided, and you can relax inside with hot drinks or watch our onboard Northern Lights presentation.
+
+Please note: sightings depend on weather and solar activity, but if you don’t see the aurora, you receive a free return ticket to try again.`,
+    whatsIncluded: [
+      "Guided Northern Lights boat tour",
+      "Warm flotation overalls (adult & children sizes)",
+      "Onboard Northern Lights presentation",
+      "Free Wi-Fi on board",
+      "Café / bar access",
+      "WCs on board",
+      "Free return ticket if no sightings",
+    ],
     image: "/nlb.png",
   },
+
   {
     id: 3,
     name: "Whale Watching by RIB",
-    slug: "rib",
-    description: "Fast and thrilling RIB boat adventure for whale spotting.",
+    slug: "rib-express",
+    description:
+      "High-speed RIB boat adventure for close encounters with whales and wildlife.",
+    fullDescription: `Experience a thrilling whale watching adventure aboard a high-speed RIB boat from Reykjavík.
+
+This tour brings you closer to whales, dolphins, and seabirds in less time, reaching the best wildlife areas quickly due to the boat’s speed and agility.
+
+Our expert guides ensure a safe and exciting experience while sharing knowledge about Icelandic marine life and nature.
+
+Ideal for guests looking for a more adventurous and fast-paced alternative to traditional whale watching.`,
+    whatsIncluded: [
+      "High-speed RIB whale watching tour",
+      "Expert wildlife guide",
+      "Close-up whale and dolphin encounters",
+      "Safety equipment (thermal suits, life jackets)",
+      "Small group experience",
+      "Scenic coastal cruise in Faxaflói Bay",
+    ],
     image: "/rib.png",
   },
+
   {
     id: 4,
     name: "Puffin Tours",
-    slug: "puffins",
-    description: "See puffins in their natural habitat during summer months.",
+    slug: "puffin-tour",
+    description:
+      "Short boat trip from Reykjavík to see puffins nesting on nearby islands.",
+    fullDescription: `Join a 1-hour Puffin Express tour from Reykjavík and visit nearby islands where thousands of puffins nest during summer.
+
+Only a short 15-minute sail from the Old Harbour, you’ll reach puffin colonies on Akurey and surrounding islands. 
+Your guide will share fun facts about puffins and local birdlife while you observe them up close in their natural habitat.
+
+The boat is specially designed to approach the islands quietly, giving you great viewing and photography opportunities.`,
+    whatsIncluded: [
+      "Guided puffin watching boat tour",
+      "Close approach to puffin nesting islands",
+      "Expert birdlife commentary",
+      "Binocular assistance onboard",
+      "Great photography opportunities",
+    ],
     image: "/puffin.png",
   },
+
   {
     id: 5,
     name: "Sea Angling",
     slug: "sea-angling",
-    description: "Enjoy a fishing adventure on Icelandic waters.",
+    description:
+      "Relaxing fishing trip in Faxaflói Bay with experienced crew, fresh catch, and onboard BBQ.",
+    fullDescription: `Join a Sea Angling tour from Reykjavík and experience traditional fishing in the rich waters of Faxaflói Bay.
+
+Set off from the Old Harbour and head to productive fishing grounds where cod, haddock, pollock, and rockfish are commonly caught. 
+Our experienced crew will guide you through the process, making it suitable even for complete beginners.
+
+All equipment is provided, and the crew assists with baiting and fishing techniques throughout the trip. 
+After fishing, your catch is grilled on board and served fresh with potatoes and sauce, creating a true Icelandic sea-to-table experience.
+
+This tour is both relaxing and interactive, ideal for families, groups, and anyone wanting an authentic fishing experience in Iceland.`,
+    whatsIncluded: [
+      "Guided sea angling tour in Faxaflói Bay",
+      "Fishing rods and equipment included",
+      "Experienced crew assistance",
+      "Protective clothing provided",
+      "Onboard BBQ of your catch",
+      "WCs onboard",
+    ],
     image: "/angling.png",
   },
 ];

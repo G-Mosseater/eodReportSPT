@@ -1,25 +1,16 @@
+import { TourKey } from "../helpers/tours";
+import { PaymentData } from "./payment";
+
 export interface TourRowProps {
   rowId: string;
-  tourName: string;
+  tourName: TourKey;
   boatOptions: string[];
   departureTimes: string[];
-  onChange: (rowId: string, data: any) => void;
+
+  onChange: (rowId: string, data: Partial<TourRowProps>) => void;
   onRemove: (rowId: string) => void;
-  payment?: {
-    cash: number;
-    card: number;
-    voucher: number;
-    total: number;
-  };
-  initialData?: {
-    hour?: string;
-    boat?: string;
-    adults?: number;
-    groups?: number;
-    youth?: number;
-    child?: number;
-    endurkoma?: number;
-    free?: number;
-    status?: string;
-  };
+
+  payment?: PaymentData;
+
+  initialData?: Partial<Omit<TourRowProps, "rowId" | "onChange" | "onRemove" | "boatOptions" | "departureTimes">>;
 }
