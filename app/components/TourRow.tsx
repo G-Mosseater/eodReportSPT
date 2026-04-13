@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { TourRowProps } from "../types/tourRow";
 import { X } from "lucide-react";
 import { tourLabels } from "../types/tourOrder";
+
 export const TourRow = ({
   rowId,
   tourName,
@@ -13,7 +14,9 @@ export const TourRow = ({
 }: TourRowProps) => {
   const [hour, setHour] = useState(initialData.hour || "");
   const [boat, setBoat] = useState(initialData.boat || "");
-  const [adults, setAdults] = useState(initialData.adults || 0);
+  const [total, setTotal] = useState(initialData.total || 0);
+
+  // const [adults, setAdults] = useState(initialData.adults || 0);
   const [groups, setGroups] = useState(initialData.groups || 0);
   const [youth, setYouth] = useState(initialData.youth || 0);
   const [child, setChild] = useState(initialData.child || 0);
@@ -21,7 +24,9 @@ export const TourRow = ({
   const [free, setFree] = useState(initialData.free || 0);
   const [status, setStatus] = useState(initialData.status || "On");
 
-  const total = adults + groups + youth + child + endurkoma + free;
+  // const total = adults + groups + youth + child + endurkoma + free;
+
+  let adults = total - groups - youth - child - endurkoma - free;
 
   useEffect(() => {
     onChange(rowId, {
@@ -37,7 +42,18 @@ export const TourRow = ({
       total,
       status,
     });
-  }, [hour, boat, adults, groups, youth, child, endurkoma, free, status]);
+  }, [
+    hour,
+    boat,
+    adults,
+    groups,
+    youth,
+    child,
+    endurkoma,
+    free,
+    status,
+    total,
+  ]);
 
   return (
     <div
@@ -57,7 +73,10 @@ export const TourRow = ({
       </button>
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>
-          <p className="font-semibold  text-base lg:text-lg">  {tourLabels[tourName]}</p>
+          <p className="font-semibold  text-base lg:text-lg">
+            {" "}
+            {tourLabels[tourName]}
+          </p>
         </div>
 
         <select
@@ -105,7 +124,7 @@ export const TourRow = ({
 
         {(
           [
-            ["Adults", adults, setAdults],
+            ["Total", total, setTotal],
             ["Groups", groups, setGroups],
             ["Youth 7-15", youth, setYouth],
             ["Child 0-6", child, setChild],
@@ -122,19 +141,19 @@ export const TourRow = ({
               min={0}
               value={value}
               onChange={(e) => setter(Number(e.target.value))}
-              className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
+              className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               disabled={status === "Canceled"}
             />
           </div>
         ))}
 
         <div className="flex flex-col items-center">
-          <label className="text-xs lg:text-sm mb-1">Total</label>
+          <label className="text-xs lg:text-sm mb-1">Adults</label>
           <input
-            type="number"
             readOnly
-            value={total}
-            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 bg-muted"
+            type="number"
+            value={adults}
+            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 bg-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
       </div>

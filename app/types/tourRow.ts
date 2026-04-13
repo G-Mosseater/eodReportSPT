@@ -1,5 +1,6 @@
 import { TourKey } from "../helpers/tours";
 import { PaymentData } from "./payment";
+import { ReportRow } from "../types/report";
 
 export interface TourRowProps {
   rowId: string;
@@ -7,10 +8,10 @@ export interface TourRowProps {
   boatOptions: string[];
   departureTimes: string[];
 
-  onChange: (rowId: string, data: Partial<TourRowProps>) => void;
+  onChange: (rowId: string, data: ReportRow) => void;
   onRemove: (rowId: string) => void;
 
   payment?: PaymentData;
 
-  initialData?: Partial<Omit<TourRowProps, "rowId" | "onChange" | "onRemove" | "boatOptions" | "departureTimes">>;
+  initialData?: Partial<ReportRow>;
 }

@@ -22,7 +22,7 @@ export default function SignInForm() {
         redirect: false,
         email,
         password,
-        callbackUrl: "/"
+        callbackUrl: "/",
       });
       if (res?.error) {
         setError("Invalid credentials");
@@ -43,11 +43,6 @@ export default function SignInForm() {
     >
       <h1 className="text-xl font-bold text-gray-800">Sign In</h1>
 
-      {error && (
-        <p className="text-red-600 bg-red-100 border border-red-300 px-3 py-2 rounded text-sm text-center">
-          {error}
-        </p>
-      )}
       <div className="flex flex-col">
         <label className="text-sm font-medium mb-1">Email</label>
         <input
@@ -55,7 +50,7 @@ export default function SignInForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
           required
         />
       </div>
@@ -67,7 +62,7 @@ export default function SignInForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
           required
         />
       </div>
@@ -75,10 +70,15 @@ export default function SignInForm() {
       <button
         disabled={pending}
         type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-2 font-medium transition-colors"
+        className="w-full bg-primary hover:bg-secondary text-white rounded px-3 py-2 font-medium transition-colors"
       >
         Sign In
       </button>
+      {error && (
+        <p className="text-red-600 border border-red-300 px-3 py-2 rounded text-sm text-center">
+          {error}
+        </p>
+      )}
     </form>
   );
 }

@@ -22,5 +22,6 @@ export interface ReportRow {
   groups: number;
   free: number;
   total: number;
-  status: "Active" | "Canceled" | string;
+  status: string;
+  endurkoma: number;
 }
