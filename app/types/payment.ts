@@ -9,7 +9,7 @@ export interface PaymentData {
   card: number;
   voucher: number;
   total: number;
-  notes?: string;
+  notes: string;
   g11?: number;
   ae5?: number;
 }
