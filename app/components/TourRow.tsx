@@ -26,7 +26,7 @@ export const TourRow = ({
 
   // const total = adults + groups + youth + child + endurkoma + free;
 
-  let adults = total - groups - youth - child - endurkoma - free;
+  let adults = Math.max(0, total - groups - youth - child - endurkoma - free);
 
   useEffect(() => {
     onChange(rowId, {

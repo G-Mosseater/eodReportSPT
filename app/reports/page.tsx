@@ -107,7 +107,7 @@ export default function Reports() {
             onClose={() => setYearOpen(false)}
             views={["year"]}
             label="Year"
-            minDate={new Date(2026, 0)}
+            minDate={new Date(2025, 0)}
             maxDate={new Date(new Date().getFullYear() + 30, 11)}
             value={selectedYear}
             yearsPerRow={3}

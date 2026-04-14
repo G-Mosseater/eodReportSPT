@@ -21,13 +21,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err: any) {
     console.error(err);
-    return NextResponse.json(
-      {
-        message: "Failed to insert tours",
-        error: err.message || err.toString(),
-      },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
 
@@ -42,5 +36,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(reports);
   } catch (err) {
     console.error(err);
+    return NextResponse.json({ message: "Failed get tours" }, { status: 500 });
   }
 }

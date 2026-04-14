@@ -162,16 +162,7 @@ export default function NewReport() {
             key={tourName}
             type="button"
             onClick={() => addRow(tourName)}
-            className="
-      bg-[#1E73BE] text-white
-      px-3 py-1.5 lg:px-6 lg:py-3
-      text-xs sm:text-sm lg:text-base
-      rounded-md
-      font-semibold
-      flex-1 sm:flex-none
-      min-w-[100px]
-      transition
-      hover:bg-[#155a96]"
+            className=" bg-[#1E73BE] text-white px-3 py-1.5 lg:px-6 lg:py-3 text-xs sm:text-sm lg:text-base rounded-md font-semibold flex-1 sm:flex-none min-w-[100px] transition hover:bg-[#155a96]"
           >
             Add {tourLabels[tourName]}
           </button>
