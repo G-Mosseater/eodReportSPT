@@ -34,7 +34,8 @@ export async function TourPage({ params }: Props) {
         {tour.name}
       </h1>
 
-      <p className="text-lg md:text-xl text-gray-700 mb-8 text-left max-w-3xl leading-relaxed">
+      <p className="text-lg md:text-xl text-gray-700 mb-8 text-left max-w-3xl leading-relaxed whitespace-pre-line">
+        {" "}
         {tour.fullDescription}
       </p>
 

@@ -4,9 +4,9 @@ export const privateTours = [
     name: "Whale Watching",
     slug: "whale-watching",
     description: "Experience majestic whales up close on a guided tour.",
-    fullDescription: `Join a private whale watching tour from Reykjavik on boats Andrea, Lilja, or Rósin. 
-Tours are fully customizable in duration and priced per hour. Spot humpback whales, minke whales, harbour porpoises, white-beaked dolphins, 
-and enjoy Iceland’s rich seabird life. Our expert guides provide interactive, educational insights while ensuring comfort, safety, and environmental care.`,
+    fullDescription: `Join a private whale watching tour from Reykjavik on boats Andrea, Lilja, or Rósin. Tours are fully customizable in duration and priced per hour.
+Spot humpback whales, minke whales, harbour porpoises, white-beaked dolphins, and enjoy Iceland’s rich seabird life. 
+Our expert guides provide interactive, educational insights while ensuring comfort, safety, and environmental care.`,
     whatsIncluded: [
       "Guided boat tour",
       "Educational & interactive focus",

@@ -160,20 +160,7 @@ export default function Reports() {
           filteredReports.map((report) => (
             <div
               key={report._id}
-              className="
-          cursor-pointer 
-         rounded-lg 
-       border border-border 
-       bg-card 
-       p-4 md:p-5 lg:p-6 
-       shadow-md 
-       transition-all 
-       hover:shadow-[0_0_15px_rgba(96,165,250,0.4)] 
-       hover:scale-[1.01]
-         max-w-4xl
-            w-full 
-              mx-auto   
-  "
+              className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-md transition-all hover:shadow-primary hover:scale-[1.01] max-w-4xl w-full mx-auto "
               onClick={() => router.push(`/reports/${report._id}`)}
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
