@@ -8,13 +8,13 @@ export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [pending, setPending] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setPending(true);
+    setLoading(true);
 
     try {
       setError("");
@@ -32,7 +32,7 @@ export default function SignInForm() {
     } catch (err) {
       setError("Something went wrong");
     } finally {
-      setPending(false);
+      setLoading(false);
     }
   };
 
@@ -46,7 +46,7 @@ export default function SignInForm() {
       <div className="flex flex-col">
         <label className="text-sm font-medium mb-1">Email</label>
         <input
-          disabled={pending}
+          disabled={loading}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -58,7 +58,7 @@ export default function SignInForm() {
       <div className="flex flex-col">
         <label className="text-sm font-medium mb-1">Password</label>
         <input
-          disabled={pending}
+          disabled={loading}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -68,11 +68,11 @@ export default function SignInForm() {
       </div>
 
       <button
-        disabled={pending}
+        disabled={loading}
         type="submit"
-        className="w-full bg-primary hover:bg-secondary text-white rounded px-3 py-2 font-medium transition-colors"
+        className={`w-full text-white rounded px-3 py-2 font-medium transition-colors ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-primary hover:bg-secondary"}`}
       >
-        Sign In
+        {loading ? "Signing in..." : "Sign In"}
       </button>
       {error && (
         <p className="text-red-600 border border-red-300 px-3 py-2 rounded text-sm text-center">

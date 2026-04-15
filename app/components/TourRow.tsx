@@ -74,7 +74,6 @@ export const TourRow = ({
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>
           <p className="font-semibold  text-base lg:text-lg">
-            {" "}
             {tourLabels[tourName]}
           </p>
         </div>
@@ -82,7 +81,7 @@ export const TourRow = ({
         <select
           value={hour}
           onChange={(e) => setHour(e.target.value)}
-          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2"
+          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           required={status !== "Canceled"}
           disabled={status === "Canceled"}
         >
@@ -97,7 +96,7 @@ export const TourRow = ({
         <select
           value={boat}
           onChange={(e) => setBoat(e.target.value)}
-          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2"
+          className="border rounded px-2 py-1.5 text-sm lg:text-base lg:px-3 lg:py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           required={status !== "Canceled"}
           disabled={status === "Canceled"}
         >
@@ -115,7 +114,7 @@ export const TourRow = ({
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-28"
+            className="border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-28 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           >
             <option value="On">On</option>
             <option value="Canceled">Canceled</option>

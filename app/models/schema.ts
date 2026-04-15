@@ -37,7 +37,13 @@ const reportSchema = new mongoose.Schema(
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
   password: { type: String, required: true },
 });
 
@@ -48,7 +54,12 @@ const privateRequestSchema = new mongoose.Schema(
     pax: { type: Number, required: true },
     boat: { type: String, required: true },
     date: { type: String, required: true },
-    email: { type: String, required: true },
+    email: {
+      type: String,
+      required: true,
+      lowercase: true,
+      trim: true,
+    },
 
     notes: { type: String, default: "" },
   },

@@ -19,9 +19,10 @@ const handler = NextAuth({
       async authorize(credentials: any) {
         try {
           await connectDatabase();
-          const user = await User.findOne({ email: credentials?.email }).select(
-            "+password",
-          );
+
+          const email = credentials?.email?.toLowerCase().trim();
+          const user = await User.findOne({ email }).select("+password");
+
           if (!user) {
             throw new Error("User not found");
           }

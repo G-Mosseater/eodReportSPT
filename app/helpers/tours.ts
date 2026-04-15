@@ -5,7 +5,7 @@ export const tourOptions = {
   },
   "puffin-tour": {
     boats: ["Skuli", "Rosin", "Other"],
-    hours: ["06:00", "07:00", "08:00"],
+    hours: ["08:00", "09:30", "10:45", "12:30", "14:15", "15:30", "17:00"],
   },
   "sea-angling": {
     boats: ["Rosin", "Other"],
@@ -23,6 +23,6 @@ export const tourOptions = {
     boats: ["Dagmar", "Katla", "Other"],
     hours: ["12:00"],
   },
-} 
+};
 
 export type TourKey = keyof typeof tourOptions;

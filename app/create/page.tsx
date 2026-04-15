@@ -36,6 +36,7 @@ export default function NewReport() {
       ? JSON.parse(saved)
       : { cash: 0, card: 0, voucher: 0, total: 0, notes: "", g11: 0, ae5: 0 };
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session, status } = useSession();
 
   const router = useRouter();
@@ -130,11 +131,16 @@ export default function NewReport() {
     };
 
     try {
+      setIsSubmitting(true);
       await postTours(allData);
+
+      setShowSubmitModal(false);
       resetReport();
       router.push("/reports");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -162,7 +168,7 @@ export default function NewReport() {
             key={tourName}
             type="button"
             onClick={() => addRow(tourName)}
-            className=" bg-[#1E73BE] text-white px-3 py-1.5 lg:px-6 lg:py-3 text-xs sm:text-sm lg:text-base rounded-md font-semibold flex-1 sm:flex-none min-w-[100px] transition hover:bg-[#155a96]"
+            className=" bg-primary text-white px-3 py-1.5 lg:px-6 lg:py-3 text-xs sm:text-sm lg:text-base rounded-md font-semibold flex-1 sm:flex-none min-w-[100px] transition hover:bg-secondary"
           >
             Add {tourLabels[tourName]}
           </button>
@@ -211,6 +217,7 @@ export default function NewReport() {
         footer={
           <div className="flex justify-end gap-3">
             <button
+              disabled={isSubmitting}
               onClick={() => setShowSubmitModal(false)}
               className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200"
             >
@@ -218,14 +225,11 @@ export default function NewReport() {
             </button>
 
             <button
-              onClick={async () => {
-                if (isReportEmpty) return;
-                setShowSubmitModal(false);
-                await submitReport();
-              }}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              disabled={isSubmitting || isReportEmpty}
+              onClick={submitReport}
+              className={`px-4 py-2 text-white rounded ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}`}
             >
-              Confirm
+              {isSubmitting ? "Submitting..." : "Confirm"}
             </button>
           </div>
         }

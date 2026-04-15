@@ -7,13 +7,13 @@ import { useSession } from "next-auth/react";
 import { getReportById, updateReport } from "../../lib/api";
 import { TourRow } from "../../components/TourRow";
 import { PaymentSummary } from "../../components/PaymentSummary";
-import { tourOptions } from "../../helpers/tours";
-import { tours, tourOrder } from "../../types/tourOrder";
+import { TourKey, tourOptions } from "../../helpers/tours";
+import { tourOrder } from "../../types/tourOrder";
 import { Modal } from "../../components/UI/Modal";
 
 interface Row {
   id: string;
-  type: tours;
+  type: TourKey;
 }
 
 export default function EditReport() {
@@ -28,6 +28,7 @@ export default function EditReport() {
     notes: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { id } = useParams();
   const { data: session, status } = useSession();
@@ -81,7 +82,7 @@ export default function EditReport() {
     fetchReport();
   }, [id, status, router]);
 
-  const addRow = useCallback((type: tours) => {
+  const addRow = useCallback((type: TourKey) => {
     const newId = crypto.randomUUID();
     setRows((prev) => {
       const newRows = [...prev, { id: newId, type }];
@@ -105,7 +106,6 @@ export default function EditReport() {
   }, []);
 
   const confirmSubmit = async () => {
-    setShowSubmitModal(false);
 
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
@@ -115,10 +115,14 @@ export default function EditReport() {
     if (!id) return;
 
     try {
+      setIsSubmitting(true);
       await updateReport(String(id), allData);
+      setShowSubmitModal(false);
       router.push("/reports");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -137,27 +141,18 @@ export default function EditReport() {
   if (!session) {
     return null;
   }
+  const tourKeys = Object.keys(tourOptions) as TourKey[];
 
   return (
     <>
       <div className="min-h-screen bg-background p-4 lg:p-8">
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
-          {[...Object.keys(tourOptions)].map((tourName) => (
+          {tourKeys.map((tourName) => (
             <button
               key={tourName}
               type="button"
-              onClick={() => addRow(tourName as tours)}
-              className="
-                bg-blue-600 text-white
-          px-3 py-1.5 lg:px-6 lg:py-3
-          text-xs sm:text-sm lg:text-base
-          rounded-md
-          font-semibold
-          flex-1 sm:flex-none
-          min-w-[100px]
-          transition
-          hover:bg-blue-700
-        "
+              onClick={() => addRow(tourName as TourKey)}
+              className=" bg-primary text-white px-3 py-1.5 lg:px-6 lg:py-3 text-xs sm:text-sm lg:text-base rounded-md font-semibold flex-1 sm:flex-none min-w-[100px] transition hover:bg-secondary"
             >
               Add {tourName}
             </button>
@@ -196,23 +191,27 @@ export default function EditReport() {
         footer={
           <div className="flex justify-end gap-3">
             <button
+              disabled={isSubmitting}
               onClick={() => setShowSubmitModal(false)}
-              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200"
+              className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
             >
               Cancel
             </button>
 
             <button
+              disabled={isSubmitting}
               onClick={confirmSubmit}
-              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+              className={`px-4 py-2 text-white rounded ${isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}`}
             >
-              Confirm
+              {isSubmitting ? "Saving..." : "Confirm"}
             </button>
           </div>
         }
       >
-        <p className="text-sm lg:text-base text-muted-foreground mb-0">
-          Are you sure you want to save the changes to this report?
+        <p className="text-sm lg:text-base text-muted-foreground mb-0 text-center">
+          {isSubmitting
+            ? "Saving changes..."
+            : "Are you sure you want to save the changes to this report?"}
         </p>
       </Modal>
     </>

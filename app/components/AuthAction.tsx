@@ -26,7 +26,17 @@ export default function AuthAction({ onClick }: { onClick?: () => void }) {
         text-white
       "
     >
-      {session ? <LogOut size={18} /> : <User size={18} />}
+      {session ? (
+        <>
+          <LogOut size={18} />
+          <span>Logout</span>
+        </>
+      ) : (
+        <>
+          <User size={18} />
+          <span>Admin</span>
+        </>
+      )}
     </button>
   );
 }

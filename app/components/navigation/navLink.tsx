@@ -11,7 +11,7 @@ export default function NavLinks() {
     const isActive =
       path === "/" ? pathname === "/" : pathname.startsWith(path);
 
-    return `px-3 py-1.5 text-sm lg:text-xl text-muted      transition-colors duration-300 ease-in-out
+    return `px-3 py-1.5 text-sm lg:text-xl text-muted transition-colors duration-300 ease-in-out
     relative
     ${isActive ? "text-secondary font-medium " : "text-muted-foreground "}
     after:content-[''] after:absolute after:left-0 after:-bottom-1

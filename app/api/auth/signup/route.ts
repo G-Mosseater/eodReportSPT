@@ -32,7 +32,9 @@ export async function POST(req: NextRequest) {
   }
   try {
     await connectDatabase();
-    const existingUser = await User.findOne({ email });
+    const normalizedEmail = email.toLowerCase().trim();
+    const existingUser = await User.findOne({ email: normalizedEmail });
+
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists" },
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
-      email,
+      email: normalizedEmail,
       name,
       password: hashedPassword,
     });
@@ -51,7 +53,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     return NextResponse.json(
       { message: "Something went wrong!" },
-      { status: 400 },
+      { status: 500 },
     );
   }
 }

@@ -10,11 +10,11 @@ import { tourLabels } from "../../types/tourOrder";
 import { ReportProps } from "../../types/report";
 import { tourStyles } from "../../helpers/tourCardStyle";
 
-
 export default function ReportPage() {
   const { id } = useParams();
   const [report, setReport] = useState<ReportProps | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -32,11 +32,14 @@ export default function ReportPage() {
 
   async function handleDeleteReport(id: string, router: any) {
     try {
+      setIsDeleting(true);
       await removeReport(id);
       setShowModal(false);
       router.push("/reports");
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -319,6 +322,7 @@ export default function ReportPage() {
         footer={
           <div className="flex justify-end gap-3">
             <button
+              disabled={isDeleting}
               onClick={() => setShowModal(false)}
               className="px-4 py-2 rounded text-sm lg:text-base bg-gray-200 hover:bg-gray-300 transition"
             >
@@ -326,16 +330,23 @@ export default function ReportPage() {
             </button>
 
             <button
+              disabled={isDeleting}
               onClick={() => handleDeleteReport(String(id), router)}
-              className="px-4 py-2 rounded text-sm lg:text-base bg-red-600 hover:bg-red-700 text-white transition"
+              className={`px-4 py-2 rounded text-white ${
+                isDeleting
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
             >
-              Delete
+              {isDeleting ? "Deleting..." : "Delete"}
             </button>
           </div>
         }
       >
         <p className="text-sm lg:text-base text-muted-foreground mb-0">
-          Are you sure you want to delete this report?
+          {isDeleting
+            ? "Deleting report..."
+            : "Are you sure you want to delete this report?"}{" "}
         </p>
       </Modal>
     </div>
