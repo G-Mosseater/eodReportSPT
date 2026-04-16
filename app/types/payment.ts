@@ -3,7 +3,6 @@ export interface PaymentProps {
   initialData?: Partial<PaymentData>;
 }
 
-
 export interface PaymentData {
   cash: number;
   card: number;
@@ -12,4 +11,6 @@ export interface PaymentData {
   notes: string;
   g11?: number;
   ae5?: number;
+  receptionStaff?: string;
+  guides?: string;
 }

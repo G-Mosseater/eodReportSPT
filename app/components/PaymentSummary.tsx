@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { formatIsk } from "../helpers/formatCurrency";
 import { PaymentProps } from "../types/payment";
@@ -10,6 +9,10 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
   const [notes, setNotes] = useState(initialData.notes || "");
   const [g11, setG11] = useState(initialData.g11 || 0);
   const [ae5, setAE5] = useState(initialData.ae5 || 0);
+  const [receptionStaff, setReceptionStaff] = useState(
+    initialData.receptionStaff || "",
+  );
+  const [guides, setGuides] = useState(initialData.guides || "");
 
   const totalWalkins = g11 + ae5;
 
@@ -20,6 +23,8 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
     setNotes(initialData.notes || "");
     setG11(initialData.g11 || 0);
     setAE5(initialData.ae5 || 0);
+    setReceptionStaff(initialData.receptionStaff || "");
+    setGuides(initialData.guides || "");
   }, [initialData]);
 
   const total = cash + card + voucher;
@@ -32,8 +37,10 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
       notes,
       g11,
       ae5,
+      receptionStaff,
+      guides,
     });
-  }, [cash, card, voucher, total, notes, ae5, g11]);
+  }, [cash, card, voucher, total, notes, ae5, g11, receptionStaff, guides]);
 
   return (
     <div className="flex flex-col gap-3 lg:gap-6 p-3 lg:p-4 border rounded w-full mt-4">
@@ -124,8 +131,35 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
+          className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           placeholder="Write details here..."
+        />
+      </div>
+      <div className="flex flex-col">
+        <label className="text-xs font-medium text-muted-foreground mb-1">
+          Reception Staff
+        </label>
+
+        <input
+          type="text"
+          value={receptionStaff}
+          onChange={(e) => setReceptionStaff(e.target.value)}
+          placeholder="e.g. Jim, Jesus, Hanz"
+          className="border rounded px-2 py-1.5 max-w-[500px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+        />
+      </div>
+
+      <div className="flex flex-col">
+        <label className="text-xs font-medium text-muted-foreground mb-1">
+          Guides
+        </label>
+
+        <input
+          type="text"
+          value={guides}
+          onChange={(e) => setGuides(e.target.value)}
+          placeholder="e.g. Orn, Gummi, Fusi"
+          className="border rounded px-2 py-1.5 max-w-[500px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
       </div>
     </div>

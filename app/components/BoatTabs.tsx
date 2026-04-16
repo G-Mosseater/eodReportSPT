@@ -14,12 +14,15 @@ export default function BoatTabs({ boats }: { boats: Boat[] }) {
 
   return (
     <div className="w-full max-w-3xl mb-8">
+      <h1 className="text-lg sm:text-xl lg:text-2xl pt-4 font-semibold text-foreground mb-3">
+        Boats operating this tour
+      </h1>
       <div className="flex gap-2 border-b mb-4">
         {boats.map((boat) => (
           <button
             key={boat.name}
             onClick={() => setActiveBoat(boat)}
-            className={`border rounded px-2 py-1.5 w-full text-sm lg:text-base lg:px-3 lg:py-2 lg:w-20 focus:outline-none focus:ring-1
+            className={`border rounded px-2 py-1.5 w-full text-sm lg:text-base  focus:outline-none focus:ring-1
     ${
       activeBoat?.name === boat.name
         ? "bg-primary text-white border-primary"

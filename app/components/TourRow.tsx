@@ -58,8 +58,8 @@ export const TourRow = ({
   return (
     <div
       className={`
-    relative flex flex-col gap-3 p-3 pt-8 border rounded w-full 
-    lg:flex-row lg:gap-6 lg:p-2 lg:items-center
+    relative flex flex-col gap-3 p-3 pt-10 border rounded w-full 
+    lg:flex-row lg:gap-6 lg:p-3 lg:items-center
     transition-opacity
     ${status === "Canceled" ? "opacity-50 bg-gray-100" : "bg-white"}
   `}
@@ -69,7 +69,7 @@ export const TourRow = ({
         onClick={() => onRemove(rowId)}
         className="absolute top-2 right-2 bg-red-600  hover:bg-red-700 text-white p-2  rounded-sm  shadow-md transition"
       >
-        <X className="w-4 h-4 " />
+        <X className="w-3 h-3 sm:w-4 sm:h-4" />
       </button>
       <div className="flex flex-col gap-2 lg:gap-3 lg:min-w-[180px]">
         <div>

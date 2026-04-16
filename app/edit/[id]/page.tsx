@@ -106,7 +106,6 @@ export default function EditReport() {
   }, []);
 
   const confirmSubmit = async () => {
-
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
@@ -175,6 +174,8 @@ export default function EditReport() {
 
           <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
 
+          <div className="flex gap-3 mt-4">
+
           <button
             type="button"
             onClick={() => setShowSubmitModal(true)}
@@ -182,6 +183,15 @@ export default function EditReport() {
           >
             Save Changes
           </button>
+
+          <button
+            type="button"
+            onClick={() => router.push(`/reports/${id}`)}
+            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-gray-600 rounded hover:bg-gray-700 text-white"
+          >
+            Cancel
+          </button>
+          </div>
         </form>
       </div>
       <Modal

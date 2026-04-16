@@ -22,6 +22,8 @@ const paymentSchema = new mongoose.Schema(
     notes: { type: String, default: "" },
     g11: { type: Number, default: 0 },
     ae5: { type: Number, default: 0 },
+    receptionStaff: { type: String, default: "" },
+    guides: { type: String, default: "" },
   },
   { _id: false },
 );

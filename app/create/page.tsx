@@ -34,7 +34,19 @@ export default function NewReport() {
     const saved = localStorage.getItem("payment");
     return saved
       ? JSON.parse(saved)
-      : { cash: 0, card: 0, voucher: 0, total: 0, notes: "", g11: 0, ae5: 0 };
+      : {
+          cash: 0,
+          card: 0,
+          voucher: 0,
+          total: 0,
+          notes: "",
+          g11: 0,
+          ae5: 0,
+        };
+  });
+  const [staffData, setStaffData] = useState({
+    reception: "",
+    guides: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: session, status } = useSession();
@@ -52,10 +64,14 @@ export default function NewReport() {
       const savedRows = localStorage.getItem("tourRows");
       const savedRowsData = localStorage.getItem("tourRowsData");
       const savedPayment = localStorage.getItem("payment");
+      const savedStaff = localStorage.getItem("staff");
 
       if (savedRows) setRows(JSON.parse(savedRows));
       if (savedRowsData) setRowsData(JSON.parse(savedRowsData));
       if (savedPayment) setPaymentData(JSON.parse(savedPayment));
+      if (savedStaff) {
+        setStaffData(JSON.parse(savedStaff));
+      }
     } catch (err) {
       console.warn("Failed to load from localStorage:", err);
       setRows([]);
@@ -81,7 +97,8 @@ export default function NewReport() {
     localStorage.setItem("tourRows", JSON.stringify(rows));
     localStorage.setItem("tourRowsData", JSON.stringify(rowsData));
     localStorage.setItem("payment", JSON.stringify(paymentData));
-  }, [rows, rowsData, paymentData, status]);
+    localStorage.setItem("staff", JSON.stringify(staffData));
+  }, [rows, rowsData, paymentData, status, staffData]);
 
   const addRow = useCallback((type: TourKey) => {
     const newId = crypto.randomUUID();
@@ -97,6 +114,7 @@ export default function NewReport() {
     localStorage.removeItem("tourRows");
     localStorage.removeItem("tourRowsData");
     localStorage.removeItem("payment");
+    localStorage.removeItem("staff");
 
     setRows([]);
     setRowsData({});
@@ -108,6 +126,10 @@ export default function NewReport() {
       notes: "",
       g11: 0,
       ae5: 0,
+    });
+    setStaffData({
+      reception: "",
+      guides: "",
     });
   }, []);
 
@@ -128,6 +150,7 @@ export default function NewReport() {
     const allData = {
       rows: rows.map((row) => rowsData[row.id] || {}),
       payment: paymentData,
+      staff: staffData,
     };
 
     try {

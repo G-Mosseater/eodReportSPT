@@ -33,6 +33,9 @@ export async function TourPage({ params }: Props) {
       <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-center text-gray-900">
         {tour.name}
       </h1>
+      <p className="max-w-3xl text-gray-700 text-lg md:text-xl leading-relaxed whitespace-pre-line mb-8">
+        {tour.fullDescription}
+      </p>
       <BoatTabs boats={tour.boats} />
       <PrivateTourForm
         tourName={tour.name}
