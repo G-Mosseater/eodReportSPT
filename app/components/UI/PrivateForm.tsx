@@ -15,7 +15,6 @@ export default function PrivateTourForm({ tourName, boatOptions }: Props) {
   const [notes, setNotes] = useState("");
   const [boat, setBoat] = useState("");
   const [email, setEmail] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {

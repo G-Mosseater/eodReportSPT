@@ -1,4 +1,17 @@
-export const privateTours = [
+import { Boat } from "../components/BoatTabs";
+
+export type Tour = {
+  id: number;
+  slug: string;
+  name: string;
+  description: string;
+  fullDescription: string;
+  whatsIncluded: string[];
+  image: string;
+  boats: Boat[];
+};
+
+export const privateTours: Tour[] = [
   {
     id: 1,
     name: "Whale Watching",
@@ -15,6 +28,26 @@ Our expert guides provide interactive, educational insights while ensuring comfo
       "WCs on board",
     ],
     image: "/whale.png",
+    boats: [
+      {
+        name: "Andrea",
+        image: "/boats/andrea.png",
+        description:
+          "One of Iceland’s largest and most comfortable whale watching vessels. Built in 1972, Andrea accommodates up to 198 passengers with spacious indoor lounges, large panoramic windows, and open viewing decks. Designed for all-weather comfort, it features a café, souvenir shop, multiple seating areas, and full accessibility. Ideal for stable, relaxed whale watching with excellent visibility and onboard facilities.",
+      },
+      {
+        name: "Lilja",
+        image: "/boats/lilja.png",
+        description:
+          "High-speed modern catamaran designed for express whale watching. Built for comfort and stability with indoor and outdoor viewing decks, Lilja quickly reaches Faxaflói Bay wildlife areas. Ideal for larger groups and fast, efficient tours with excellent visibility in all conditions.",
+      },
+      {
+        name: "Rosin",
+        image: "/boats/Rosin.png",
+        description:
+          "A fast and modern mid-sized vessel designed for efficient and comfortable wildlife tours. Rosin reaches whale and bird areas quickly with a cruising speed of up to 24 knots, while offering heated indoor seating, large viewing windows, and outdoor decks. Ideal for both whale watching and Northern Lights cruises, combining speed with comfort and excellent visibility in all weather conditions.",
+      },
+    ],
   },
 
   {
@@ -40,6 +73,26 @@ Please note: sightings depend on weather and solar activity, but if you don’t 
       "Free return ticket if no sightings",
     ],
     image: "/nlb.png",
+    boats: [
+      {
+        name: "Andrea",
+        image: "/boats/andrea.png",
+        description:
+          "One of Iceland’s largest and most comfortable whale watching vessels. Built in 1972, Andrea accommodates up to 198 passengers with spacious indoor lounges, large panoramic windows, and open viewing decks. Designed for all-weather comfort, it features a café, souvenir shop, multiple seating areas, and full accessibility. Ideal for stable, relaxed whale watching with excellent visibility and onboard facilities.",
+      },
+      {
+        name: "Lilja",
+        image: "/boats/lilja.png",
+        description:
+          "High-speed modern catamaran designed for express whale watching. Built for comfort and stability with indoor and outdoor viewing decks, Lilja quickly reaches Faxaflói Bay wildlife areas. Ideal for larger groups and fast, efficient tours with excellent visibility in all conditions.",
+      },
+      {
+        name: "Rosin",
+        image: "/boats/Rosin.png",
+        description:
+          "A fast and modern mid-sized vessel designed for efficient and comfortable wildlife tours. Rosin reaches whale and bird areas quickly with a cruising speed of up to 24 knots, while offering heated indoor seating, large viewing windows, and outdoor decks. Ideal for both whale watching and Northern Lights cruises, combining speed with comfort and excellent visibility in all weather conditions.",
+      },
+    ],
   },
 
   {
@@ -64,6 +117,20 @@ Ideal for guests looking for a more adventurous and fast-paced alternative to tr
       "Scenic coastal cruise in Faxaflói Bay",
     ],
     image: "/rib.png",
+
+    boats: [
+      {
+        name: "Dagmar",
+        image: "/boats/dagmar.png",
+        description:
+          "A high-speed, custom-built RIB (2017) designed for small groups of up to 12 passengers. Equipped with advanced shock seats for a smoother, more comfortable ride, even in rough seas. Cruising at 32 knots, Dagmar offers a fast and exciting wildlife experience, combining whale watching, puffin spotting, and coastal views around Reykjavík.",
+      },
+      {
+        name: "Katla",
+        image: "/boats/dagmar.png",
+        description: "Fast modern boat for small groups.",
+      },
+    ],
   },
 
   {
@@ -71,7 +138,7 @@ Ideal for guests looking for a more adventurous and fast-paced alternative to tr
     name: "Puffin Tours",
     slug: "puffin-tour",
     description:
-      "Short boat trip from Reykjavík to see puffins nesting on nearby islands.",
+      "1-hour Puffin Express boat tour from Reykjavík to nearby nesting islands. Just a short 15-minute sail to Akurey, where you can observe thousands of puffins in their natural habitat while enjoying scenic views of Reykjavík’s coastline and expert wildlife guidance onboard.",
     fullDescription: `Join a 1-hour Puffin Express tour from Reykjavík and visit nearby islands where thousands of puffins nest during summer.
 
 Only a short 15-minute sail from the Old Harbour, you’ll reach puffin colonies on Akurey and surrounding islands. 
@@ -86,6 +153,20 @@ The boat is specially designed to approach the islands quietly, giving you great
       "Great photography opportunities",
     ],
     image: "/puffin.png",
+    boats: [
+      {
+        name: "Skuli",
+        image: "/boats/skuli.png",
+        description:
+          "A classic wooden boat built in 1959, used for puffin watching tours. With a shallow draft, Skúlaskeið is ideal for getting close to bird colonies around the islands while offering a cozy and traditional sailing experience for small groups.",
+      },
+      {
+        name: "Rosin",
+        image: "/boats/Rosin.png",
+        description:
+          "A fast and modern mid-sized vessel designed for efficient and comfortable wildlife tours. Rosin reaches whale and bird areas quickly with a cruising speed of up to 24 knots, while offering heated indoor seating, large viewing windows, and outdoor decks. Ideal for both whale watching and Northern Lights cruises, combining speed with comfort and excellent visibility in all weather conditions.",
+      },
+    ],
   },
 
   {
@@ -112,5 +193,13 @@ This tour is both relaxing and interactive, ideal for families, groups, and anyo
       "WCs onboard",
     ],
     image: "/angling.png",
+    boats: [
+      {
+        name: "Rosin",
+        image: "/boats/Rosin.png",
+        description:
+          "A fast and modern mid-sized vessel designed for efficient and comfortable wildlife tours. Rosin reaches whale and bird areas quickly with a cruising speed of up to 24 knots, while offering heated indoor seating, large viewing windows, and outdoor decks. Ideal for both whale watching and Northern Lights cruises, combining speed with comfort and excellent visibility in all weather conditions.",
+      },
+    ],
   },
 ];
