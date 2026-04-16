@@ -16,13 +16,16 @@ export default function Card({ tour }: CardProps) {
   return (
     <div className="bg-white shadow hover:shadow-xl  hover:-translate-y-1 transition-transform duration-200 rounded-lg border max-w-sm p-6 flex flex-col h-full">
       <Link href={`/privates/${tour.slug}`}>
-        <Image
-          className="rounded-sm w-full object-cover"
-          src={tour.image}
-          alt={tour.name}
-          width={400}
-          height={250}
-        />
+        <div className="relative w-full aspect-[16/10] overflow-hidden rounded-sm">
+          <Image
+            src={tour.image}
+            alt={tour.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 400px"
+            priority
+          />
+        </div>
       </Link>
       <Link href={`/privates/${tour.slug}`}>
         <h5 className="text-2xl font-semibold  mt-2">{tour.name}</h5>
