@@ -117,7 +117,7 @@ export default function EditReport() {
       setIsSubmitting(true);
       await updateReport(String(id), allData);
       setShowSubmitModal(false);
-      router.push("/reports");
+      router.push(`/reports/${id}`);
     } catch (err) {
       console.error(err);
     } finally {

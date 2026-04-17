@@ -7,3 +7,16 @@ export const tourStyles = {
   "northern-lights": "bg-gradient-to-r from-violet-200/70 to-emerald-400/25",
   "puffin-by-rib": "bg-gradient-to-r from-gray-200/70 to-gray-400/30",
 };
+
+export const tourNameMap: Record<string, keyof typeof tourStyles> = {
+  "Puffin Tours": "puffin-tour",
+
+  "Whale Watching": "whale-watching",
+  "Whale Watching by RIB": "rib-express",
+
+  "Sea Angling": "sea-angling",
+
+  "Northern Lights": "northern-lights",
+
+  "Puffin by RIB": "puffin-by-rib",
+};

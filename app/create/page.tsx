@@ -6,7 +6,7 @@ import { postTours } from "../lib/api";
 import { PaymentSummary } from "../components/PaymentSummary";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { tours, tourOrder, tourLabels } from "../types/tourOrder";
+import { tourOrder, tourLabels } from "../types/tourOrder";
 import { Modal } from "../components/UI/Modal";
 interface Row {
   id: string;
@@ -15,7 +15,6 @@ interface Row {
 
 export default function NewReport() {
   const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const [rows, setRows] = useState<Row[]>(() => {
     if (typeof window === "undefined") return [];
@@ -53,40 +52,10 @@ export default function NewReport() {
 
   const router = useRouter();
 
-  // Load data from local storage
   useEffect(() => {
     if (status === "unauthenticated") {
-      setIsLoading(false);
       router.replace("/signin");
-    }
-    setIsLoading(true);
-    try {
-      const savedRows = localStorage.getItem("tourRows");
-      const savedRowsData = localStorage.getItem("tourRowsData");
-      const savedPayment = localStorage.getItem("payment");
-      const savedStaff = localStorage.getItem("staff");
-
-      if (savedRows) setRows(JSON.parse(savedRows));
-      if (savedRowsData) setRowsData(JSON.parse(savedRowsData));
-      if (savedPayment) setPaymentData(JSON.parse(savedPayment));
-      if (savedStaff) {
-        setStaffData(JSON.parse(savedStaff));
-      }
-    } catch (err) {
-      console.warn("Failed to load from localStorage:", err);
-      setRows([]);
-      setRowsData({});
-      setPaymentData({
-        cash: 0,
-        card: 0,
-        voucher: 0,
-        total: 0,
-        notes: "",
-        g11: 0,
-        ae5: 0,
-      });
-    } finally {
-      setIsLoading(false);
+      return;
     }
   }, [status]);
 
@@ -171,7 +140,7 @@ export default function NewReport() {
     e.preventDefault();
     setShowSubmitModal(true);
   }
-  if (status === "loading" || isLoading) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
@@ -185,6 +154,10 @@ export default function NewReport() {
   const tourKeys = Object.keys(tourOptions) as TourKey[];
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
+      <h1 className="text-2xl lg:text-4xl font-semibold text-foreground mb-4">
+        {" "}
+        Select tour:
+      </h1>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">
         {tourKeys.map((tourName) => (
           <button

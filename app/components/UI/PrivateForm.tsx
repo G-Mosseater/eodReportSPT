@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { postPrivateRequest } from "../../lib/api";
+import { useRouter } from "next/navigation";
 
 type Props = {
   tourName: string;
@@ -16,6 +17,7 @@ export default function PrivateTourForm({ tourName, boatOptions }: Props) {
   const [boat, setBoat] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -31,16 +33,17 @@ export default function PrivateTourForm({ tourName, boatOptions }: Props) {
       boat,
       email,
     };
-    console.log(formData)
+    console.log(formData);
     try {
       await postPrivateRequest(formData);
-      
+
       setCompany("");
       setPax(0);
       setDate("");
       setNotes("");
       setBoat("");
       setEmail("");
+      router.push("/privates")
     } catch (err) {
       console.error(err);
     } finally {
@@ -117,7 +120,7 @@ export default function PrivateTourForm({ tourName, boatOptions }: Props) {
       </div>
 
       <div className="flex flex-col">
-        <label className="text-sm mb-1">Additional Details</label>
+        <label className="text-sm mb-1">Additional Requests</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}

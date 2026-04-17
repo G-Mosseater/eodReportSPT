@@ -73,7 +73,12 @@ export default function ReportPage() {
             Report Details
           </h1>
           <p className="text-sm md:text-base lg:text-lg text-muted-foreground">
-            Created: {new Date(report.createdAt).toLocaleString()}
+            Created:{" "}
+            {new Date(report.createdAt).toLocaleString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
           </p>
         </div>
 
@@ -290,9 +295,9 @@ export default function ReportPage() {
             )}
 
             <div className="w-full bg-card border border-border rounded-lg p-4 md:p-5 lg:p-6 shadow-sm">
-                <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-foreground mb-3 lg:mb-4">
-    Staff
-  </h2>
+              <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-foreground mb-3 lg:mb-4">
+                Staff
+              </h2>
               {report.payment?.receptionStaff && (
                 <div className="border-t border-border pt-4 lg:pt-5">
                   <p className="text-sm lg:text-base font-medium text-foreground mb-2">

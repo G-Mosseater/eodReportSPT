@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getPrivateRequests } from "../lib/api";
+import { tourNameMap, tourStyles } from "../helpers/tourCardStyle";
 
 type Request = {
   _id: string;
@@ -43,34 +44,51 @@ export default function PrivateRequestsPage() {
       <h1 className="text-2xl font-bold mb-6">Private Tour Requests</h1>
 
       <div className="space-y-4">
-        {data.map((t) => (
-          <div key={t._id} className="border rounded-lg p-4 bg-white shadow-sm">
-            <div className="flex justify-between">
-              <h2 className="font-semibold">{t.tourName}</h2>
-              <span className="text-sm text-gray-500">
-                {new Date(t.createdAt).toLocaleDateString()}
-              </span>
+        {data.map((t) => {
+          const key = tourNameMap[t.tourName];
+          return (
+            <div
+              key={t._id}
+              className={`border rounded-lg p-4 shadow-sm text-gray-900 ${
+                key ? tourStyles[key] : "bg-white"
+              }`}
+            >
+              <div className="flex justify-between">
+                <h2 className="font-semibold">{t.tourName}</h2>
+                <span className="text-sm text-gray-500">
+                  {new Date(t.createdAt).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </span>
+              </div>
+              <p className="text-sm mt-1">
+                <strong>Company:</strong> {t.company}
+              </p>
+              <p className="text-sm">
+                <strong>Boat:</strong> {t.boat}
+              </p>
+              <p className="text-sm">
+                <strong>Pax:</strong> {t.pax}
+              </p>
+              <p className="text-sm">
+                <strong>Date requested:</strong>{" "}
+                {new Date(t.date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+              <p className="text-sm">
+                <strong>Email:</strong> {t.email}
+              </p>
+              <p className="text-sm">
+                <strong>Aditional requests:</strong> {t.notes}
+              </p>
             </div>
-
-            <p className="text-sm mt-1">
-              <strong>Company:</strong> {t.company}
-            </p>
-            <p className="text-sm">
-              <strong>Boat:</strong> {t.boat}
-            </p>
-            <p className="text-sm">
-              <strong>Pax:</strong> {t.pax}
-            </p>
-
-            <p className="text-sm">
-              <strong>Date:</strong> {t.date}
-            </p>
-            <p className="text-sm">
-              <strong>Email:</strong> {t.email}
-            </p>
-            {t.notes && <p className="text-sm mt-2 text-gray-600">{t.notes}</p>}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

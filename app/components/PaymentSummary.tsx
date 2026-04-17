@@ -28,6 +28,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
   }, [initialData]);
 
   const total = cash + card + voucher;
+
   useEffect(() => {
     onChange({
       cash,
