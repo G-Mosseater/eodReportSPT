@@ -22,8 +22,8 @@ export default function AuthAction({ onClick }: { onClick?: () => void }) {
       className="
         flex items-center gap-2
         px-3 py-1.5 rounded
-        bg-primary hover:bg-secondary
-        text-white
+        bg-background border border-primary hover:bg-secondary/10
+        text-black
       "
     >
       {session ? (

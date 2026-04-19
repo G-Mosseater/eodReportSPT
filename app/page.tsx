@@ -18,7 +18,7 @@ export default function Home() {
   // }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between  px-6 md:px-16 lg:px-24 min-h-screen gap-12">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-24 md:justify-between  px-6 md:px-16 lg:px-24 min-h-screen  ">
       <div className="flex flex-col gap-6 text-center md:text-left max-w-xl">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
           Special Tours <br /> Operations
@@ -38,14 +38,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="w-full max-w-[180px] sm:max-w-[220px] md:max-w-sm lg:max-w-xl">
-     
+      <div className="w-full max-w-[180px] sm:max-w-[300px] md:max-w-[420px]   lg:max-w-lg ">
         <Image
           src="/balena.png"
           alt="Humpback Whale"
           width={1000}
           height={800}
-          className="w-full h-auto object-contain"
+          className="w-full h-auto  md:ml-12 object-contain"
           priority
         />
       </div>
