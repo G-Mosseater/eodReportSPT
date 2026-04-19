@@ -26,7 +26,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
     setAE5(initialData.ae5 || 0);
     setReceptionStaff(initialData.receptionStaff || "");
     setGuides(initialData.guides || "");
-  }, []);
+  }, [initialData]);
 
   const total = cash + card + voucher;
 

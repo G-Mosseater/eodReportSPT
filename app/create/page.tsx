@@ -95,6 +95,8 @@ export default function NewReport() {
       notes: "",
       g11: 0,
       ae5: 0,
+      receptionStaff: "",
+      guides:"",
     });
     setStaffData({
       reception: "",
