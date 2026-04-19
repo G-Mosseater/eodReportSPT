@@ -76,7 +76,7 @@ export default function MainNavigation() {
               >
                 New Report
               </Link>
-                   <Link
+              <Link
                 href="/private-request"
                 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
                 onClick={() => setDrawerOpen(false)}
@@ -86,6 +86,13 @@ export default function MainNavigation() {
             </>
           )}
           <AuthAction />
+          <Link
+            href="/about"
+            className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
+            onClick={() => setDrawerOpen(false)}
+          >
+            About us
+          </Link>
         </nav>
       </SideDrawer>
     </>

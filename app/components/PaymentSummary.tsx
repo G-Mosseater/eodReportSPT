@@ -17,6 +17,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
   const totalWalkins = g11 + ae5;
 
   useEffect(() => {
+    if (!initialData) return;
     setCash(initialData.cash || 0);
     setCard(initialData.card || 0);
     setVoucher(initialData.voucher || 0);
@@ -25,12 +26,12 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
     setAE5(initialData.ae5 || 0);
     setReceptionStaff(initialData.receptionStaff || "");
     setGuides(initialData.guides || "");
-  }, [initialData]);
+  }, []);
 
   const total = cash + card + voucher;
 
   useEffect(() => {
-    onChange({
+    const newData = {
       cash,
       card,
       voucher,
@@ -40,7 +41,10 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
       ae5,
       receptionStaff,
       guides,
-    });
+    };
+    if (JSON.stringify(newData) !== JSON.stringify(initialData)) {
+      onChange(newData);
+    }
   }, [cash, card, voucher, total, notes, ae5, g11, receptionStaff, guides]);
 
   return (

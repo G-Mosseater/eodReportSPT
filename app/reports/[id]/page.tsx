@@ -284,7 +284,7 @@ export default function ReportPage() {
             </div>
 
             {report.payment?.notes && (
-              <div className="border-t border-border pt-4 lg:pt-5">
+              <div className="border-t border-border pt-4 lg:pt-5 mb-2">
                 <p className="text-sm lg:text-base font-medium text-foreground mb-2">
                   Notes
                 </p>

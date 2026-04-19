@@ -35,17 +35,17 @@ export default function BoatTabs({ boats }: { boats: Boat[] }) {
       </div>
       <div className="w-full max-w-3xl mx-auto">
         <div className="flex justify-center mb-6">
-          <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md w-[500px] h-[300px]">
+          <div className="border border-gray-200 rounded-xl overflow-hidden shadow-md w-[600px] h-[300px]">
             <Image
               src={activeBoat.image}
               alt={activeBoat.name}
-              width={500}
-              height={300}
+              width={600}
+              height={400}
               className="w-full h-full object-cover"
             />
           </div>
         </div>
-        <div className="text-center max-w-md mx-auto">
+        <div className="text-center w-full">
           <p className="text-gray-700 text-left">{activeBoat.description}</p>
         </div>
       </div>

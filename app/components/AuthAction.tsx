@@ -20,8 +20,8 @@ export default function AuthAction({ onClick }: { onClick?: () => void }) {
     <button
       onClick={handleClick}
       className="
-        flex items-center gap-2
-        px-3 py-1.5 rounded
+        flex items-center gap-2 text-sm
+        px-2 py-1 rounded  
         bg-background border border-primary hover:bg-secondary/10
         text-black
       "
