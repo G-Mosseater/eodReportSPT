@@ -29,12 +29,10 @@ export default function AuthAction({ onClick }: { onClick?: () => void }) {
       {session ? (
         <>
           <LogOut size={18} />
-          <span>Logout</span>
         </>
       ) : (
         <>
           <User size={18} />
-          <span>Admin</span>
         </>
       )}
     </button>
