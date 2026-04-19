@@ -10,6 +10,7 @@ import { PaymentSummary } from "../../components/PaymentSummary";
 import { TourKey, tourOptions } from "../../helpers/tours";
 import { tourOrder } from "../../types/tourOrder";
 import { Modal } from "../../components/UI/Modal";
+import { PaymentData } from "../../types/payment";
 
 interface Row {
   id: string;
@@ -20,12 +21,15 @@ export default function EditReport() {
   const [rows, setRows] = useState<Row[]>([]);
   const [rowsData, setRowsData] = useState<Record<string, any>>({});
   const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [paymentData, setPaymentData] = useState({
+  const [paymentData, setPaymentData] = useState<PaymentData>({
     cash: 0,
     card: 0,
     voucher: 0,
-    total: 0,
     notes: "",
+    g11: 0,
+    ae5: 0,
+    receptionStaff: "",
+    guides: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -65,14 +69,18 @@ export default function EditReport() {
 
         setRows(loadedRows);
         setRowsData(loadedRowsData);
-        setPaymentData(
-          data.payment || { cash: 0, card: 0, voucher: 0, total: 0, notes: "" },
-        );
+        setPaymentData({
+          cash: data.payment?.cash ?? 0,
+          card: data.payment?.card ?? 0,
+          voucher: data.payment?.voucher ?? 0,
+          notes: data.payment?.notes ?? "",
+          g11: data.payment?.g11 ?? 0,
+          ae5: data.payment?.ae5 ?? 0,
+          receptionStaff: data.payment?.receptionStaff ?? "",
+          guides: data.payment?.guides ?? "",
+        });
       } catch (err) {
         console.error(err);
-        alert(
-          "Failed to load report. It may have been deleted or you don't have access.",
-        );
         router.push("/reports");
       } finally {
         setIsLoading(false);
@@ -80,7 +88,7 @@ export default function EditReport() {
     }
 
     fetchReport();
-  }, [id, status, router]);
+  }, [status, router]);
 
   const addRow = useCallback((type: TourKey) => {
     const newId = crypto.randomUUID();
@@ -172,25 +180,24 @@ export default function EditReport() {
             />
           ))}
 
-          <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
+          <PaymentSummary data={paymentData} onChange={setPaymentData} />
 
           <div className="flex gap-3 mt-4">
+            <button
+              type="button"
+              onClick={() => setShowSubmitModal(true)}
+              className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
+            >
+              Save Changes
+            </button>
 
-          <button
-            type="button"
-            onClick={() => setShowSubmitModal(true)}
-            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-green-600 hover:bg-green-700 text-white"
-          >
-            Save Changes
-          </button>
-
-          <button
-            type="button"
-            onClick={() => router.push(`/reports/${id}`)}
-            className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-gray-600 rounded hover:bg-gray-700 text-white"
-          >
-            Cancel
-          </button>
+            <button
+              type="button"
+              onClick={() => router.push(`/reports/${id}`)}
+              className="px-4 py-2 lg:px-6 lg:py-3 text-sm lg:text-base rounded font-semibold transition w-fit bg-gray-600 rounded hover:bg-gray-700 text-white"
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>

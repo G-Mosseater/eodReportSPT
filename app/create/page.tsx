@@ -57,7 +57,7 @@ export default function NewReport() {
       router.replace("/signin");
       return;
     }
-  }, [status]);
+  }, [status, router]);
 
   // Save data to local storage
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function NewReport() {
     const newId = crypto.randomUUID();
     setRows((prev) => {
       const newRows = [...prev, { id: newId, type }];
-      return newRows.sort(
+      return [...newRows].sort(
         (a, b) => tourOrder.indexOf(a.type) - tourOrder.indexOf(b.type),
       );
     });
@@ -96,12 +96,13 @@ export default function NewReport() {
       g11: 0,
       ae5: 0,
       receptionStaff: "",
-      guides:"",
+      guides: "",
     });
     setStaffData({
       reception: "",
       guides: "",
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const removeRow = useCallback((rowId: string) => {
@@ -187,7 +188,7 @@ export default function NewReport() {
           />
         ))}
 
-        <PaymentSummary onChange={setPaymentData} initialData={paymentData} />
+        <PaymentSummary data={paymentData} onChange={setPaymentData} />
 
         <div className="flex gap-3 mt-6">
           <button

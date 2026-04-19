@@ -1,33 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { formatIsk } from "../helpers/formatCurrency";
 import { PaymentProps } from "../types/payment";
 
-export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
-  const [cash, setCash] = useState(initialData.cash || 0);
-  const [card, setCard] = useState(initialData.card || 0);
-  const [voucher, setVoucher] = useState(initialData.voucher || 0);
-  const [notes, setNotes] = useState(initialData.notes || "");
-  const [g11, setG11] = useState(initialData.g11 || 0);
-  const [ae5, setAE5] = useState(initialData.ae5 || 0);
-  const [receptionStaff, setReceptionStaff] = useState(
-    initialData.receptionStaff || "",
-  );
-  const [guides, setGuides] = useState(initialData.guides || "");
+export function PaymentSummary({ onChange, data }: PaymentProps) {
+  const { cash, card, voucher, notes, g11, ae5, receptionStaff, guides } = data;
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const totalWalkins = g11 + ae5;
-
-  useEffect(() => {
-    if (!initialData) return;
-    setCash(initialData.cash || 0);
-    setCard(initialData.card || 0);
-    setVoucher(initialData.voucher || 0);
-    setNotes(initialData.notes || "");
-    setG11(initialData.g11 || 0);
-    setAE5(initialData.ae5 || 0);
-    setReceptionStaff(initialData.receptionStaff || "");
-    setGuides(initialData.guides || "");
-  }, [initialData]);
-
   const total = cash + card + voucher;
 
   useEffect(() => {
@@ -42,40 +21,55 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
       receptionStaff,
       guides,
     };
-    if (JSON.stringify(newData) !== JSON.stringify(initialData)) {
-      onChange(newData);
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
-  }, [cash, card, voucher, total, notes, ae5, g11, receptionStaff, guides]);
+    debounceRef.current = setTimeout(() => {
+      onChange(newData);
+    }, 1000);
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [cash, card, voucher, notes, ae5, g11, receptionStaff, guides, onChange]);
 
   return (
     <div className="flex flex-col gap-3 lg:gap-6 p-3 lg:p-4 border rounded w-full mt-4">
       <label className="text-sm font-medium text-muted-foreground ">
         <span className="border-b border-current pb-0.5">Payments</span>
       </label>
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4">
-        {(
-          [
-            ["Cash", cash, setCash],
-            ["Card", card, setCard],
-            ["Voucher", voucher, setVoucher],
-          ] as [string, number, React.Dispatch<React.SetStateAction<number>>][]
-        ).map(([label, value, setter]) => (
+        {[
+          ["Cash", cash, "cash"],
+          ["Card", card, "card"],
+          ["Voucher", voucher, "voucher"],
+        ].map(([label, value, key]) => (
           <div key={label} className="flex flex-col">
             <label className="text-xs lg:text-sm font-medium text-muted-foreground mb-1">
               {label}
             </label>
+
             <input
               type="number"
               value={value}
-              onChange={(e) => setter(Number(e.target.value))}
+              onChange={(e) =>
+                onChange({
+                  ...data,
+                  [key]: e.target.value === "" ? 0 : Number(e.target.value),
+                })
+              }
               className="border rounded px-2 py-1.5 lg:px-3 lg:py-2 w-full text-sm lg:text-base focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
         ))}
+
         <div className="flex flex-col">
           <label className="text-xs lg:text-sm font-medium text-muted-foreground mb-1 ">
             Total
           </label>
+
           <input
             type="text"
             readOnly
@@ -84,21 +78,29 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
           />
         </div>
       </div>
+
       <div>
         <div className="mb-4">
           <label className="text-sm font-medium text-muted-foreground">
             <span className="border-b border-current pb-0.5">Walk-ins</span>
           </label>
         </div>
+
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="flex flex-col ">
             <label className="text-xs font-medium text-muted-foreground mb-1">
               G11
             </label>
+
             <input
               type="number"
               value={g11}
-              onChange={(e) => setG11(Number(e.target.value))}
+              onChange={(e) =>
+                onChange({
+                  ...data,
+                  g11: e.target.value === "" ? 0 : Number(e.target.value),
+                })
+              }
               className="border rounded px-2 py-1.5 w-full focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
@@ -107,10 +109,16 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
             <label className="text-xs font-medium text-muted-foreground mb-1">
               AE5
             </label>
+
             <input
               type="number"
               value={ae5}
-              onChange={(e) => setAE5(Number(e.target.value))}
+              onChange={(e) =>
+                onChange({
+                  ...data,
+                  ae5: e.target.value === "" ? 0 : Number(e.target.value),
+                })
+              }
               className="border rounded px-2 py-1.5 w-full focus:outline-none focus:border-[#1E73BE] focus:ring-1 focus:ring-[#1E73BE]"
             />
           </div>
@@ -119,6 +127,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
             <label className="text-xs font-medium text-muted-foreground mb-1">
               Total walkins
             </label>
+
             <input
               type="number"
               value={totalWalkins}
@@ -128,6 +137,7 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
           </div>
         </div>
       </div>
+
       <div className="flex flex-col flex-grow ">
         <label className="text-sm font-medium text-muted-foreground mb-1">
           Group info / Cash to bank / Private tours
@@ -135,11 +145,17 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
 
         <textarea
           value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              notes: e.target.value,
+            })
+          }
           className="border rounded px-3 py-2 w-full h-24 text-base overflow-auto resize-y focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
           placeholder="Write details here..."
         />
       </div>
+
       <div className="flex flex-col">
         <label className="text-xs font-medium text-muted-foreground mb-1">
           Reception Staff
@@ -148,7 +164,12 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
         <input
           type="text"
           value={receptionStaff}
-          onChange={(e) => setReceptionStaff(e.target.value)}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              receptionStaff: e.target.value,
+            })
+          }
           placeholder="e.g. Jim, Jesus, Hanz"
           className="border rounded px-2 py-1.5 max-w-[500px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />
@@ -162,7 +183,12 @@ export function PaymentSummary({ onChange, initialData = {} }: PaymentProps) {
         <input
           type="text"
           value={guides}
-          onChange={(e) => setGuides(e.target.value)}
+          onChange={(e) =>
+            onChange({
+              ...data,
+              guides: e.target.value,
+            })
+          }
           placeholder="e.g. Orn, Gummi, Fusi"
           className="border rounded px-2 py-1.5 max-w-[500px] focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary"
         />

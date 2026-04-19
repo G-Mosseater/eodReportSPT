@@ -28,7 +28,6 @@ export default function Reports() {
     },
   });
 
-  const skip = reports.length;
 
   async function fetchReports(currentCursor: string | null = null) {
     if (loading) return;
