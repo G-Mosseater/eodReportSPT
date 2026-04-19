@@ -47,8 +47,14 @@ export async function postTours(data: any) {
   });
 }
 
-export async function getReports() {
-  return apiRequest("/tours");
+export async function getReports(limit = 31, cursor: string | null = null) {
+  const params = new URLSearchParams({
+    limit: String(limit),
+  });
+  if (cursor) {
+    params.append("cursor", cursor);
+  }
+  return apiRequest(`/tours?${params.toString()}`);
 }
 
 export async function getReportById(id: string) {

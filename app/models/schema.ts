@@ -37,6 +37,10 @@ const reportSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+reportSchema.index({ createdAt: -1 });
+
+reportSchema.index({ "rows.status": 1 });
+
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: {

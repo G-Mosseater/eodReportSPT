@@ -26,16 +26,39 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const limit = Math.min(Number(searchParams.get("limit") || 31), 100);
+  const cursor = searchParams.get("cursor");
   const token = await getToken({ req, secret: process.env.BETTER_AUTH_SECRET });
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
   try {
     await connectDatabase();
-    const reports = await Report.find({}).sort({ createdAt: -1 }).lean();
-    return NextResponse.json(reports);
+
+    const query: any = {};
+    if (cursor) {
+      query.createdAt = { $lt: new Date(cursor) };
+    }
+
+    const reports = await Report.find(query)
+      .sort({ createdAt: -1 })
+      .lean()
+      .limit(limit);
+
+    const nextCursor =
+      reports.length > 0 ? reports[reports.length - 1].createdAt : null;
+
+    return NextResponse.json({
+      reports,
+      nextCursor,
+      hasMore: reports.length === limit,
+    });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ message: "Failed get tours" }, { status: 500 });
+    return NextResponse.json(
+      { message: "Failed to fetch reports" },
+      { status: 500 },
+    );
   }
 }

@@ -7,6 +7,8 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ReportProps } from "../types/report";
 
+const LIMIT = 31;
+
 export default function Reports() {
   const [reports, setReports] = useState<ReportProps[]>([]);
   const [selectedMonth, setSelectedMonth] = useState<Date | null>(null);
@@ -14,6 +16,9 @@ export default function Reports() {
   const [monthOpen, setMonthOpen] = useState(false);
   const [yearOpen, setYearOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [cursor, setCursor] = useState<string | null>(null);
+
   const router = useRouter();
 
   const { data: session, status } = useSession({
@@ -23,21 +28,34 @@ export default function Reports() {
     },
   });
 
+  const skip = reports.length;
+
+  async function fetchReports(currentCursor: string | null = null) {
+    if (loading) return;
+    try {
+      setLoading(true);
+      const data = await getReports(LIMIT, currentCursor);
+
+      setReports((prev) =>
+        currentCursor ? [...prev, ...data.reports] : data.reports,
+      );
+      setCursor(data.nextCursor);
+      setHasMore(data.hasMore);
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     if (status !== "authenticated") return;
-    async function fetchReports() {
-      try {
-        setLoading(true);
-        const data = await getReports();
 
-        setReports(data);
-      } catch (err) {
-        console.error(err);
-      }
-      setLoading(false);
-    }
-    fetchReports();
+    fetchReports(null);
   }, [status]);
+
+  function loadMore() {
+    fetchReports(cursor);
+  }
 
   const filteredReports = reports.filter((report) => {
     const reportDate = new Date(report.createdAt);
@@ -53,7 +71,7 @@ export default function Reports() {
     return monthMatch && yearMatch;
   });
 
-  if (status === "loading" || loading) {
+  if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-base lg:text-lg text-muted-foreground">Loading...</p>
@@ -180,6 +198,17 @@ export default function Reports() {
           ))
         )}
       </div>
+      {hasMore && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={loadMore}
+            disabled={loading}
+            className="px-4 py-2 bg-primary  hover:bg-secondary text-white rounded"
+          >
+            {loading ? "Loading..." : "Load more"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
