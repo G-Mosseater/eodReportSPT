@@ -51,7 +51,6 @@ export default function NewReport() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
-
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/signin");
