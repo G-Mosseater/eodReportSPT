@@ -24,21 +24,13 @@ export default function ReportPage() {
       acc.adults += row.adults || 0;
       acc.groups += row.groups || 0;
       acc.youth += row.youth || 0;
-      acc.child += row.child || 0;
-      acc.free += row.free || 0;
-      acc.endurkoma += row.endurkoma || 0;
 
       return acc;
     },
-    { adults: 0, groups: 0, youth: 0, child: 0, free: 0, endurkoma: 0 },
+    { adults: 0, groups: 0, youth: 0 },
   );
-  const totalPax =
-    totalPaxCat.adults +
-    totalPaxCat.groups +
-    totalPaxCat.youth +
-    totalPaxCat.child +
-    totalPaxCat.free +
-    totalPaxCat.endurkoma;
+  const totalPax = totalPaxCat.adults + totalPaxCat.groups + totalPaxCat.youth;
+
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -244,15 +236,14 @@ export default function ReportPage() {
             <div className="w-full rounded-lg border p-4 lg:p-6 shadow-sm bg-primary/5 mt-4">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                 <h3 className="text-base lg:text-xl font-semibold text-foreground">
-                  Totals
+                  Total paying pax
                 </h3>
-
                 <span className="px-3 py-1 rounded text-xs lg:text-sm font-medium bg-primary/10 text-primary">
                   Summary
                 </span>
               </div>
 
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 lg:gap-4">
+              <div className="grid grid-cols-3  gap-2 lg:gap-4">
                 <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
                   <p className="text-sm lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
                     Adults
@@ -280,35 +271,8 @@ export default function ReportPage() {
                   </p>
                 </div>
 
-                <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                  <p className="text-sm lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
-                    Child
-                  </p>
-                  <p className="text-base lg:text-xl font-semibold text-foreground">
-                    {totalPaxCat.child}
-                  </p>
-                </div>
-
-                <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                  <p className="text-sm lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
-                    Free
-                  </p>
-                  <p className="text-base lg:text-xl font-semibold text-foreground">
-                    {totalPaxCat.free}
-                  </p>
-                </div>
-
-                <div className="bg-background/50 rounded-md p-2 lg:p-3 text-center border border-border/50">
-                  <p className="text-sm lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
-                    Endurkoma
-                  </p>
-                  <p className="text-base lg:text-xl font-semibold text-foreground">
-                    {totalPaxCat.endurkoma}
-                  </p>
-                </div>
-
                 <div className="col-span-full bg-primary/10 rounded-md p-2 lg:p-3 text-center border border-primary/20">
-                  <p className="text-sm lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
+                  <p className="text-sm font-bold lg:text-lg text-muted-foreground mb-0.5 lg:mb-1">
                     Total PAX
                   </p>
                   <p className="text-base lg:text-xl font-bold text-primary">
