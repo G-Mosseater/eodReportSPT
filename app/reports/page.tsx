@@ -21,19 +21,22 @@ export default function Reports() {
 
   const router = useRouter();
 
-  const { data: session, status } = useSession({
+  const { status } = useSession({
     required: true,
     onUnauthenticated() {
       router.replace("/signin");
     },
   });
 
-
-  async function fetchReports(currentCursor: string | null = null) {
+  async function fetchReports(
+    currentCursor: string | null = null,
+    month?: number,
+    year?: number,
+  ) {
     if (loading) return;
     try {
       setLoading(true);
-      const data = await getReports(LIMIT, currentCursor);
+      const data = await getReports(LIMIT, currentCursor, month, year);
 
       setReports((prev) =>
         currentCursor ? [...prev, ...data.reports] : data.reports,
@@ -48,27 +51,34 @@ export default function Reports() {
 
   useEffect(() => {
     if (status !== "authenticated") return;
-
-    fetchReports(null);
-  }, [status]);
+    const month = selectedMonth?.getMonth();
+    const year = selectedYear?.getFullYear();
+    setReports([]);
+    setCursor(null);
+    setHasMore(true);
+    fetchReports(null, month, year);
+  }, [status, selectedMonth, selectedYear]);
 
   function loadMore() {
-    fetchReports(cursor);
+    const month = selectedMonth?.getMonth();
+    const year = selectedYear?.getFullYear();
+
+    fetchReports(cursor, month, year);
   }
 
-  const filteredReports = reports.filter((report) => {
-    const reportDate = new Date(report.createdAt);
+  // const filteredReports = reports.filter((report) => {
+  //   const reportDate = new Date(report.createdAt);
 
-    const monthMatch = selectedMonth
-      ? reportDate.getMonth() === selectedMonth.getMonth()
-      : true;
+  //   const monthMatch = selectedMonth
+  //     ? reportDate.getMonth() === selectedMonth.getMonth()
+  //     : true;
 
-    const yearMatch = selectedYear
-      ? reportDate.getFullYear() === selectedYear.getFullYear()
-      : true;
+  //   const yearMatch = selectedYear
+  //     ? reportDate.getFullYear() === selectedYear.getFullYear()
+  //     : true;
 
-    return monthMatch && yearMatch;
-  });
+  //   return monthMatch && yearMatch;
+  // });
 
   if (status === "loading") {
     return (
@@ -169,12 +179,12 @@ export default function Reports() {
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
-        {!loading && filteredReports.length === 0 ? (
+        {!loading && reports.length === 0 ? (
           <p className="min-h-screen flex items-center justify-center text-lg font-bold">
             No reports found
           </p>
         ) : (
-          filteredReports.map((report) => (
+          reports.map((report) => (
             <div
               key={report._id}
               className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-md transition-all hover:shadow-primary hover:scale-[1.01] max-w-4xl w-full mx-auto "

@@ -29,18 +29,37 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const limit = Math.min(Number(searchParams.get("limit") || 31), 100);
   const cursor = searchParams.get("cursor");
+  const month = searchParams.get("month");
+  const year = searchParams.get("year");
+
   const token = await getToken({ req, secret: process.env.BETTER_AUTH_SECRET });
   if (!token) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
   try {
     await connectDatabase();
+    const conditions: any[] = [];
 
-    const query: any = {};
+    if (month || year) {
+      const y = year ? Number(year) : new Date().getFullYear();
+      const m = month ? Number(month) : 0;
+
+      const start = new Date(y, m, 1);
+      const end = month
+        ? new Date(y, m + 1, 0, 23, 59, 59, 999)
+        : new Date(y, 11, 31, 23, 59, 59, 999);
+
+      conditions.push({
+        createdAt: { $gte: start, $lte: end },
+      });
+    }
     if (cursor) {
-      query.createdAt = { $lt: new Date(cursor) };
+      conditions.push({
+        createdAt: { $lt: new Date(cursor) },
+      });
     }
 
+    const query = conditions.length > 0 ? { $and: conditions } : {};
     const reports = await Report.find(query)
       .sort({ createdAt: -1 })
       .lean()

@@ -47,12 +47,24 @@ export async function postTours(data: any) {
   });
 }
 
-export async function getReports(limit = 31, cursor: string | null = null) {
+export async function getReports(
+  limit = 31,
+  cursor: string | null = null,
+  month?: number,
+  year?: number,
+) {
   const params = new URLSearchParams({
     limit: String(limit),
   });
   if (cursor) {
     params.append("cursor", cursor);
+  }
+  if (month !== undefined) {
+    params.append("month", String(month));
+  }
+
+  if (year !== undefined) {
+    params.append("year", String(year));
   }
   return apiRequest(`/tours?${params.toString()}`);
 }
