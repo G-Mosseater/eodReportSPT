@@ -1,18 +1,16 @@
-"use client";
-
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { LogOut, User } from "lucide-react";
-
-export default function AuthAction({ onClick }: { onClick?: () => void }) {
-  const { data: session } = useSession();
-
-  const handleClick = () => {
+type Props = {
+  session: any;
+  onClick?: () => void;
+};
+export default function AuthAction({ session, onClick }: Props) {
+  const handleClick = async () => {
     if (session) {
-      signOut({ callbackUrl: "/" });
+      await signOut({ callbackUrl: "/" });
     } else {
-      signIn("credentials", { callbackUrl: "/" });
+      await signIn("credentials", { callbackUrl: "/" });
     }
-
     onClick?.();
   };
 
@@ -20,19 +18,17 @@ export default function AuthAction({ onClick }: { onClick?: () => void }) {
     <button
       onClick={handleClick}
       className="
-        flex items-center gap-2 text-sm
-        px-2 py-1 rounded  
-        bg-background border border-primary hover:bg-secondary/10
-        text-black
-      "
+        flex items-center gap-2 text-sm px-2 py-1 rounded bg-background border border-primary hover:bg-secondary/10 text-black"
     >
       {session ? (
         <>
           <LogOut size={18} />
+          <span>Logout</span>
         </>
       ) : (
         <>
           <User size={18} />
+          <span>Login</span>
         </>
       )}
     </button>

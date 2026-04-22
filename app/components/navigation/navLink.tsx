@@ -1,17 +1,19 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function NavLinks() {
+type Props = {
+  isLoggedIn: boolean;
+};
+
+export default function NavLinks({isLoggedIn}:Props) {
   const pathname = usePathname();
 
-  const { data: session } = useSession();
   const linkStyle = (path: string) => {
     const isActive =
       path === "/" ? pathname === "/" : pathname.startsWith(path);
 
-    return `px-3 py-1.5 text-sm lg:text-xl text-muted transition-colors duration-300 ease-in-out
+    return `px-3 md:px-1 py-1.5 text-sm lg:text-xl text-muted transition-colors duration-300 ease-in-out
     relative whitespace-nowrap
     ${isActive ? "text-secondary font-medium " : "text-muted-foreground "}
     after:content-[''] after:absolute after:left-0 after:-bottom-1
@@ -19,7 +21,7 @@ export default function NavLinks() {
     ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`;
   };
   return (
-    <ul className="flex gap-1  md:gap-2 lg:gap-3">
+    <ul className="flex gap-1  md:gap-1 lg:gap-3">
       <li>
         <Link href="/" className={linkStyle("/")}>
           Home
@@ -31,7 +33,7 @@ export default function NavLinks() {
         </Link>
       </li>
 
-      {session && (
+      {isLoggedIn && (
         <>
           <li>
             <Link href="/create" className={linkStyle("/create")}>

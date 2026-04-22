@@ -140,7 +140,6 @@ export default function NewReport() {
 
   async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    setShowSubmitModal(true);
   }
   if (status === "loading") {
     return (
@@ -157,7 +156,6 @@ export default function NewReport() {
   return (
     <div className="min-h-screen bg-background p-4 lg:p-8">
       <h1 className="text-2xl lg:text-4xl font-semibold text-foreground mb-4">
-        {" "}
         Select tour:
       </h1>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6 mb-6">

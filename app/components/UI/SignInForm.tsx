@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 export default function SignInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -11,7 +10,6 @@ export default function SignInForm() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +26,8 @@ export default function SignInForm() {
         setError("Invalid credentials");
         return;
       }
-      router.push("/");
+      router.replace("/");
+      router.refresh();
     } catch (err) {
       setError("Something went wrong");
     } finally {
