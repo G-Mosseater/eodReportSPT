@@ -12,7 +12,7 @@ const rowSchema = new mongoose.Schema({
   endurkoma: { type: Number, default: 0 },
   free: { type: Number, default: 0 },
   total: { type: Number, required: true },
-});
+}); 
 const paymentSchema = new mongoose.Schema(
   {
     cash: { type: Number, default: 0 },

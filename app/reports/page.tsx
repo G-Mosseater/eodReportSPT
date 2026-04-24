@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ReportProps } from "../types/report";
+import Link from "next/link";
 
 const LIMIT = 31;
 
@@ -91,91 +92,105 @@ export default function Reports() {
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
       <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
-        All Reports
+        All End of Day Reports
       </h1>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <div className="flex  justify-end gap-2 md:gap-4 mb-6">
-          <DatePicker
-            open={monthOpen}
-            onClose={() => setMonthOpen(false)}
-            views={["month"]}
-            label="Month"
-            minDate={new Date(2020, 0)}
-            value={selectedMonth}
-            onChange={(newValue) => setSelectedMonth(newValue)}
-            slotProps={{
-              field: {
-                onClick: () => setMonthOpen(true),
-              },
-              openPickerButton: {
-                onClick: () => setMonthOpen(true),
-              },
-              popper: {
-                popperOptions: {
-                  modifiers: [
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, 20],
-                      },
-                    },
-                  ],
-                },
-                sx: {
-                  "& .MuiPaper-root": {
-                    paddingTop: "16px",
-                  },
-                },
-              },
-            }}
-          />
-          <DatePicker
-            open={yearOpen}
-            onClose={() => setYearOpen(false)}
-            views={["year"]}
-            label="Year"
-            minDate={new Date(2025, 0)}
-            maxDate={new Date(new Date().getFullYear() + 30, 11)}
-            value={selectedYear}
-            yearsPerRow={3}
-            onChange={(newValue) => {
-              (setSelectedYear(newValue), setSelectedMonth(null));
-            }}
-            slotProps={{
-              field: {
-                onClick: () => setYearOpen(true),
-              },
-              openPickerButton: {
-                onClick: () => setYearOpen(true),
-              },
-              popper: {
-                popperOptions: {
-                  modifiers: [
-                    {
-                      name: "offset",
-                      options: {
-                        offset: [0, 20],
-                      },
-                    },
-                  ],
-                },
-                sx: {
-                  "& .MuiPaper-root": {
-                    paddingTop: "16px",
-                  },
-                },
-              },
-            }}
-          />
-          <button
-            className="px-3 py-1 text-sm bg-gray-200 rounded hover:bg-gray-300"
-            onClick={() => {
-              setSelectedMonth(null);
-              setSelectedYear(null);
-            }}
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <Link
+            href="/analytics"
+            className="text-sm font-medium bg-baackground rounded border border-primary hover:bg-gray-100  text-primary px-4 py-4"
           >
-            Reset date
-          </button>
+            View Analytics
+          </Link>
+          <div className="flex items-center gap-2 md:gap-4">
+            <DatePicker
+              sx={{
+                width: { xs: 110, sm: 140, md: 180 },
+              }}
+              open={monthOpen}
+              onClose={() => setMonthOpen(false)}
+              views={["month"]}
+              label="Month"
+              minDate={new Date(2020, 0)}
+              value={selectedMonth}
+              onChange={(newValue) => setSelectedMonth(newValue)}
+              slotProps={{
+                field: {
+                  onClick: () => setMonthOpen(true),
+                },
+                openPickerButton: {
+                  onClick: () => setMonthOpen(true),
+                },
+                popper: {
+                  popperOptions: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, 20],
+                        },
+                      },
+                    ],
+                  },
+                  sx: {
+                    "& .MuiPaper-root": {
+                      paddingTop: "16px",
+                    },
+                  },
+                },
+              }}
+            />
+            <DatePicker
+              sx={{
+                width: { xs: 110, sm: 140, md: 180 },
+              }}
+              open={yearOpen}
+              onClose={() => setYearOpen(false)}
+              views={["year"]}
+              label="Year"
+              minDate={new Date(2025, 0)}
+              maxDate={new Date(new Date().getFullYear() + 30, 11)}
+              value={selectedYear}
+              yearsPerRow={3}
+              onChange={(newValue) => {
+                (setSelectedYear(newValue), setSelectedMonth(null));
+              }}
+              slotProps={{
+                field: {
+                  onClick: () => setYearOpen(true),
+                },
+                openPickerButton: {
+                  onClick: () => setYearOpen(true),
+                },
+                popper: {
+                  popperOptions: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, 20],
+                        },
+                      },
+                    ],
+                  },
+                  sx: {
+                    "& .MuiPaper-root": {
+                      paddingTop: "16px",
+                    },
+                  },
+                },
+              }}
+            />
+            <button
+              className="px-4 py-4 text-sm bg-gray-200 rounded hover:bg-gray-300 whitespace-nowrap flex-shrink-0"
+              onClick={() => {
+                setSelectedMonth(null);
+                setSelectedYear(null);
+              }}
+            >
+              Reset date
+            </button>
+          </div>
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">

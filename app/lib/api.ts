@@ -97,3 +97,21 @@ export async function postPrivateRequest(data: any) {
     body: JSON.stringify(data),
   });
 }
+
+export async function getOvertimeAnalytics(
+  month?: number,
+  year?: number,
+  tour?: string,
+) {
+  const params = new URLSearchParams();
+
+  if (month !== undefined) {
+    params.append("month", String(month));
+  }
+
+  if (year !== undefined) {
+    params.append("year", String(year));
+  }
+  if (tour) params.append("tour", tour);
+  return apiRequest(`/tours/analytics?${params.toString()}`);
+}
