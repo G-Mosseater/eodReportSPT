@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import WaveVideo from "./components/UI/MainWaves";
 export default function Home() {
   // const { data: session, status } = useSession();
   // const router = useRouter();
@@ -27,11 +28,10 @@ export default function Home() {
         <p className="text-gray-600 text-base md:text-lg">
           Platform for managing private tour requests and internal operations.
         </p>
-
         <div className="flex gap-4 justify-center md:justify-start">
           <Link
             href="/privates"
-            className="px-6 py-3 bg-black text-white rounded-lg bg-primary hover:bg-secondary transition"
+            className="px-6 py-3 bg-black text-white rounded bg-primary hover:bg-secondary transition"
           >
             Check out private tours
           </Link>
@@ -48,6 +48,7 @@ export default function Home() {
           priority
         />
       </div>
+      <div className="absolute bottom-0 left-0 w-full h-[40vh] z-0 pointer-events-none"></div>
     </div>
   );
 }

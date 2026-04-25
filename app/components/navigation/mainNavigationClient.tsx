@@ -11,20 +11,20 @@ export default function MainNavigationClient({ session }: any) {
 
   return (
     <>
-      <header className="border-b bg-background text-foreground w-full">
-        <div className="w-full mx-auto flex items-center  flex justify-between p-4">
+      <header className="border-b bg-background text-foreground w-full shadow rounded ">
+        <div className="w-full mx-auto flex items-center  flex justify-between p-4 gap-10">
           <Link href="/" className="flex items-center">
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20">
+            <div className="relative ">
               <Image
-                src="/sptLogo.png"
+                src="/logo.svg"
                 alt="logo"
-                fill
-                sizes="(max-width: 768px) 56px, 80px"
+                width={100}
+                height={40}
                 className="object-contain transition-transform hover:scale-105"
               />
             </div>
           </Link>
-          <div className="md:flex hidden gap-4 items-center">
+          <div className="md:flex hidden gap-4 items-center ">
             <NavLinks isLoggedIn={!!session} />
             <AuthAction session={session} />
           </div>
@@ -57,7 +57,7 @@ export default function MainNavigationClient({ session }: any) {
                 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
                 onClick={() => setDrawerOpen(false)}
               >
-                All Reports
+                EOD history
               </Link>
 
               <Link
@@ -65,7 +65,7 @@ export default function MainNavigationClient({ session }: any) {
                 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
                 onClick={() => setDrawerOpen(false)}
               >
-                New Report
+                New EOD
               </Link>
               <Link
                 href="/private-request"

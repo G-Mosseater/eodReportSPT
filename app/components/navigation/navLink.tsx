@@ -37,13 +37,13 @@ export default function NavLinks({isLoggedIn}:Props) {
         <>
           <li>
             <Link href="/create" className={linkStyle("/create")}>
-              New EOD Report
+              New EOD 
             </Link>
           </li>
 
           <li>
             <Link href="/reports" className={linkStyle("/reports")}>
-              All Reports
+              EOD History
             </Link>
           </li>
 

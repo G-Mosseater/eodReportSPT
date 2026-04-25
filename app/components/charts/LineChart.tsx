@@ -1,6 +1,7 @@
 import ReactEcharts from "echarts-for-react";
+import { loadingOption } from "./LoadingOption";
 
-export default function HourlyLineChart({ data }: any) {
+export default function HourlyLineChart({ data, loading }: any) {
   //   if (!data.length) return null;
   const option = {
     title: {
@@ -36,12 +37,13 @@ export default function HourlyLineChart({ data }: any) {
       },
     },
     yAxis: {
+      interval: 1000,
       type: "value",
       name: "Count",
       nameLocation: "middle",
       nameGap: 60,
       axisLabel: {
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: 600,
         margin: 10,
       },
@@ -69,5 +71,14 @@ export default function HourlyLineChart({ data }: any) {
       },
     ],
   };
-  return <ReactEcharts option={option} style={{ height: 350 }} />;
+  return (
+    <div className="w-full h-[220px] sm:h-[280px] md:h-[350px]">
+      <ReactEcharts option={option} style={{ width: "100%", height: "100%" }} />
+    </div>
+  );
 }
+
+// key={loading ? "loading" : "data"}
+// option={option}
+// notMerge={true}
+// lazyUpdate={true}

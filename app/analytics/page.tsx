@@ -31,7 +31,7 @@ export default function DashboardPage() {
     // payment
   } = useAnalytics();
   return (
-    <div className="p-6 space-y-10 min-h-screen">
+    <div className="px-6 py-16 space-y-10 min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Analytics Dashboard</h1>
 
       <DashboardFilters
@@ -56,7 +56,7 @@ export default function DashboardPage() {
         <div className="flex flex-col xl:flex-row gap-6 mt-6 ">
           <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
             <div className="w-full h-full ">
-              <HourlyLineChart data={hourly} />
+              <HourlyLineChart data={hourly} loading={loading} />
             </div>
           </div>
 

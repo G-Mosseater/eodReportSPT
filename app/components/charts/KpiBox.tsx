@@ -1,5 +1,5 @@
 import { FaChild } from "react-icons/fa";
-import { MdCancel, MdOutlineDiscount, MdGroups2 } from "react-icons/md";
+import { MdCancel, MdDiscount, MdGroups2 } from "react-icons/md";
 import { LiaUsersSolid } from "react-icons/lia";
 import { ImUser } from "react-icons/im";
 type Props = {
@@ -32,49 +32,57 @@ export default function KpiBox({
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Passengers</p>
-            <LiaUsersSolid className="text-primary text-2xl" />
+            <p className="text-xs sm:text-sm text-gray-500">Total Passengers</p>
+            <LiaUsersSolid className="text-primary text-xl sm:text-2xl" />
           </div>
-          <p className="text-2xl font-bold">
+          <p className="text-lg md:text-2xl font-bold">
             {totalPassengers.toLocaleString()}
           </p>
         </div>
         <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Adults</p>
-            <ImUser className="text-primary text-2xl" />
+            <p className="text-xs sm:text-sm text-gray-500">Total Adults</p>
+            <ImUser className="text-primary text-xl sm:text-2xl" />
           </div>
-          <p className="text-2xl font-bold">{totalAdults.toLocaleString()}</p>
+          <p className="text-lg md:text-2xl font-bold">
+            {totalAdults.toLocaleString()}
+          </p>
         </div>
         <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Youth</p>
-            <FaChild className="text-primary text-2xl" />
+            <p className="text-xs sm:text-sm text-gray-500">Total Youth</p>
+            <FaChild className="text-primary text-xl sm:text-2xl" />
           </div>
-          <p className="text-2xl font-bold">{totalYouth.toLocaleString()}</p>
-        </div>
-
-        <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Group</p>
-            <MdGroups2 className="text-primary text-2xl" />
-          </div>
-          <p className="text-2xl font-bold">{totalGroup.toLocaleString()}</p>
+          <p className="text-lg md:text-2xl font-bold">
+            {totalYouth.toLocaleString()}
+          </p>
         </div>
 
         <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Free</p>
-            <MdOutlineDiscount className="text-primary text-2xl" />
+            <p className="text-xs sm:text-sm text-gray-500">Total Group</p>
+            <MdGroups2 className="text-primary text-xl sm:text-2xl" />
           </div>
-          <p className="text-2xl font-bold">{totalFree.toLocaleString()}</p>
+          <p className="text-lg md:text-2xl font-bold">
+            {totalGroup.toLocaleString()}
+          </p>
+        </div>
+
+        <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
+          <div className="flex items-center justify-between">
+            <p className="text-xs sm:text-sm text-gray-500">Total Free</p>
+            <MdDiscount className="text-primary text-xl sm:text-2xl" />
+          </div>
+          <p className="text-lg md:text-2xl font-bold">
+            {totalFree.toLocaleString()}
+          </p>
         </div>
         <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-gray-500">Total Canceled</p>
-            <MdCancel className="text-primary text-2xl" />
+            <p className="text-xs sm:text-sm text-gray-500">Total Canceled</p>
+            <MdCancel className="text-primary text-xl sm:text-2xl" />
           </div>
-          <p className="text-2xl font-bold text-red-500">
+          <p className="text-lg md:text-2xl font-bold text-red-500">
             {totalCanceledTours.toLocaleString()}
           </p>
         </div>

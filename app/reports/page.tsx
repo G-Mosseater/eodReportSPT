@@ -1,4 +1,6 @@
 "use client";
+import { FaCalendarAlt, FaShip } from "react-icons/fa";
+import { GiWhaleTail } from "react-icons/gi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getReports } from "../lib/api";
@@ -7,6 +9,7 @@ import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ReportProps } from "../types/report";
 import Link from "next/link";
+import WaveBackground from "../components/UI/WaveBackground";
 
 const LIMIT = 31;
 
@@ -54,6 +57,7 @@ export default function Reports() {
     if (status !== "authenticated") return;
     const month = selectedMonth?.getMonth();
     const year = selectedYear?.getFullYear();
+
     setReports([]);
     setCursor(null);
     setHasMore(true);
@@ -91,21 +95,23 @@ export default function Reports() {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
-      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6">
-        All End of Day Reports
-      </h1>
+      <div>
+        <h1 className="inline-block text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 hover:text-secondary transition">
+          End of Day History Reports
+        </h1>
+      </div>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <div className="flex items-center justify-between gap-4 mb-6">
           <Link
             href="/analytics"
-            className="text-sm font-medium bg-baackground rounded border border-primary hover:bg-gray-100  text-primary px-4 py-4"
+            className="text-xs sm:text-sm text-center font-medium bg-background rounded border border-primary hover:bg-gray-100 text-primary px-2 py-4 sm:px-4 "
           >
             View Analytics
           </Link>
           <div className="flex items-center gap-2 md:gap-4">
             <DatePicker
               sx={{
-                width: { xs: 110, sm: 140, md: 180 },
+                width: { xs: 80, sm: 140, md: 180 },
               }}
               open={monthOpen}
               onClose={() => setMonthOpen(false)}
@@ -120,6 +126,9 @@ export default function Reports() {
                 },
                 openPickerButton: {
                   onClick: () => setMonthOpen(true),
+                  sx: {
+                    display: { xs: "none", sm: "flex" },
+                  },
                 },
                 popper: {
                   popperOptions: {
@@ -142,7 +151,7 @@ export default function Reports() {
             />
             <DatePicker
               sx={{
-                width: { xs: 110, sm: 140, md: 180 },
+                width: { xs: 80, sm: 140, md: 180 },
               }}
               open={yearOpen}
               onClose={() => setYearOpen(false)}
@@ -161,6 +170,9 @@ export default function Reports() {
                 },
                 openPickerButton: {
                   onClick: () => setYearOpen(true),
+                  sx: {
+                    display: { xs: "none", sm: "flex" },
+                  },
                 },
                 popper: {
                   popperOptions: {
@@ -188,36 +200,52 @@ export default function Reports() {
                 setSelectedYear(null);
               }}
             >
-              Reset date
+              Reset
             </button>
           </div>
         </div>
       </LocalizationProvider>
       <div className="grid gap-4 md:gap-6">
         {!loading && reports.length === 0 ? (
-          <p className="min-h-screen flex items-center justify-center text-lg font-bold">
-            No reports found
-          </p>
+          <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+            <GiWhaleTail className="text-6xl text-muted-foreground opacity-30 mb-3" />
+            <p className="text-lg font-semibold">No reports found</p>
+            <p className="text-sm text-muted-foreground">
+              Try changing filters or selecting another period
+            </p>
+          </div>
         ) : (
           reports.map((report) => (
             <div
               key={report._id}
-              className="cursor-pointer rounded-lg border border-border bg-card p-4 md:p-5 lg:p-6 shadow-md transition-all hover:shadow-primary hover:scale-[1.01] max-w-4xl w-full mx-auto "
+              className="relative overflow-hidden cursor-pointer rounded-lg border p-4 md:p-5 lg:p-6 shadow-md transition-all hover:shadow-secondary hover:scale-[1.01] max-w-4xl w-full mx-auto "
               onClick={() => router.push(`/reports/${report._id}`)}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
-                <h2 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
-                  {new Date(report.createdAt).toLocaleDateString(undefined, {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </h2>
-
-                <span className="text-sm text-muted-foreground">
-                  {report.rows.length} tours
-                </span>
+              <div className="absolute inset-0 text-secondary">
+                <WaveBackground />
               </div>
+              <GiWhaleTail className="absolute right-4 top-1/2 -translate-y-1/2 text-secondary text-7xl opacity-80 pointer-events-none blur-[0.3px] pulse" />
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex items-center gap-2 text-foreground">
+                  <FaCalendarAlt className="text-secondary text-sm" />
+                  <h2 className="text-base md:text-lg lg:text-xl font-semibold text-foreground">
+                    {new Date(report.createdAt).toLocaleDateString(undefined, {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <FaShip className="text-secondary text-sm" />
+                  <span className="font-medium text-black">
+                    {report.rows.length} tours
+                  </span>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Click to view full report
+              </p>
             </div>
           ))
         )}

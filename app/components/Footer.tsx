@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
+import WaveVideo from "./UI/MainWaves";
 
 export default function Footer() {
   return (
-    <footer className="w-full border-t bg-background text-foreground mt-auto">
+    <footer className=" relative w-full border-t bg-background text-foreground mt-auto">
+      <div className="absolute bottom-0 left-0 w-full pointer-events-none z-0">
+        <WaveVideo />
+      </div>
       <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-gray-600 lg:text-base">
           © {new Date().getFullYear()} Special Tours Operations

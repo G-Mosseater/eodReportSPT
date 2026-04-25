@@ -35,7 +35,8 @@ export default function useAnalytics() {
         console.error("Failed to fetch analytics", err);
       } finally {
         setLoading(false);
-      }
+      }        
+
     }
     fetchData();
   }, [month, year, selectedTour]);
