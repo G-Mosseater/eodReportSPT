@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 export default function HourlyLineChart({ data }: any) {
   //   if (!data.length) return null;
   const option = {
-       title: {
+    title: {
       text: "Total Hourly Passengers",
       left: "center",
     },
@@ -14,7 +14,7 @@ export default function HourlyLineChart({ data }: any) {
       left: 0,
       right: 0,
       top: 60,
-      bottom: 40,
+      bottom: 30,
       containLabel: false,
     },
     xAxis: {
@@ -24,8 +24,9 @@ export default function HourlyLineChart({ data }: any) {
       nameLocation: "middle",
       nameGap: 50,
       axisLabel: {
-        fontSize: 14,
-        margin: 8,
+        fontSize: 13,
+        fontWeight: 600,
+        margin: 10,
       },
       boundaryGap: false,
 
@@ -40,7 +41,9 @@ export default function HourlyLineChart({ data }: any) {
       nameLocation: "middle",
       nameGap: 60,
       axisLabel: {
-        fontSize: 14,
+        fontSize: 13,
+        fontWeight: 600,
+        margin: 10,
       },
       nameTextStyle: {
         fontSize: 14,

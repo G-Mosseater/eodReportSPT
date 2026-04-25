@@ -3,7 +3,7 @@ import ReactEcharts from "echarts-for-react";
 export default function PieChart({ data }: any) {
   const option = {
     title: {
-      text: "Total Tour Distribution",
+      text: "Total Passenger Distribution",
       left: "center",
     },
     tooltip: {

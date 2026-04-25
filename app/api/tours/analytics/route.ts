@@ -31,10 +31,27 @@ export async function GET(req: NextRequest) {
 
   let allRows = reports.flatMap((r) => r.rows);
 
+  // let paymentRows = reports.flatMap((r) => r.payment);
+  const boatCapacity: Record<string, number> = {
+    Andrea: 189,
+    Lilja: 186,
+    Rosin: 52,
+    Skuli: 32,
+    Katla: 12,
+    Dagmar: 12,
+    Other: 100,
+  };
+
+  const boatTrips: Record<string, number> = {};
+  const boatRows = tour ? allRows.filter((r) => r.tourName === tour) : allRows;
+
+  for (const row of boatRows) {
+    const boat = row.boat?.trim() || "Unknown";
+    boatTrips[boat] = (boatTrips[boat] || 0) + 1;
+  }
   const hourlyRows = tour
     ? allRows.filter((r) => r.tourName === tour)
     : allRows;
-  const pieRows = allRows;
 
   const hourMap: Record<
     string,
@@ -71,9 +88,44 @@ export async function GET(req: NextRequest) {
   }
   const tourMap: Record<string, number> = {};
 
+  const pieRows = allRows;
+
   for (const row of pieRows) {
     tourMap[row.tourName] = (tourMap[row.tourName] || 0) + (row.total || 0);
   }
+  const boatMap: Record<string, number> = {};
+
+  for (const row of boatRows) {
+    const boatName = row.boat?.trim() || "Unknown";
+    boatMap[boatName] = (boatMap[boatName] || 0) + (row.total || 0);
+  }
+
+  const boatUtilisation = Object.entries(boatMap).map(([boat, passengers]) => {
+    const capacity = boatCapacity[boat] || 0;
+    const trips = boatTrips[boat] || 0;
+
+    const maxCapacity = capacity * trips;
+    const utilisation = (passengers / maxCapacity) * 100;
+    return {
+      boat,
+      passengers,
+      trips,
+      capacity,
+      utilisation: Number(utilisation.toFixed(1)),
+    };
+  });
+
+  // const paymentTotals = {
+  //   cash: 0,
+  //   card: 0,
+  //   voucher: 0,
+  // };
+  // for (const row of paymentRows) {
+  //   paymentTotals.cash += row.cash || 0;
+  //   paymentTotals.card += row.card || 0;
+  //   paymentTotals.voucher += row.voucher || 0;
+  // }
+  // console.log(paymentTotals);
 
   return NextResponse.json({
     hourly: Object.entries(hourMap)
@@ -92,5 +144,12 @@ export async function GET(req: NextRequest) {
       tour,
       total,
     })),
+
+    byBoat: Object.entries(boatMap).map(([boat, total]) => ({
+      boat,
+      total,
+    })),
+    boatUtilisation,
+    // payment: paymentTotals
   });
 }

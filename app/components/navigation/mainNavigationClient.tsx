@@ -16,7 +16,7 @@ export default function MainNavigationClient({ session }: any) {
           <Link href="/" className="flex items-center">
             <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20">
               <Image
-                src="/sptlogo.png"
+                src="/sptLogo.png"
                 alt="logo"
                 fill
                 sizes="(max-width: 768px) 56px, 80px"
