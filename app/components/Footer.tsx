@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import WaveVideo from "./UI/MainWaves";
-
+import Image from "next/image";
 export default function Footer() {
   return (
     <footer className=" relative w-full border-t bg-background text-foreground mt-auto">
@@ -9,6 +9,17 @@ export default function Footer() {
         <WaveVideo />
       </div>
       <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <Link href="/" className="flex items-center">
+          <div className="relative ">
+            <Image
+              src="/logo.svg"
+              alt="logo"
+              width={40}
+              height={40}
+              className="w-16 h-auto object-contain transition-transform hover:scale-105"
+            />
+          </div>
+        </Link>
         <p className="text-sm text-gray-600 lg:text-base">
           © {new Date().getFullYear()} Special Tours Operations
         </p>

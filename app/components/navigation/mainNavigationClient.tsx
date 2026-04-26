@@ -20,7 +20,7 @@ export default function MainNavigationClient({ session }: any) {
                 alt="logo"
                 width={100}
                 height={40}
-                className="object-contain transition-transform hover:scale-105"
+                className="w-16 sm:w-20 md:w-24 lg:w-28 h-auto object-contain transition-transform hover:scale-105"
               />
             </div>
           </Link>
