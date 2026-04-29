@@ -21,7 +21,7 @@ type Row = {
 
 export default function DepartureScreen() {
   const { data: session, status } = useSession();
-  const isAdmin = !!session;
+  const isAdmin = status === "authenticated";
   const tourKeys = Object.keys(tourOptions) as TourKey[];
   const [serverRows, setServerRows] = useState<Row[]>([]);
   const [draftRows, setDraftRows] = useState<Row[]>([]);
@@ -66,46 +66,43 @@ export default function DepartureScreen() {
 
   const fetchData = async () => {
     const data = await getDepartureScreen();
-    return data ?? [];
+    return Array.isArray(data) ? data : [];
   };
+
+  const loadData = useCallback(async () => {
+    const data = await fetchData();
+
+    setServerRows(data);
+
+    if (isAdmin) {
+      setDraftRows(data);
+      const tours = Array.from(new Set(data.map((r) => r.tour)));
+
+      setVisibleTours(tours as TourKey[]);
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   useEffect(() => {
     if (isAdmin) return;
 
-    let interval: NodeJS.Timeout;
-
-    const loadData = async () => {
-      setLoading(true);
+    const interval = setInterval(async () => {
       const data = await fetchData();
-      setServerRows(data ?? []);
-      setLoading(false);
-    };
-
-    loadData();
-
-    interval = setInterval(loadData, 5000);
+      setServerRows(data);
+    }, 7000);
 
     return () => clearInterval(interval);
-  }, [isAdmin]);
-
-  useEffect(() => {
-    if (!isAdmin) return;
-
-    const load = async () => {
-      const data = await fetchData();
-      setDraftRows(data ?? []);
-    };
-
-    load();
   }, [isAdmin]);
 
   const handleSave = async () => {
     try {
       setSaving(true);
       await saveDepartureScreen(draftRows);
-      const freshData = await fetchData();
-      setDraftRows(freshData);
-      setServerRows(freshData);
+
+      await loadData();
     } catch (error) {
       console.error(error);
     } finally {
@@ -118,7 +115,6 @@ export default function DepartureScreen() {
     ? visibleTours
     : tourKeys.filter((tour) => serverRows.some((r) => r.tour === tour));
 
- 
   const today = new Date().toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "long",
@@ -145,7 +141,6 @@ export default function DepartureScreen() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {toursToRender?.map((tourKey) => {
-          console.log("visibleTours", visibleTours);
           const tour = tourOptions[tourKey];
           const tourRows = activeRows.filter((r) => r.tour === tourKey);
 
