@@ -12,7 +12,7 @@ const rowSchema = new mongoose.Schema({
   endurkoma: { type: Number, default: 0 },
   free: { type: Number, default: 0 },
   total: { type: Number, required: true },
-}); 
+});
 const paymentSchema = new mongoose.Schema(
   {
     cash: { type: Number, default: 0 },
@@ -72,10 +72,45 @@ const privateRequestSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+const departureRowSchema = new mongoose.Schema(
+  {
+    id: { type: String, required: true },
+    tour: { type: String, required: true },
+    boat: { type: String, required: true },
+    hour: { type: String, required: true },
+    seaConditions: { type: String, required: true },
+    status: { type: String, required: true },
+  },
+  { _id: false },
+);
+
+const DepartureSchema = new mongoose.Schema(
+  {
+    key: {
+      type: String,
+      default: "main",
+      unique: true,
+    },
+
+    rows: {
+      type: [departureRowSchema],
+      default: [],
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+const DepartureScreen =
+  mongoose.models.DepartureScreen ||
+  mongoose.model("DepartureScreen", DepartureSchema);
+
 const PrivateRequest =
   mongoose.models.PrivateRequest ||
   mongoose.model("PrivateRequest", privateRequestSchema);
+
 const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
+
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-export { Report, User, PrivateRequest };
+export { Report, User, PrivateRequest, DepartureScreen };

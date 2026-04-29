@@ -50,6 +50,13 @@ export default function MainNavigationClient({ session }: any) {
           >
             Private tours
           </Link>
+          <Link
+            href="/departures"
+            className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
+            onClick={() => setDrawerOpen(false)}
+          >
+            Departure Screen
+          </Link>
           {session && (
             <>
               <Link

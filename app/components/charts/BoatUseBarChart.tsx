@@ -20,7 +20,7 @@ export default function BoatChart({ data }: any) {
       data: data.map((d: any) => d.boat),
       axisLabel: {
         fontSize: 13,
-        fontWeight: 600,
+        fontWeight: 600
       },
     },
     yAxis: {
@@ -28,6 +28,7 @@ export default function BoatChart({ data }: any) {
       axisLabel: {
         fontSize: 13,
         fontWeight: 600,
+        
       },
     },
 

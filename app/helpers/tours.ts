@@ -4,7 +4,7 @@ export const tourOptions = {
     hours: ["09:00", "10:00", "13:00", "14:00", "17:00", "21:00"],
   },
   "puffin-tour": {
-    boats: ["Skuli", "Rosin", "Other"],
+    boats: [  "Skuli", "Rosin", "Other"],
     hours: ["08:00", "09:30", "10:45", "12:30", "14:15", "15:30", "17:00"],
   },
   "sea-angling": {
@@ -26,3 +26,7 @@ export const tourOptions = {
 };
 
 export type TourKey = keyof typeof tourOptions;
+
+
+export const seaConditions = ["Calm", "Moderate", "Rough", "Pending"];
+export const statuses = ["On", "Pending", "Canceled"];

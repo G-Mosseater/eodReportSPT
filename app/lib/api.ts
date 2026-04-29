@@ -115,3 +115,14 @@ export async function getOvertimeAnalytics(
   if (tour) params.append("tour", tour);
   return apiRequest(`/tours/analytics?${params.toString()}`);
 }
+
+export async function getDepartureScreen() {
+  return apiRequest("/departure-screen");
+}
+
+export async function saveDepartureScreen(rows: any) {
+  return apiRequest("/departure-screen", {
+    method: "POST",
+    body: JSON.stringify(rows),
+  });
+}

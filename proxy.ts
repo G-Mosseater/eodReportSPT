@@ -21,5 +21,6 @@ export const config = {
     "/reports",
     "/reports/:path*",
     "/api/private-tour/:path*",
+    "/private-request",
   ],
 };

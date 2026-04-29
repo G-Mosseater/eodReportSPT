@@ -32,7 +32,12 @@ export default function NavLinks({isLoggedIn}:Props) {
           Private Tours
         </Link>
       </li>
-
+       <li>
+        <Link href="/departures" className={linkStyle("/departures")}>
+          Departure Screen
+        </Link>
+      </li>
+    
       {isLoggedIn && (
         <>
           <li>
