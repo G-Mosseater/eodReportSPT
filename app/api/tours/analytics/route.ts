@@ -7,11 +7,21 @@ export async function GET(req: NextRequest) {
   const month = searchParams.get("month");
   const year = searchParams.get("year");
   const tour = searchParams.get("tour");
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
 
   await connectDatabase();
   const conditions: any[] = [];
 
-  if (month || year) {
+  if (from || to) {
+    const start = from ? new Date(from) : new Date(0);
+    const end = to
+      ? new Date(new Date(to).setHours(23, 59, 59, 999))
+      : new Date();
+    conditions.push({
+      createdAt: { $gte: start, $lte: end },
+    });
+  } else if (month || year) {
     const y = year ? Number(year) : new Date().getFullYear();
     const m = month ? Number(month) : 0;
 

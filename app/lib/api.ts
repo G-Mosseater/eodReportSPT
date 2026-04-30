@@ -102,15 +102,21 @@ export async function getOvertimeAnalytics(
   month?: number,
   year?: number,
   tour?: string,
+  from?: string,
+  to?: string,
 ) {
   const params = new URLSearchParams();
 
-  if (month !== undefined) {
-    params.append("month", String(month));
-  }
+  if (from) params.append("from", from);
+  if (to) params.append("to", to);
 
-  if (year !== undefined) {
-    params.append("year", String(year));
+  if (!from && !to) {
+    if (month !== undefined) {
+      params.append("month", String(month));
+    }
+    if (year !== undefined) {
+      params.append("year", String(year));
+    }
   }
   if (tour) params.append("tour", tour);
   return apiRequest(`/tours/analytics?${params.toString()}`);

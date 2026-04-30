@@ -193,8 +193,8 @@ async function seed() {
   await mongoose.connect(MONGO_URI);
   console.log("Connected to MongoDB");
 
-  const start = new Date("2025-01-01");
-  const end = new Date("2026-04-24");
+  const start = new Date("2026-04-01");
+  const end = new Date("2026-12-31");
 
   const reports: any[] = [];
 

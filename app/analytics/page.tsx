@@ -19,6 +19,8 @@ export default function DashboardPage() {
     setMonth,
     setYear,
     setSelectedTour,
+    setRange,
+    range,
     loading,
     totalCanceledTours,
     totalPassengers,
@@ -41,6 +43,8 @@ export default function DashboardPage() {
         setMonth={setMonth}
         setYear={setYear}
         setTour={setSelectedTour}
+        setRange={setRange}
+        range={range}
       />
 
       <ChartWrapper loading={loading}>
@@ -73,8 +77,8 @@ export default function DashboardPage() {
             <BoatUtilChart data={boatUtilisation} />
           </div>
         </div>
-        <div className="flex flex-col xl:flex-row gap-6  mt-6 ">
-          <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-sm hover:shadow-primary transition">
+        <div className="mt-6 flex justify-center">
+          <div className="w-full max-w-[1300px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
             <TripsPerBoat data={boatUtilisation} />
           </div>
         </div>
