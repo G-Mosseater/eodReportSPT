@@ -23,3 +23,8 @@ This project was created to replace outdated Excel workflows and make daily oper
 - Tailwind CSS  
 
 The design is intentionally minimal, as the main focus was on functionality, reliability, and improving real-world workflows.
+
+Test version of the app: https://eod-report-spt.vercel.app/
+Login credentials:
+email: jameson@yahoo.com
+password: jameson
