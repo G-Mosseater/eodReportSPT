@@ -120,7 +120,7 @@ export default function DepartureScreen() {
     month: "long",
   });
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 min-h-screen">
       <h1 className="text-xl lg:text-2xl font-bold text-center">
         {isAdmin ? "Admin Departure Screen" : `Daily Departures - ${today}`}
       </h1>
@@ -139,7 +139,7 @@ export default function DepartureScreen() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
         {toursToRender?.map((tourKey) => {
           const tour = tourOptions[tourKey];
           const tourRows = activeRows.filter((r) => r.tour === tourKey);

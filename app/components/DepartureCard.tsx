@@ -48,7 +48,7 @@ export default function DepartureCard({
   onChange,
 }: Props) {
   return (
-    <div className="relative w-full rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+    <div className="relative w-full  h-full rounded-xl border bg-white p-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
       <Image
         src={watermarks[tourKey]}
         alt="tour image"
@@ -64,7 +64,7 @@ export default function DepartureCard({
             height={24}
             className="object-contain"
           /> */}
-          <h2 className="text-lg font-semibold capitalize lg:text-xl">
+          <h2 className="text-lg font-semibold capitalize lg:text-4xl underline">
             {tourKey.replace(/-/g, " ")}
           </h2>
         </div>
@@ -86,11 +86,11 @@ export default function DepartureCard({
           <span>Add</span>
         </button>
       )}
-      <div className="flex w-full border-b text-sm font-medium lg:text-xl  underline rounded">
+      <div className="flex w-full border-b text-sm font-medium lg:text-3xl  rounded">
         <div className="flex-1 p-2">Boat</div>
-        <div className="flex-1 p-2 ml-6">Hour</div>
+        <div className="flex-1 p-2">Hour</div>
         <div className="flex-1 p-2">Conditions</div>
-        <div className="w-32 p-2 text-right">Status</div>
+        <div className="flex-1 p-2 text-right">Status</div>
         <div className="w-10 p-2"></div>
       </div>
       <div className="flex flex-col ">
@@ -107,7 +107,7 @@ export default function DepartureCard({
                     : ""
             }`}
           >
-            <div className="flex-1 p-2 flex items-center lg:text-lg lg:font-medium">
+            <div className="flex-1 p-2 flex items-center lg:text-2xl lg:font-medium">
               {isAdmin ? (
                 <select
                   value={row.boat}
@@ -125,7 +125,7 @@ export default function DepartureCard({
               )}
             </div>
 
-            <div className="flex-1 p-2 flex items-center lg:text-lg lg:font-medium">
+            <div className="flex-1 p-2 flex items-center lg:text-2xl lg:font-medium">
               {isAdmin ? (
                 <select
                   value={row.hour}
@@ -142,8 +142,7 @@ export default function DepartureCard({
                 row.hour
               )}
             </div>
-
-            <div className="flex-1 p-2 flex items-center lg:text-lg lg:font-medium">
+            <div className="flex-1 p-2 flex items-center lg:text-2xl lg:font-medium">
               {isAdmin ? (
                 <select
                   value={row.seaConditions}
@@ -163,12 +162,12 @@ export default function DepartureCard({
               )}
             </div>
 
-            <div className="w-32 p-2 text-right flex items-center justify-center">
+            <div className="flex-1 p-2 flex justify-center lg:text-2xl lg:font-medium">
               {isAdmin ? (
                 <select
                   value={row.status}
                   onChange={(e) => onChange(row.id, "status", e.target.value)}
-                  className="w-full border rounded p-1"
+                  className="w-full border rounded p-1 text-right"
                 >
                   {statuses.map((s) => (
                     <option key={s} value={s}>
@@ -177,7 +176,7 @@ export default function DepartureCard({
                   ))}
                 </select>
               ) : (
-                <span className="px-2 py-1 rounded text-sm lg:text-lg">
+                <span className="px-2 py-1 rounded  text-sm lg:text-2xl">
                   {row.status}
                 </span>
               )}

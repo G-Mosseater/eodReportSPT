@@ -75,7 +75,6 @@ export default function DashboardFilters({
           }
         >
           <option value="">All months</option>
-
           {months.map((name, index) => (
             <option key={index} value={index}>
               {name}
