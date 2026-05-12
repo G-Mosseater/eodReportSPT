@@ -37,6 +37,11 @@ export default function NavLinks({isLoggedIn}:Props) {
           Departure Screen
         </Link>
       </li>
+        <li>
+        <Link href="/sightings" className={linkStyle("/sightings")}>
+          Sightings
+        </Link>
+      </li>
     
       {isLoggedIn && (
         <>
