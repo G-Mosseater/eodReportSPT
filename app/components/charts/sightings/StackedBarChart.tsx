@@ -56,7 +56,6 @@ export default function WhaleChart({ months, series }: Props) {
         fontSize: 18,
       },
     },
-    color: SPECIES_COLORS,
     grid: {
       left: 10,
       right: 10,
@@ -82,7 +81,7 @@ export default function WhaleChart({ months, series }: Props) {
 
     legend: {
       data: series.map((s) => s.name),
-      bottom: 0,
+      bottom: 10,
       left: "center",
 
       itemWidth: 18,
@@ -123,7 +122,7 @@ export default function WhaleChart({ months, series }: Props) {
   };
 
   return (
-    <div style={{ height: 600, marginBottom: 40 }}>
+    <div style={{ height: 500, marginBottom: 40 }}>
       <ReactECharts option={option} style={{ height: "100%" }} />
     </div>
   );

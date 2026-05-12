@@ -9,7 +9,8 @@ export default async function Page() {
   const chartData = aggregateSightings(data);
 
   return (
-    <div className="p-6 flex flex-col gap-10">
+    <div className="p-6 flex flex-col gap-10 min-h-screen overflow-x-hidden">
+      {" "}
       <div className="space-y-1">
         <h1 className="text-2xl lg:text-3xl font-bold">
           Whale Watching Classic 2025
@@ -18,9 +19,8 @@ export default async function Page() {
           Sightings, species distribution and operational insights
         </p>
       </div>
-
       <div className="w-full max-w-6xl mx-auto flex flex-col gap-10">
-        <section className="space-y-3">
+        <section className="space-y-3 min-h-0">
           <WhaleKpiBoxes
             totalSightings={chartData.totalSightings}
             totalCancelled={chartData.totalCancelled}
@@ -35,10 +35,9 @@ export default async function Page() {
           <SpeciesRankingChart ranking={chartData.ranking} />
         </section>
 
-        <section className="space-y-3">
+        <section className="space-y-3 min-h-0">
           <h2 className="text-lg font-semibold">Sightings Over Time</h2>
-
-          <div className="w-full h-[500px]">
+          <div className="w-full min-h-0">
             <WhaleChart months={chartData.months} series={chartData.series} />
           </div>
         </section>
