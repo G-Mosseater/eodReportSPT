@@ -10,7 +10,6 @@ export default async function Page() {
 
   return (
     <div className="p-6 flex flex-col gap-10 min-h-screen overflow-x-hidden">
-      {" "}
       <div className="space-y-1">
         <h1 className="text-2xl lg:text-3xl font-bold">
           Whale Watching Classic 2025
@@ -19,28 +18,27 @@ export default async function Page() {
           Sightings, species distribution and operational insights
         </p>
       </div>
-      <div className="w-full max-w-6xl mx-auto flex flex-col gap-10">
-        <section className="space-y-3 min-h-0">
+
+      <div className="w-full flex flex-col gap-10">
+        <div className="w-full">
           <WhaleKpiBoxes
             totalSightings={chartData.totalSightings}
             totalCancelled={chartData.totalCancelled}
             totalPrivate={chartData.totalPrivate}
             breachingEvents={chartData.breachingEvents}
+            endurkoma={chartData.endurkoma}
           />
-        </section>
+        </div>
 
-        <section className="space-y-3">
-          <h2 className="text-lg font-semibold">Species Ranking</h2>
-
-          <SpeciesRankingChart ranking={chartData.ranking} />
-        </section>
-
-        <section className="space-y-3 min-h-0">
-          <h2 className="text-lg font-semibold">Sightings Over Time</h2>
-          <div className="w-full min-h-0">
+        <div className="w-full flex flex-col xl:flex-row gap-6">
+          <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm transition min-h-[320px]">
             <WhaleChart months={chartData.months} series={chartData.series} />
           </div>
-        </section>
+
+          <div className="flex-1 bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm transition min-h-[320px]">
+            <SpeciesRankingChart ranking={chartData.ranking} />
+          </div>
+        </div>
       </div>
     </div>
   );

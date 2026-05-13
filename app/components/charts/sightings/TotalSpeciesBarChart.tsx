@@ -64,7 +64,8 @@ export default function SpeciesRankingChart({ ranking }: Props) {
   };
 
   return (
-    <div className="w-full h-[500px]">
+    <div className="w-full h-[320px] sm:h-[380px] lg:h-[450px] xl:h-[500px] mb-6">
+      {" "}
       <ReactECharts option={option} style={{ height: "100%" }} />
     </div>
   );

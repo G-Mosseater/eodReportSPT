@@ -3,6 +3,7 @@
 import ReactECharts from "echarts-for-react";
 import { SPECIES_COLORS } from "../../../lib/aggregatedSightings";
 
+const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
 type Props = {
   months: number[];
   series: {
@@ -79,20 +80,29 @@ export default function WhaleChart({ months, series }: Props) {
       },
     },
 
-    legend: {
-      data: series.map((s) => s.name),
-      bottom: 10,
-      left: "center",
+    legend: isMobile
+      ? {
+          data: series.map((s) => s.name),
 
-      itemWidth: 18,
-      itemHeight: 12,
-      itemGap: 20,
+          orient: "horizontal",
+          bottom: 0,
+          left: "center",
+          itemWidth: 10,
+          itemHeight: 8,
+          itemGap: 8,
+          textStyle: { fontSize: 10 },
+        }
+      : {
+          data: series.map((s) => s.name),
 
-      textStyle: {
-        fontSize: 14,
-        fontWeight: 500,
-      },
-    },
+          orient: "horizontal",
+          bottom: 5,
+          left: "center",
+          itemWidth: 18,
+          itemHeight: 12,
+          itemGap: 20,
+          textStyle: { fontSize: 12, fontWeight: 500 },
+        },
 
     xAxis: {
       type: "category",
@@ -122,7 +132,8 @@ export default function WhaleChart({ months, series }: Props) {
   };
 
   return (
-    <div style={{ height: 500, marginBottom: 40 }}>
+    <div className="w-full h-[300px] sm:h-[380px] lg:h-[450px] xl:h-[500px] mb-6">
+      {" "}
       <ReactECharts option={option} style={{ height: "100%" }} />
     </div>
   );

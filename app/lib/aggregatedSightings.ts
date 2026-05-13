@@ -108,6 +108,7 @@ export function aggregateSightings(data: SightingRow[]) {
   //     private: values.private,
   //   }),
   // );
+
   const totalSightings = data.filter(
     (row) => row.Value !== "CANCELLED" && row.Value !== "PRIVATE",
   ).length;
@@ -119,7 +120,8 @@ export function aggregateSightings(data: SightingRow[]) {
   const breachingEvents = data.filter(
     (row) => row.Value === "H!" || row.Value === "M!",
   ).length;
-
+  const endurkoma = data.filter((row) => row.Value === "EK").length;
+  
   const ranking = SPECIES.map((species) => ({
     species,
     count: speciesTotals[species] || 0,
@@ -142,5 +144,6 @@ export function aggregateSightings(data: SightingRow[]) {
     totalPrivate,
     breachingEvents,
     ranking,
+    endurkoma,
   };
 }
