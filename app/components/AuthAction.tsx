@@ -18,7 +18,17 @@ export default function AuthAction({ session, onClick }: Props) {
     <button
       onClick={handleClick}
       className="
-        flex items-center gap-2 text-sm px-2 py-1 rounded bg-background border border-primary hover:bg-secondary/10 text-black"
+    w-fit flex items-center gap-2
+  px-2 py-1 text-xs
+  md:px-3 md:py-2 md:text-sm
+  lg:px-4 lg:py-2 lg:text-base
+  bg-white text-black
+    border border-secondary
+    rounded
+    hover:bg-gray-50
+    hover:shadow-sm shadow-secondary
+    transition-all duration-200 ease-out hover:-translate-y-[1px]
+  "
     >
       {session ? (
         <>
