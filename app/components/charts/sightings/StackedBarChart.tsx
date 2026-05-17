@@ -2,8 +2,7 @@
 
 import ReactECharts from "echarts-for-react";
 import { SPECIES_COLORS } from "../../../lib/aggregatedSightings";
-
-const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+import { useIsMobile } from "../../../helpers/useIsMobile";
 type Props = {
   months: number[];
   series: {
@@ -13,26 +12,7 @@ type Props = {
   }[];
 };
 
-// export const COLORS = [
-//   "#2F6F9F", // M - Minke (strong blue)
-//   "#0B2D4D", // M! - Breaching Minke (deep navy)
-
-//   "#F28E2B", // H - Humpback (orange)
-//   "#C85A00", // H! - Breaching Humpback (dark orange)
-
-//   "#1B9E77", // WBD - Dolphin (green-teal)
-//   "#66C2A5", // P - Porpoise (lighter teal but distinct)
-
-//   "#D95F02", // O - Orca (strong red-orange)
-//   "#7570B3", // F - Fin Whale (purple)
-//   "#8C510A", // S - Sei Whale (brown)
-//   "#E6AB02", // G - Pilot Whale (gold)
-
-//   "#666666", // BS - Shark (neutral dark gray)
-//   "#2C7FB8", // L - Seals (cool teal)
-//   "#F781BF", // C - Common Dolphin (pink highlight)
-// ];
-const MONTH_LABELS = [
+export const MONTH_LABELS = [
   "Jan",
   "Feb",
   "Mar",
@@ -48,19 +28,22 @@ const MONTH_LABELS = [
 ];
 
 export default function WhaleChart({ months, series }: Props) {
+  const isMobile = useIsMobile();
   const option = {
     title: {
-      text: "Total sightings distribution over time",
+      text: "Total Sightings Over Time",
+      top: 0,
+      subtext:
+        "Monthly distribution of whale sightings grouped by species (stacked comparison)",
       left: "center",
-      top: 5,
       textStyle: {
-        fontSize: 18,
+        fontSize: isMobile ? 12 : 15,
       },
     },
     grid: {
       left: 10,
       right: 10,
-      top: 30,
+      top: 50,
       bottom: 85,
       containLabel: true,
     },
@@ -80,35 +63,23 @@ export default function WhaleChart({ months, series }: Props) {
       },
     },
 
-    legend: isMobile
-      ? {
-          data: series.map((s) => s.name),
+    legend: {
+      data: series.map((s) => s.name),
 
-          orient: "horizontal",
-          bottom: 0,
-          left: "center",
-          itemWidth: 10,
-          itemHeight: 8,
-          itemGap: 8,
-          textStyle: { fontSize: 10 },
-        }
-      : {
-          data: series.map((s) => s.name),
-
-          orient: "horizontal",
-          bottom: 5,
-          left: "center",
-          itemWidth: 18,
-          itemHeight: 12,
-          itemGap: 20,
-          textStyle: { fontSize: 12, fontWeight: 500 },
-        },
+      orient: "horizontal",
+      bottom: 0,
+      left: "center",
+      itemWidth: isMobile ? 10 : 14,
+      itemHeight: isMobile ? 8 : 14,
+      itemGap: isMobile ? 8 : 18,
+      textStyle: { fontSize: isMobile ? 10 : 14 },
+    },
 
     xAxis: {
       type: "category",
       data: months.map((m) => MONTH_LABELS[m - 1]),
       axisLabel: {
-        fontSize: 14,
+        fontSize: isMobile ? 10 : 14,
         fontWeight: 500,
       },
     },
@@ -116,7 +87,7 @@ export default function WhaleChart({ months, series }: Props) {
     yAxis: {
       type: "value",
       axisLabel: {
-        fontSize: 14,
+        fontSize: isMobile ? 10 : 14,
         fontWeight: 500,
       },
     },
@@ -127,13 +98,15 @@ export default function WhaleChart({ months, series }: Props) {
       data: s.data,
       itemStyle: {
         color: SPECIES_COLORS[s.species] || "#999",
+        borderRadius: 3,
+        borderColor: "white",
+        borderWidth: 1,
       },
     })),
   };
 
   return (
     <div className="w-full h-[300px] sm:h-[380px] lg:h-[450px] xl:h-[500px] mb-6">
-      {" "}
       <ReactECharts option={option} style={{ height: "100%" }} />
     </div>
   );

@@ -43,13 +43,13 @@ export default function MainNavigationClient({ session }: any) {
           >
             Home
           </Link>
-          <Link
+          {/* <Link
             href="/privates"
             className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
             onClick={() => setDrawerOpen(false)}
           >
             Private tours
-          </Link>
+          </Link> */}
           <Link
             href="/departures"
             className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
@@ -74,13 +74,13 @@ export default function MainNavigationClient({ session }: any) {
               >
                 New EOD
               </Link>
-              <Link
+              {/* <Link
                 href="/private-request"
                 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors duration-200"
                 onClick={() => setDrawerOpen(false)}
               >
                 Private tour requests
-              </Link>
+              </Link> */}
             </>
           )}
           <Link

@@ -1,6 +1,6 @@
 import { GiWhaleTail } from "react-icons/gi";
 import { MdCancel, MdOutlineSearchOff } from "react-icons/md";
-import { IoBoatOutline } from "react-icons/io5";
+import { IoBoatOutline, IoStatsChartOutline } from "react-icons/io5";
 import { TbWavesElectricity } from "react-icons/tb";
 
 type Props = {
@@ -11,68 +11,70 @@ type Props = {
   endurkoma: number;
 };
 
-export default function WhaleKpiBoxes({
-  totalSightings,
-  totalCancelled,
-  totalPrivate,
-  breachingEvents,
-  endurkoma,
-}: Props) {
+const kpis = (data: Props) => [
+  {
+    label: "Total Sightings",
+    value: data.totalSightings,
+    icon: GiWhaleTail,
+    color: "text-primary",
+  },
+  {
+    label: "Private Tours",
+    value: data.totalPrivate,
+    icon: IoBoatOutline,
+    color: "text-primary",
+  },
+  {
+    label: "Breaching Events",
+    value: data.breachingEvents,
+    icon: TbWavesElectricity,
+    color: "text-primary",
+  },
+  {
+    label: "Cancelled Tours",
+    value: data.totalCancelled,
+    icon: MdCancel,
+    color: "text-red-500",
+  },
+  {
+    label: "Endurkoma",
+    value: data.endurkoma,
+    icon: MdOutlineSearchOff,
+    color: "text-red-500",
+  },
+];
+
+export default function WhaleKpiBoxes(props: Props) {
   return (
-    <div className="space-y-3">
-      <h2 className="text-lg font-semibold">Operational Overview</h2>
+    <div className="space-y-4">
+      <h2 className="flex items-center gap-2 text-lg font-semibold">
+        <IoStatsChartOutline className="text-primary" />
+        Operational Overview
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+        {kpis(props).map((kpi) => {
+          const Icon = kpi.icon;
 
-      <div className="flex flex-wrap gap-4">
-        <div className="flex-1 min-w-[160px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-xs sm:text-sm text-gray-500">Total Sightings</p>
+          return (
+            <div
+              key={kpi.label}
+              className="group bg-white/70 backdrop-blur border border-blue-100 rounded-xl p-5 shadow-sm
+                         hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-gray-500 font-medium">{kpi.label}</p>
 
-            <GiWhaleTail className="text-primary text-xl sm:text-2xl" />
-          </div>
-          <p className="text-lg md:text-2xl font-bold">
-            {totalSightings.toLocaleString()}
-          </p>
-        </div>
+                <div className="p-2 rounded-full bg-blue-50 group-hover:bg-blue-100 transition">
+                  <Icon className={`text-xl ${kpi.color}`} />
+                </div>
+              </div>
 
-        <div className="flex-1 min-w-[160px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-xs sm:text-sm text-gray-500">Private Tours</p>
-
-            <IoBoatOutline className="text-primary text-xl sm:text-2xl" />
-          </div>
-          <p className="text-lg md:text-2xl font-bold">
-            {totalPrivate.toLocaleString()}
-          </p>
-        </div>
-        <div className="flex-1 min-w-[160px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-xs sm:text-sm text-gray-500">Breaching Events</p>
-
-            <TbWavesElectricity className="text-primary text-xl sm:text-2xl" />
-          </div>
-          <p className="text-lg md:text-2xl font-bold">
-            {breachingEvents.toLocaleString()}
-          </p>
-        </div>
-        <div className="flex-1 min-w-[160px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-xs sm:text-sm text-gray-500">Cancelled Tours</p>
-
-            <MdCancel className="text-primary text-xl sm:text-2xl" />
-          </div>
-          <p className="text-lg md:text-2xl font-bold text-red-500">
-            {totalCancelled.toLocaleString()}
-          </p>
-        </div>
-        <div className="flex-1 min-w-[160px] bg-white/70 backdrop-blur border border-blue-100 rounded-lg p-4 shadow-sm hover:shadow-primary transition">
-          <div className="flex items-center justify-between">
-            <p className="text-xs sm:text-sm text-gray-500">Endurkoma</p>
-            <MdOutlineSearchOff className="text-primary text-xl sm:text-2xl" />{" "}
-          </div>
-          <p className="text-lg md:text-2xl font-bold text-red-500">
-            {endurkoma.toLocaleString()}
-          </p>
-        </div>
+              <p className={`text-xl md:text-2xl font-bold mt-3 ${kpi.color}`}>
+                {kpi.value.toLocaleString()}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

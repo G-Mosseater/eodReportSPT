@@ -1,3 +1,4 @@
+'use client'
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 

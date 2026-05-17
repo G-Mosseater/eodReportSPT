@@ -6,7 +6,7 @@ type Props = {
   isLoggedIn: boolean;
 };
 
-export default function NavLinks({isLoggedIn}:Props) {
+export default function NavLinks({ isLoggedIn }: Props) {
   const pathname = usePathname();
 
   const linkStyle = (path: string) => {
@@ -27,42 +27,29 @@ export default function NavLinks({isLoggedIn}:Props) {
           Home
         </Link>
       </li>
+
       <li>
-        <Link href="/privates" className={linkStyle("/privates")}>
-          Private Tours
-        </Link>
-      </li>
-       <li>
         <Link href="/departures" className={linkStyle("/departures")}>
           Departure Screen
         </Link>
       </li>
-        <li>
+      <li>
         <Link href="/sightings" className={linkStyle("/sightings")}>
           Sightings
         </Link>
       </li>
-    
+
       {isLoggedIn && (
         <>
           <li>
             <Link href="/create" className={linkStyle("/create")}>
-              New EOD 
+              New EOD
             </Link>
           </li>
 
           <li>
             <Link href="/reports" className={linkStyle("/reports")}>
               EOD History
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              href="/private-request"
-              className={linkStyle("/private-request")}
-            >
-              Private requests
             </Link>
           </li>
         </>
